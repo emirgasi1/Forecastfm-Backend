@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.configure.createHttpClient
+import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
@@ -9,10 +11,14 @@ class ServerTest {
 
     @Test
     fun `test health endpoint`() = testApplication {
+
         application {
             configureResources()
             configureSerialization()
-            configureRouting()
+
+            val httpClient = createHttpClient()
+
+            configureRouting(httpClient)
         }
 
         val response = client.get("/api/health")

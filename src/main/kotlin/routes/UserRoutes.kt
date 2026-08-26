@@ -1,5 +1,8 @@
 package com.example.routes
 
+import com.example.post.PostRepository
+import com.example.post.SavedPostRepository
+import com.example.profile.ProfileRepository
 import com.example.user.CreateUserRequest
 import com.example.user.UserRepository
 import com.example.user.UserResponse
@@ -12,6 +15,11 @@ import io.ktor.server.routing.post
 import kotlin.uuid.Uuid
 
 fun Route.userRoutes(){
+
+    val postRepository= PostRepository()
+    val savedPostRepository = SavedPostRepository()
+    val profileRepository = ProfileRepository()
+
     get("/api/users/{id}") {
 
         val idString = call.parameters["id"]
@@ -73,5 +81,82 @@ fun Route.userRoutes(){
             mapOf("id" to userId)
         )
     }
+    get("/api/users/{userId}/saved-posts") {
 
+        val userId = call.parameters["userId"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest)
+
+        val parsedUserId = try {
+            Uuid.parse(userId)
+        } catch (e: IllegalArgumentException) {
+            return@get call.respond(HttpStatusCode.BadRequest)
+        }
+
+        val posts = savedPostRepository.getSavedPosts(parsedUserId)
+
+        call.respond(posts)
+    }
+
+    get("/api/users/{userId}/posts") {
+
+        val userId =
+            call.parameters["userId"]
+                ?: return@get call.respond(
+                    HttpStatusCode.BadRequest
+                )
+
+        val parsedUserId = try {
+
+            Uuid.parse(userId)
+
+        } catch (e: IllegalArgumentException) {
+
+            return@get call.respond(
+                HttpStatusCode.BadRequest
+            )
+        }
+
+        val posts =
+            postRepository.getPostsByUserId(
+                parsedUserId
+            )
+
+        call.respond(posts)
+    }
+
+    get("/api/users/{userId}/profile") {
+
+        val userId =
+            call.parameters["userId"]
+                ?: return@get call.respond(
+                    HttpStatusCode.BadRequest
+                )
+
+        val parsedUserId = try {
+
+            Uuid.parse(userId)
+
+        } catch (e: IllegalArgumentException) {
+
+            return@get call.respond(
+                HttpStatusCode.BadRequest
+            )
+        }
+
+        try {
+
+            val profile =
+                profileRepository.getProfile(
+                    parsedUserId
+                )
+
+            call.respond(profile)
+
+        } catch (e: IllegalArgumentException) {
+
+            call.respond(
+                HttpStatusCode.NotFound
+            )
+        }
+    }
 }

@@ -14,5 +14,9 @@ object Playlists : Table("playlists") {
     val location = text("location")
     val likes = integer("likes").default(0)
 
+    val spotifyUrl = text("spotifyUrl").nullable()
+    val youtubeUrl = text("youtubeUrl").nullable()
+
+
     override val primaryKey = PrimaryKey(id)
 }

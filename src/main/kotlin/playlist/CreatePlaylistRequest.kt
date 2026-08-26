@@ -10,5 +10,7 @@ data class CreatePlaylistRequest(
     val albumImageUrl: String?,
     val weather: String,
     val temperature: String,
-    val location: String
+    val location: String,
+    val spotifyUrl: String?,
+    val youtubeUrl: String?
 )

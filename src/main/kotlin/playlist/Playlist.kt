@@ -12,5 +12,7 @@ data class Playlist(
     val weather: String,
     val temperature: String,
     val location: String,
-    val likes: Int
+    val likes: Int,
+    val spotifyUrl: String?,
+    val youtubeUrl: String?
 )

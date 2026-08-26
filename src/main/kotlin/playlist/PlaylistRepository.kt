@@ -22,7 +22,9 @@ class PlaylistRepository {
         albumImageUrl: String?,
         weather: String,
         temperature: String,
-        location: String
+        location: String,
+        spotifyUrl: String?,
+        youtubeUrl: String?
     ): Playlist {
 
         val id = Uuid.random()
@@ -37,6 +39,8 @@ class PlaylistRepository {
                 it[Playlists.weather] = weather
                 it[Playlists.temperature] = temperature
                 it[Playlists.location] = location
+                it[Playlists.spotifyUrl] = spotifyUrl
+                it[Playlists.youtubeUrl] = youtubeUrl
             }
         }
 
@@ -49,7 +53,9 @@ class PlaylistRepository {
             weather = weather,
             temperature = temperature,
             location = location,
-            likes = 0
+            likes = 0,
+            spotifyUrl = spotifyUrl,
+            youtubeUrl = youtubeUrl
         )
     }
     fun getPlaylists(): List<PlaylistResponse> {
@@ -72,7 +78,9 @@ class PlaylistRepository {
                         songs = getSongsForPlaylist(
                             playlist[Playlists.id]
                         ),
-                        likes = playlist[Playlists.likes]
+                        likes = playlist[Playlists.likes],
+                        spotifyUrl = playlist[Playlists.spotifyUrl],
+                        youtubeUrl = playlist[Playlists.youtubeUrl],
                     )
                 }
         }
@@ -98,7 +106,9 @@ class PlaylistRepository {
                         temperature = it[Playlists.temperature],
                         location = it[Playlists.location],
                         songs = songs,
-                        likes = it[Playlists.likes]
+                        likes = it[Playlists.likes],
+                        spotifyUrl = it[Playlists.spotifyUrl],
+                        youtubeUrl = it[Playlists.youtubeUrl],
                     )
                 }
         }
@@ -160,7 +170,9 @@ class PlaylistRepository {
                         temperature = row[Playlists.temperature],
                         location = row[Playlists.location],
                         songs = getSongsForPlaylist(playlistId),
-                        likes = row[Playlists.likes]
+                        likes = row[Playlists.likes],
+                        spotifyUrl = row[Playlists.spotifyUrl],
+                        youtubeUrl = row[Playlists.youtubeUrl],
                     )
                 }
         }

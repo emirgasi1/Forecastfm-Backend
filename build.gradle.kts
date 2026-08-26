@@ -22,6 +22,10 @@ dependencies {
     implementation(ktorLibs.server.netty)
     implementation(ktorLibs.server.resources)
 
+    implementation(ktorLibs.client.core)
+    implementation(ktorLibs.client.cio)
+    implementation(ktorLibs.client.contentNegotiation)
+
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation("org.jetbrains.exposed:exposed-java-time:1.0.0")

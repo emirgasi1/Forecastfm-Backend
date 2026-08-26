@@ -14,5 +14,7 @@ data class PlaylistResponse(
     val temperature: String,
     val location: String,
     val songs: List<Music>,
-    val likes: Int
+    val likes: Int,
+    val spotifyUrl: String?,
+    val youtubeUrl: String?
 )
