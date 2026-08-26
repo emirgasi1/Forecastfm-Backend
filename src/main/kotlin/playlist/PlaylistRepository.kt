@@ -1,0 +1,206 @@
+package com.example.playlist
+
+import com.example.database.table.FavoritePlaylists
+import com.example.database.table.Musics
+import com.example.database.table.PlaylistSongs
+import com.example.database.table.Playlists
+import com.example.music.Music
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import kotlin.uuid.Uuid
+
+class PlaylistRepository {
+
+    fun createPlaylist(
+        title: String,
+        genre: String,
+        mood: String,
+        albumImageUrl: String?,
+        weather: String,
+        temperature: String,
+        location: String
+    ): Playlist {
+
+        val id = Uuid.random()
+
+        transaction {
+            Playlists.insert {
+                it[Playlists.id] = id
+                it[Playlists.title] = title
+                it[Playlists.genre] = genre
+                it[Playlists.mood] = mood
+                it[Playlists.albumImageUrl] = albumImageUrl
+                it[Playlists.weather] = weather
+                it[Playlists.temperature] = temperature
+                it[Playlists.location] = location
+            }
+        }
+
+        return Playlist(
+            id = id.toString(),
+            title = title,
+            genre = genre,
+            mood = mood,
+            albumImageUrl = albumImageUrl,
+            weather = weather,
+            temperature = temperature,
+            location = location,
+            likes = 0
+        )
+    }
+    fun getPlaylists(): List<PlaylistResponse> {
+
+        return transaction {
+
+            Playlists
+                .selectAll()
+                .map { playlist ->
+
+                    PlaylistResponse(
+                        id = playlist[Playlists.id].toString(),
+                        title = playlist[Playlists.title],
+                        genre = playlist[Playlists.genre],
+                        mood = playlist[Playlists.mood],
+                        albumImageUrl = playlist[Playlists.albumImageUrl],
+                        weather = playlist[Playlists.weather],
+                        temperature = playlist[Playlists.temperature],
+                        location = playlist[Playlists.location],
+                        songs = getSongsForPlaylist(
+                            playlist[Playlists.id]
+                        ),
+                        likes = playlist[Playlists.likes]
+                    )
+                }
+        }
+    }
+    fun getPlaylistById(id: Uuid): PlaylistResponse? {
+
+        return transaction {
+            Playlists
+                .selectAll()
+                .where { Playlists.id eq id }
+                .singleOrNull()
+                ?.let {
+
+                    val songs = getSongsForPlaylist(id)
+
+                    PlaylistResponse(
+                        id = it[Playlists.id].toString(),
+                        title = it[Playlists.title],
+                        genre = it[Playlists.genre],
+                        mood = it[Playlists.mood],
+                        albumImageUrl = it[Playlists.albumImageUrl],
+                        weather = it[Playlists.weather],
+                        temperature = it[Playlists.temperature],
+                        location = it[Playlists.location],
+                        songs = songs,
+                        likes = it[Playlists.likes]
+                    )
+                }
+        }
+    }
+
+    fun addSongToPlaylist(
+        playlistId: Uuid,
+        musicId: Uuid
+    ) {
+        transaction {
+            PlaylistSongs.insert {
+                it[PlaylistSongs.playlistId] = playlistId
+                it[PlaylistSongs.musicId] = musicId
+            }
+        }
+    }
+    fun getSongsForPlaylist(
+        playlistId: Uuid
+    ): List<Music> {
+
+        return transaction {
+            (PlaylistSongs innerJoin Musics)
+                .selectAll()
+                .where { PlaylistSongs.playlistId eq playlistId }
+                .map {
+                    Music(
+                        id = it[Musics.id].toString(),
+                        title = it[Musics.title],
+                        artist = it[Musics.artist],
+                        duration = it[Musics.duration],
+                        albumImageUrl = it[Musics.albumImageUrl]
+                    )
+                }
+        }
+    }
+
+    fun getFavoritePlaylists(
+        userId: Uuid
+    ): List<PlaylistResponse> {
+
+        return transaction {
+
+            (FavoritePlaylists innerJoin Playlists)
+                .selectAll()
+                .where {
+                    FavoritePlaylists.userId eq userId
+                }
+                .map { row ->
+
+                    val playlistId = row[Playlists.id]
+
+                    PlaylistResponse(
+                        id = playlistId.toString(),
+                        title = row[Playlists.title],
+                        genre = row[Playlists.genre],
+                        mood = row[Playlists.mood],
+                        albumImageUrl = row[Playlists.albumImageUrl],
+                        weather = row[Playlists.weather],
+                        temperature = row[Playlists.temperature],
+                        location = row[Playlists.location],
+                        songs = getSongsForPlaylist(playlistId),
+                        likes = row[Playlists.likes]
+                    )
+                }
+        }
+    }
+
+    fun getFavoritePlaylistIds(
+        userId:Uuid
+    ):List<String>{
+        return transaction{
+            FavoritePlaylists
+                .selectAll()
+                .where{
+                    FavoritePlaylists.userId eq userId
+                }
+                .map{
+                    it[FavoritePlaylists.playlistId].toString()
+                }
+        }
+    }
+    fun favoritePlaylist(
+        userId: Uuid,
+        playlistId: Uuid
+    ) {
+        transaction {
+            FavoritePlaylists.insert {
+                it[FavoritePlaylists.userId] = userId
+                it[FavoritePlaylists.playlistId] = playlistId
+            }
+        }
+    }
+
+    fun unfavoritePlaylist(
+        userId: Uuid,
+        playlistId: Uuid
+    ) {
+        transaction {
+            FavoritePlaylists.deleteWhere {
+                (FavoritePlaylists.userId eq userId) and
+                        (FavoritePlaylists.playlistId eq playlistId)
+            }
+        }
+    }
+}
