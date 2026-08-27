@@ -1,20 +1,6 @@
 package com.example
 
-import com.example.comment.CommentRepository
-import com.example.comment.CreateCommentRequest
-import com.example.like.CreateLikeRequest
-import com.example.like.LikeRepository
-import com.example.post.CreatePostRequest
-import com.example.post.PostRepository
-import com.example.model.HealthResponse
-import com.example.music.CreateMusicRequest
-import com.example.music.MusicRepository
-import com.example.playlist.AddSongToPlaylistRequest
-import com.example.playlist.CreatePlaylistRequest
-import com.example.playlist.PlaylistRepository
-import com.example.post.SavePostRequest
-import com.example.post.SavedPostRepository
-import com.example.profile.ProfileRepository
+
 import com.example.routes.commentRoutes
 import com.example.routes.musicRoutes
 import com.example.routes.playlistRoutes

@@ -1,5 +1,6 @@
 package com.example.database
 
+import com.example.database.seed.SeedData
 import com.example.database.table.Comments
 import com.example.database.table.FavoritePlaylists
 import com.example.database.table.Musics
@@ -9,6 +10,8 @@ import com.example.database.table.PostLikes
 import com.example.database.table.Posts
 import com.example.database.table.SavedPosts
 import com.example.database.table.Users
+import com.example.music.MusicRepository
+import com.example.playlist.PlaylistRepository
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -27,8 +30,10 @@ object DatabaseFactory {
             user = user,
             password = password
         )
+
         transaction {
-            SchemaUtils.create(Users,
+            SchemaUtils.create(
+                Users,
                 Posts,
                 Comments,
                 Musics,
@@ -39,6 +44,8 @@ object DatabaseFactory {
                 FavoritePlaylists
             )
         }
+
+
         DriverManager.getConnection(url, user, password).use { connection ->
             connection.createStatement().use { statement ->
                 statement.executeQuery("SELECT 1").use { result ->
@@ -48,5 +55,12 @@ object DatabaseFactory {
                 }
             }
         }
+        val musicRepository = MusicRepository()
+        val playlistRepository = PlaylistRepository()
+
+        SeedData.seed(
+            musicRepository = musicRepository,
+            playlistRepository = playlistRepository
+        )
     }
 }
