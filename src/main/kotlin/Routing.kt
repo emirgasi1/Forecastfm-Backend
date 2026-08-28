@@ -2,6 +2,7 @@ package com.example
 
 
 import com.example.routes.commentRoutes
+import com.example.routes.musicHistoryRoutes
 import com.example.routes.musicRoutes
 import com.example.routes.playlistRoutes
 import com.example.routes.postRoutes
@@ -33,6 +34,7 @@ fun Application.configureRouting(
         commentRoutes()
         playlistRoutes()
         musicRoutes()
+        musicHistoryRoutes()
 
 
 

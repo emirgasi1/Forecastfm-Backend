@@ -1,5 +1,6 @@
-package com.example.weather
+package com.example.routes
 
+import com.example.weather.WeatherRepository
 import io.ktor.server.application.Application
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get

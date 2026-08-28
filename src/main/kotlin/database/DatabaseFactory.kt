@@ -3,6 +3,7 @@ package com.example.database
 import com.example.database.seed.SeedData
 import com.example.database.table.Comments
 import com.example.database.table.FavoritePlaylists
+import com.example.database.table.MusicHistory
 import com.example.database.table.Musics
 import com.example.database.table.PlaylistSongs
 import com.example.database.table.Playlists
@@ -41,7 +42,8 @@ object DatabaseFactory {
                 PlaylistSongs,
                 PostLikes,
                 SavedPosts,
-                FavoritePlaylists
+                FavoritePlaylists,
+                MusicHistory
             )
         }
 

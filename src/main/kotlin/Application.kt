@@ -2,10 +2,9 @@ package com.example
 
 import com.example.configure.createHttpClient
 import com.example.database.DatabaseFactory
-import com.example.user.UserRepository
 import com.example.weather.WeatherApi
 import com.example.weather.WeatherRepository
-import com.example.weather.weatherRoutes
+import com.example.routes.weatherRoutes
 import io.ktor.server.application.Application
 
 fun Application.rootModule() {
