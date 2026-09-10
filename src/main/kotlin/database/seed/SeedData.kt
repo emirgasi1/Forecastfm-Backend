@@ -1,433 +1,206 @@
 package com.example.database.seed
 
+import com.example.database.table.Locations
+import com.example.database.table.Musics
+import com.example.database.table.PlaylistSongs
+import com.example.database.table.Playlists
+import com.example.database.table.Posts
 import com.example.music.MusicRepository
 import com.example.playlist.PlaylistRepository
+import database.table.Users
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.mindrot.jbcrypt.BCrypt
+import java.util.UUID
 import kotlin.uuid.Uuid
+import java.time.Instant
 
 object SeedData {
+    fun seedLocations() {
+        transaction {
+            // Only seed if locations are empty
+            if (Locations.selectAll().count() == 0L) {
 
-    fun seed(
-        musicRepository: MusicRepository,
-        playlistRepository: PlaylistRepository
-    ) {
+                // ===== SARAJEVO LOCATIONS =====
 
-        if (playlistRepository.getPlaylists().isNotEmpty()) {
-            println("Seed data already exists. Skipping.")
-            return
+                // 1. Baščaršija
+                val locationId1 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId1
+                    it[Locations.name] = "Baščaršija"
+                    it[Locations.description] = "Stari gradski trg, srce Sarajeva sa osmanskim duhom, ćevapima i bakrom"
+                    it[Locations.latitude] = 43.8608
+                    it[Locations.longitude] = 18.4288
+                }
+
+                // 2. Vrelo Bosne - Ilidža
+                val locationId2 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId2
+                    it[Locations.name] = "Vrelo Bosne"
+                    it[Locations.description] = "Prirodni park na izvoru rijeke Bosne, idealan za šetnju i odmor"
+                    it[Locations.latitude] = 43.8196
+                    it[Locations.longitude] = 18.2695
+                }
+
+                // 3. Avaz Twist Tower
+                val locationId3 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId3
+                    it[Locations.name] = "Avaz Twist Tower"
+                    it[Locations.description] = "Najviša zgrada u Bosni, pogled na cijelo Sarajevo sa 176m visine"
+                    it[Locations.latitude] = 43.8584
+                    it[Locations.longitude] = 18.4055
+                }
+
+                // 4. Bijela Tabija
+                val locationId4 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId4
+                    it[Locations.name] = "Bijela Tabija"
+                    it[Locations.description] = "Stara osmanska tvrđava na brdu iznad Sarajeva, najbolji pogled na grad"
+                    it[Locations.latitude] = 43.8620
+                    it[Locations.longitude] = 18.4462
+                }
+
+                // 5. Katedrala Srca Isusova
+                val locationId5 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId5
+                    it[Locations.name] = "Katedrala Srca Isusova"
+                    it[Locations.description] = "Neogotička katedrala u centru Sarajeva, simbol grada"
+                    it[Locations.latitude] = 43.8593
+                    it[Locations.longitude] = 18.4248
+                }
+
+                // 6. Sebilj
+                val locationId6 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId6
+                    it[Locations.name] = "Sebilj - Baščaršija"
+                    it[Locations.description] = "Drvena česma iz 18. vijeka, najpoznatiji simbol Sarajeva"
+                    it[Locations.latitude] = 43.8607
+                    it[Locations.longitude] = 18.4290
+                }
+
+                // 7. Zmajevac
+                val locationId7 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId7
+                    it[Locations.name] = "Zmajevac"
+                    it[Locations.description] = "Popularno izletište sa pogledom na Sarajevo, omiljeno mjesto za kafu"
+                    it[Locations.latitude] = 43.8672
+                    it[Locations.longitude] = 18.4122
+                }
+
+                // 8. Vijećnica
+                val locationId8 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId8
+                    it[Locations.name] = "Vijećnica"
+                    it[Locations.description] = "Pseudo-maurska palača, nekadašnja gradska vijećnica, simbol Sarajeva"
+                    it[Locations.latitude] = 43.8595
+                    it[Locations.longitude] = 18.4331
+                }
+
+                // 9. Trebević
+                val locationId9 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId9
+                    it[Locations.name] = "Trebević - Vidikovac"
+                    it[Locations.description] = "Planina iznad Sarajeva, uživajte u prirodi i panoramskom pogledu"
+                    it[Locations.latitude] = 43.8271
+                    it[Locations.longitude] = 18.4485
+                }
+
+                // 10. Ilidža - Veliki park
+                val locationId10 = UUID.randomUUID().toString()
+                Locations.insert {
+                    it[Locations.id] = locationId10
+                    it[Locations.name] = "Veliki park - Ilidža"
+                    it[Locations.description] = "Prostrani park u Ilidži, savršen za opuštanje i porodične izlete"
+                    it[Locations.latitude] = 43.8297
+                    it[Locations.longitude] = 18.3132
+                }
+
+                // ===== SEED TEST USER =====
+                val userId = UUID.randomUUID().toString()
+                val hashedPassword = BCrypt.hashpw("password123", BCrypt.gensalt())
+
+                Users.insert {
+                    it[Users.id] = userId
+                    it[Users.email] = "test@example.com"
+                    it[Users.username] = "testuser"
+                    it[Users.passwordHash] = hashedPassword
+                    it[Users.bio] = "Istražujem Sarajevo! 🇧🇦"
+                    it[Users.profileImageUrl] = null
+                    it[Users.favoriteLocation] = "Baščaršija"
+                    it[Users.isVerified] = true
+                    it[Users.status] = "ACTIVE"
+                }
+
+                // ===== SEED TEST POST =====
+                val postId = UUID.randomUUID().toString()
+                Posts.insert {
+                    it[Posts.id] = postId
+                    it[Posts.userId] = userId
+                    it[Posts.caption] = "Prvi put u Baščaršiji! Nevjerovatna atmosfera i najbolji ćevapi! 🌟 #ForecastFM #Sarajevo"
+                    it[Posts.imageUrl] = null
+                    it[Posts.createdAt] = Instant.now()
+                }
+
+                // ===== SEED TEST PLAYLIST =====
+                val playlistId = UUID.randomUUID().toString()
+                Playlists.insert {
+                    it[Playlists.id] = playlistId
+                    it[Playlists.title] = "Sarajevske Večeri"
+                    it[Playlists.genre] = "Sevdah"
+                    it[Playlists.mood] = "Romantično"
+                    it[Playlists.albumImageUrl] = null
+                    it[Playlists.weather] = "Sunčano"
+                    it[Playlists.temperature] = "24°C"
+                    it[Playlists.location] = "Baščaršija"
+                    it[Playlists.likes] = 0
+                    it[Playlists.spotifyUrl] = "https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO"
+                    it[Playlists.youtubeUrl] = null
+                }
+
+                // ===== SEED TEST MUSIC =====
+                val musicId = UUID.randomUUID().toString()
+                Musics.insert {
+                    it[Musics.id] = musicId
+                    it[Musics.title] = "Sarajevo, volim te"
+                    it[Musics.artist] = "Halid Bešlić"
+                    it[Musics.duration] = 245
+                    it[Musics.albumImageUrl] = null
+                }
+
+                // ===== ADD SONG TO PLAYLIST =====
+                PlaylistSongs.insert {
+                    it[PlaylistSongs.playlistId] = playlistId
+                    it[PlaylistSongs.musicId] = musicId
+                }
+
+                println("✅ Seed data inserted successfully!")
+                println("📍 10 Sarajevo locations seeded:")
+                println("   - Baščaršija")
+                println("   - Vrelo Bosne (Ilidža)")
+                println("   - Avaz Twist Tower")
+                println("   - Bijela Tabija")
+                println("   - Katedrala Srca Isusova")
+                println("   - Sebilj")
+                println("   - Zmajevac")
+                println("   - Vijećnica")
+                println("   - Trebević")
+                println("   - Veliki park (Ilidža)")
+                println("👤 1 User seeded (test@example.com / password123)")
+                println("📝 1 Post seeded")
+                println("🎵 1 Playlist seeded")
+                println("🎵 1 Music track seeded")
+            }
         }
-
-        println("Seeding music and playlist data...")
-
-        val coffeeTime = musicRepository.createMusic(
-            title = "Coffee Time",
-            artist = "Example Artist",
-            duration = "3:45",
-            albumImageUrl = null
-        )
-
-        val morningWalk = musicRepository.createMusic(
-            title = "Morning Walk",
-            artist = "Example Artist",
-            duration = "4:10",
-            albumImageUrl = null,
-        )
-
-        val rainyDay = musicRepository.createMusic(
-            title = "Rainy Day",
-            artist = "Example Artist",
-            duration = "3:52",
-            albumImageUrl = null,
-        )
-
-        val lofiStudy = musicRepository.createMusic(
-            title = "Lofi Study",
-            artist = "Example Artist",
-            duration = "3:28",
-            albumImageUrl = null
-        )
-
-        val nightDrive = musicRepository.createMusic(
-            title = "Night Drive",
-            artist = "Example Artist",
-            duration = "4:02",
-            albumImageUrl = null
-        )
-
-        val summerVibes = musicRepository.createMusic(
-            title = "Summer Vibes",
-            artist = "Example Artist",
-            duration = "3:35",
-            albumImageUrl = null
-        )
-
-        val hipHopEnergy = musicRepository.createMusic(
-            title = "Energy",
-            artist = "Example Artist",
-            duration = "3:18",
-            albumImageUrl = null
-        )
-
-        val cozyEvening = musicRepository.createMusic(
-            title = "Cozy Evening",
-            artist = "Example Artist",
-            duration = "4:12",
-            albumImageUrl = null
-        )
-
-        val autumnWalk = musicRepository.createMusic(
-            title = "Autumn Walk",
-            artist = "Example Artist",
-            duration = "3:47",
-            albumImageUrl = null
-        )
-
-        val lateNight = musicRepository.createMusic(
-            title = "Late Night",
-            artist = "Example Artist",
-            duration = "4:21",
-            albumImageUrl = null
-        )
-
-        val weekend = musicRepository.createMusic(
-            title = "Weekend",
-            artist = "Example Artist",
-            duration = "3:31",
-            albumImageUrl = null
-        )
-
-        val peaceful = musicRepository.createMusic(
-            title = "Peaceful",
-            artist = "Example Artist",
-            duration = "4:05",
-            albumImageUrl = null
-        )
-
-        val goldenHour = musicRepository.createMusic(
-            title = "Golden Hour",
-            artist = "Example Artist",
-            duration = "3:46",
-            albumImageUrl = null
-        )
-
-        val deepFocus = musicRepository.createMusic(
-            title = "Deep Focus",
-            artist = "Example Artist",
-            duration = "5:02",
-            albumImageUrl = null
-        )
-
-        val chillNight = musicRepository.createMusic(
-            title = "Chill Night",
-            artist = "Example Artist",
-            duration = "3:58",
-            albumImageUrl = null
-        )
-
-        val jazzEvening = musicRepository.createMusic(
-            title = "Evening Jazz",
-            artist = "Example Artist",
-            duration = "4:17",
-            albumImageUrl = null
-        )
-
-        val popEnergy = musicRepository.createMusic(
-            title = "Pop Energy",
-            artist = "Example Artist",
-            duration = "3:22",
-            albumImageUrl = null
-        )
-
-        val winterCoffee = musicRepository.createMusic(
-            title = "Winter Coffee",
-            artist = "Example Artist",
-            duration = "4:08",
-            albumImageUrl = null
-        )
-
-        val rainyWalk = musicRepository.createMusic(
-            title = "Rainy Walk",
-            artist = "Example Artist",
-            duration = "3:54",
-            albumImageUrl = null
-        )
-
-        val midnight = musicRepository.createMusic(
-            title = "Midnight",
-            artist = "Example Artist",
-            duration = "4:26",
-            albumImageUrl = null
-        )
-
-        val playlist1 = playlistRepository.createPlaylist(
-            title = "Morning Coffee",
-            genre = "Jazz",
-            mood = "Relaxed",
-            albumImageUrl = null,
-            weather = "Sunny",
-            temperature = "22°C",
-            location = "Baščaršija",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist2 = playlistRepository.createPlaylist(
-            title = "Rainy Day",
-            genre = "Indie",
-            mood = "Cozy",
-            albumImageUrl = null,
-            weather = "Rainy",
-            temperature = "15°C",
-            location = "Baščaršija",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist3 = playlistRepository.createPlaylist(
-            title = "Lofi Study",
-            genre = "Lo-Fi",
-            mood = "Focused",
-            albumImageUrl = null,
-            weather = "Cloudy",
-            temperature = "17°C",
-            location = "Otoka",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist4 = playlistRepository.createPlaylist(
-            title = "Night Drive",
-            genre = "Electronic",
-            mood = "Chill",
-            albumImageUrl = null,
-            weather = "Clear",
-            temperature = "18°C",
-            location = "Sarajevo",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist5 = playlistRepository.createPlaylist(
-            title = "Hip-Hop Workout",
-            genre = "Hip-Hop",
-            mood = "Energetic",
-            albumImageUrl = null,
-            weather = "Sunny",
-            temperature = "24°C",
-            location = "Sarajevo",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist6 = playlistRepository.createPlaylist(
-            title = "Cozy Evening",
-            genre = "R&B",
-            mood = "Calm",
-            albumImageUrl = null,
-            weather = "Cloudy",
-            temperature = "16°C",
-            location = "Vogošća",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist7 = playlistRepository.createPlaylist(
-            title = "Summer Vibes",
-            genre = "Pop",
-            mood = "Happy",
-            albumImageUrl = null,
-            weather = "Sunny",
-            temperature = "28°C",
-            location = "Ilidža",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist8 = playlistRepository.createPlaylist(
-            title = "Late Night Jazz",
-            genre = "Jazz",
-            mood = "Moody",
-            albumImageUrl = null,
-            weather = "Clear",
-            temperature = "14°C",
-            location = "Sarajevo",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist9 = playlistRepository.createPlaylist(
-            title = "Autumn Walk",
-            genre = "Indie",
-            mood = "Peaceful",
-            albumImageUrl = null,
-            weather = "Cloudy",
-            temperature = "12°C",
-            location = "Koševo",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        val playlist10 = playlistRepository.createPlaylist(
-            title = "Weekend Energy",
-            genre = "Pop",
-            mood = "Energetic",
-            albumImageUrl = null,
-            weather = "Sunny",
-            temperature = "23°C",
-            location = "Baščaršija",
-            spotifyUrl = null,
-            youtubeUrl = null
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist1.id),
-            Uuid.parse(coffeeTime.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist1.id),
-            Uuid.parse(morningWalk.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist1.id),
-            Uuid.parse(winterCoffee.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist2.id),
-            Uuid.parse(rainyDay.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist2.id),
-            Uuid.parse(rainyWalk.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist2.id),
-            Uuid.parse(peaceful.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist3.id),
-            Uuid.parse(lofiStudy.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist3.id),
-            Uuid.parse(deepFocus.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist3.id),
-            Uuid.parse(peaceful.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist4.id),
-            Uuid.parse(nightDrive.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist4.id),
-            Uuid.parse(chillNight.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist4.id),
-            Uuid.parse(midnight.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist5.id),
-            Uuid.parse(hipHopEnergy.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist5.id),
-            Uuid.parse(popEnergy.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist5.id),
-            Uuid.parse(weekend.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist6.id),
-            Uuid.parse(cozyEvening.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist6.id),
-            Uuid.parse(chillNight.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist6.id),
-            Uuid.parse(jazzEvening.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist7.id),
-            Uuid.parse(summerVibes.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist7.id),
-            Uuid.parse(goldenHour.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist7.id),
-            Uuid.parse(popEnergy.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist8.id),
-            Uuid.parse(jazzEvening.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist8.id),
-            Uuid.parse(lateNight.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist8.id),
-            Uuid.parse(midnight.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist9.id),
-            Uuid.parse(autumnWalk.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist9.id),
-            Uuid.parse(peaceful.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist9.id),
-            Uuid.parse(rainyWalk.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist10.id),
-            Uuid.parse(weekend.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist10.id),
-            Uuid.parse(summerVibes.id)
-        )
-
-        playlistRepository.addSongToPlaylist(
-            Uuid.parse(playlist10.id),
-            Uuid.parse(goldenHour.id)
-        )
-
-        println("Music and playlist seed completed!")
     }
 }

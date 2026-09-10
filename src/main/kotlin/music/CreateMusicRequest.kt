@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class CreateMusicRequest(
     val title: String,
     val artist: String,
-    val duration: String,
+    val duration: Int,
     val albumImageUrl: String?
 )

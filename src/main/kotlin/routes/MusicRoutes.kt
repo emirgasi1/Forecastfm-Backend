@@ -10,12 +10,10 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import kotlin.uuid.Uuid
 
-fun Route.musicRoutes(){
-
-    val musicRepository= MusicRepository()
+fun Route.musicRoutes() {
+    val musicRepository = MusicRepository()
 
     post("/api/music") {
-
         val request = call.receive<CreateMusicRequest>()
 
         val music = musicRepository.createMusic(
@@ -25,27 +23,17 @@ fun Route.musicRoutes(){
             albumImageUrl = request.albumImageUrl
         )
 
-        call.respond(
-            HttpStatusCode.Created,
-            music
-        )
+        call.respond(HttpStatusCode.Created, music)
     }
 
     get("/api/music/{id}") {
-
         val id = call.parameters["id"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing music ID")
 
-        val musicId = try {
-            Uuid.parse(id)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val music = musicRepository.getMusicById(musicId)
+        val music = musicRepository.getMusicById(id)
 
         if (music == null) {
-            call.respond(HttpStatusCode.NotFound)
+            call.respond(HttpStatusCode.NotFound, "Music not found")
         } else {
             call.respond(music)
         }

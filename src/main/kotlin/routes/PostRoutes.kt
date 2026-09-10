@@ -8,263 +8,198 @@ import com.example.post.PostRepository
 import com.example.post.SavePostRequest
 import com.example.post.SavedPostRepository
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.PartData
+import io.ktor.http.content.forEachPart
+import io.ktor.http.content.streamProvider
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import java.io.File
 import kotlin.uuid.Uuid
 
-fun Route.postRoutes(){
-
-    val postRepository= PostRepository()
-    val commentRepository= CommentRepository()
-    val likeRepository= LikeRepository()
-    val savedPostRepository= SavedPostRepository()
+fun Route.postRoutes() {
+    val postRepository = PostRepository()
+    val commentRepository = CommentRepository()
+    val likeRepository = LikeRepository()
+    val savedPostRepository = SavedPostRepository()
 
     post("/api/posts") {
         val request = call.receive<CreatePostRequest>()
-
         val post = postRepository.createPost(
-            userId = Uuid.parse(request.userId),
+            userId = request.userId,
             caption = request.caption,
             imageUrl = request.imageUrl
         )
-
         call.respond(HttpStatusCode.Created, post)
     }
 
     get("/api/posts") {
-
         val posts = postRepository.getPosts()
-
         call.respond(posts)
     }
 
-
     get("/api/posts/{id}") {
         val id = call.parameters["id"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
-        val postId = try {
-            Uuid.parse(id)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val post = postRepository.getPostById(postId)
-
+        val post = postRepository.getPostById(id)
         if (post == null) {
-            call.respond(HttpStatusCode.NotFound)
+            call.respond(HttpStatusCode.NotFound, "Post not found")
         } else {
             call.respond(post)
         }
     }
 
     get("/api/posts/{postId}/comments") {
-
         val postId = call.parameters["postId"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val comments = commentRepository.getCommentsByPostId(
-            parsedPostId
-        )
-
+        val comments = commentRepository.getCommentsByPostId(postId)
         call.respond(comments)
     }
 
     post("/api/posts/{postId}/like") {
-
         val postId = call.parameters["postId"]
-            ?: return@post call.respond(HttpStatusCode.BadRequest)
+            ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val request = call.receive<CreateLikeRequest>()
 
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@post call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val userId = try {
-            Uuid.parse(request.userId)
-        } catch (e: IllegalArgumentException) {
-            return@post call.respond(HttpStatusCode.BadRequest)
-        }
-
         likeRepository.likePost(
-            userId = userId,
-            postId = parsedPostId
+            userId = request.userId,
+            postId = postId
         )
-
         call.respond(HttpStatusCode.Created)
     }
 
     delete("/api/posts/{postId}/like") {
-
         val postId = call.parameters["postId"]
-            ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val userId = call.request.queryParameters["userId"]
-            ?: return@delete call.respond(HttpStatusCode.BadRequest)
-
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@delete call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val parsedUserId = try {
-            Uuid.parse(userId)
-        } catch (e: IllegalArgumentException) {
-            return@delete call.respond(HttpStatusCode.BadRequest)
-        }
+            ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         likeRepository.unlikePost(
-            userId = parsedUserId,
-            postId = parsedPostId
+            userId = userId,
+            postId = postId
         )
-
         call.respond(HttpStatusCode.OK)
     }
 
     get("/api/posts/{postId}/like") {
-
         val postId = call.parameters["postId"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val userId = call.request.queryParameters["userId"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
-
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val parsedUserId = try {
-            Uuid.parse(userId)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         val liked = likeRepository.isPostLiked(
-            userId = parsedUserId,
-            postId = parsedPostId
+            userId = userId,
+            postId = postId
         )
-
-        call.respond(
-            mapOf("liked" to liked)
-        )
+        call.respond(mapOf("liked" to liked))
     }
 
     get("/api/posts/{postId}/likes") {
-
         val postId = call.parameters["postId"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val count = likeRepository.getPostLikeCount(parsedPostId)
-
-        call.respond(
-            mapOf("likes" to count)
-        )
+        val count = likeRepository.getPostLikeCount(postId)
+        call.respond(mapOf("likes" to count))
     }
 
     post("/api/posts/{postId}/save") {
-
         val postId = call.parameters["postId"]
-            ?: return@post call.respond(HttpStatusCode.BadRequest)
+            ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val request = call.receive<SavePostRequest>()
 
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@post call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val userId = try {
-            Uuid.parse(request.userId)
-        } catch (e: IllegalArgumentException) {
-            return@post call.respond(HttpStatusCode.BadRequest)
-        }
-
         savedPostRepository.savePost(
-            userId = userId,
-            postId = parsedPostId
+            userId = request.userId,
+            postId = postId
         )
-
         call.respond(HttpStatusCode.Created)
     }
 
     delete("/api/posts/{postId}/save") {
-
         val postId = call.parameters["postId"]
-            ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val userId = call.request.queryParameters["userId"]
-            ?: return@delete call.respond(HttpStatusCode.BadRequest)
-
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@delete call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val parsedUserId = try {
-            Uuid.parse(userId)
-        } catch (e: IllegalArgumentException) {
-            return@delete call.respond(HttpStatusCode.BadRequest)
-        }
+            ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         savedPostRepository.unsavePost(
-            userId = parsedUserId,
-            postId = parsedPostId
+            userId = userId,
+            postId = postId
         )
-
         call.respond(HttpStatusCode.OK)
     }
 
     get("/api/posts/{postId}/save") {
-
         val postId = call.parameters["postId"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val userId = call.request.queryParameters["userId"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
-
-        val parsedPostId = try {
-            Uuid.parse(postId)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val parsedUserId = try {
-            Uuid.parse(userId)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         val saved = savedPostRepository.isPostSaved(
-            userId = parsedUserId,
-            postId = parsedPostId
+            userId = userId,
+            postId = postId
         )
+        call.respond(mapOf("saved" to saved))
+    }
 
-        call.respond(
-            mapOf("saved" to saved)
-        )
+
+    post("/api/posts/{postId}/image") {
+        val postId = call.parameters["postId"]
+            ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing post ID")
+
+        try {
+            val multipart = call.receiveMultipart()
+            var imageUrl: String? = null
+
+            multipart.forEachPart { part ->
+                if (part is PartData.FileItem) {
+                    val fileName = part.originalFileName ?: "image.jpg"
+                    val extension = fileName.substringAfterLast(".", "jpg")
+                    val uniqueFileName = "$postId.${System.currentTimeMillis()}.$extension"
+
+                    val uploadDir = File("uploads/posts")
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdirs()
+                    }
+
+                    val file = File(uploadDir, uniqueFileName)
+                    part.streamProvider().use { input ->
+                        file.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+
+                    imageUrl = "/uploads/posts/$uniqueFileName"
+                }
+                part.dispose()
+            }
+
+            if (imageUrl != null) {
+                val updatedPost = postRepository.updatePostImage(postId, imageUrl)
+                call.respond(HttpStatusCode.OK, mapOf("imageUrl" to imageUrl))
+            } else {
+                call.respond(HttpStatusCode.BadRequest, "No image file provided")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            call.respond(HttpStatusCode.InternalServerError, "Upload failed: ${e.message}")
+        }
+    }
+    get("/api/posts/saved") {
+        val userId = call.request.headers["User-Id"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing User-Id")
+
+        val savedPosts = savedPostRepository.getSavedPosts(userId)
+        call.respond(savedPosts)
     }
 }

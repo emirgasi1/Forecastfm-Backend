@@ -8,29 +8,28 @@ class WeatherRepository(
     private val weatherApi: WeatherApi
 ) {
 
-    suspend fun getWeather(): WeatherResponse {
+    suspend fun getWeather(
+        location: String,
+        latitude: Double,
+        longitude: Double
+    ): WeatherResponse {
 
-        val latitude = 43.8597
-        val longitude = 18.4314
 
-        // Get normal weather data
+
         val response = weatherApi.getWeather(
             latitude = latitude,
             longitude = longitude
         )
 
-        // Get air quality data
         val airQualityResponse = weatherApi.getAirQuality(
             latitude = latitude,
             longitude = longitude
         )
 
-        // Find the current hour
         val currentHourIndex = findCurrentHourIndex(
             response.hourly.time
         )
 
-        // Current hour + next 4 hours
         val hourly = response.hourly.time
             .indices
             .drop(currentHourIndex)
@@ -50,7 +49,6 @@ class WeatherRepository(
                 )
             }
 
-        // Today + next 4 days
         val daily = response.daily.time
             .indices
             .take(5)
@@ -70,7 +68,6 @@ class WeatherRepository(
                 )
             }
 
-        // Find current air quality value
         val airQualityHourIndex = findCurrentHourIndex(
             airQualityResponse.hourly.time
         )
@@ -80,7 +77,7 @@ class WeatherRepository(
 
         return WeatherResponse(
 
-            location = "Baščaršija",
+            location = location,
 
             temperature =
                 "${response.current.temperature_2m}°C",

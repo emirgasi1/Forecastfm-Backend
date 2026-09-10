@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(ktorLibs.plugins.ktor)
@@ -15,6 +14,7 @@ application {
 kotlin {
     jvmToolchain(21)
 }
+
 dependencies {
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.contentNegotiation)
@@ -31,7 +31,12 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-java-time:1.0.0")
     implementation(libs.postgresql)
 
+    implementation(libs.jbcrypt)
+    implementation("com.auth0:java-jwt:4.4.0")
+
     implementation(libs.logback.classic)
+    implementation(libs.ktor.server.freemarker)
+
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)

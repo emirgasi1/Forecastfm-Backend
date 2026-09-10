@@ -5,6 +5,7 @@ import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import java.util.UUID
 import kotlin.uuid.Uuid
 
 class MusicRepository {
@@ -12,24 +13,23 @@ class MusicRepository {
     fun createMusic(
         title: String,
         artist: String,
-        duration: String,
+        duration: Int,  // Changed from String to Int
         albumImageUrl: String?
     ): Music {
-
-        val id = Uuid.random()
+        val id = UUID.randomUUID().toString()
 
         transaction {
             Musics.insert {
                 it[Musics.id] = id
                 it[Musics.title] = title
                 it[Musics.artist] = artist
-                it[Musics.duration] = duration
+                it[Musics.duration] = duration  // Now Int matches
                 it[Musics.albumImageUrl] = albumImageUrl
             }
         }
 
         return Music(
-            id = id.toString(),
+            id = id,
             title = title,
             artist = artist,
             duration = duration,
@@ -37,15 +37,14 @@ class MusicRepository {
         )
     }
 
-    fun getMusicById(id: Uuid): Music? {
-
+    fun getMusicById(id: String): Music? {
         return transaction {
             Musics
                 .selectAll()
                 .where { Musics.id eq id }
                 .map {
                     Music(
-                        id = it[Musics.id].toString(),
+                        id = it[Musics.id],
                         title = it[Musics.title],
                         artist = it[Musics.artist],
                         duration = it[Musics.duration],

@@ -10,5 +10,6 @@ data class Comment(
     val postId: String,
     val text: String,
     val createdAt: String,
-    val likes: Int
+    val likes: Int,
+    val username: String? = null
 )

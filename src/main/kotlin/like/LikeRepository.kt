@@ -13,8 +13,8 @@ import kotlin.uuid.Uuid
 class LikeRepository {
 
     fun likePost(
-        userId: Uuid,
-        postId: Uuid
+        userId: String,
+        postId: String
     ) {
         transaction {
             PostLikes.insert {
@@ -25,8 +25,8 @@ class LikeRepository {
     }
 
     fun unlikePost(
-        userId: Uuid,
-        postId: Uuid
+        userId: String,
+        postId: String
     ) {
         transaction {
             PostLikes.deleteWhere {
@@ -37,10 +37,9 @@ class LikeRepository {
     }
 
     fun isPostLiked(
-        userId: Uuid,
-        postId: Uuid
+        userId: String,
+        postId: String
     ): Boolean {
-
         return transaction {
             PostLikes
                 .selectAll()
@@ -53,9 +52,8 @@ class LikeRepository {
     }
 
     fun getPostLikeCount(
-        postId: Uuid
+        postId: String
     ): Int {
-
         return transaction {
             PostLikes
                 .selectAll()
@@ -66,11 +64,9 @@ class LikeRepository {
     }
 
     fun getUserReceivedLikeCount(
-        userId: Uuid
+        userId: String
     ): Int {
-
         return transaction {
-
             PostLikes
                 .innerJoin(Posts)
                 .selectAll()

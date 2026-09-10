@@ -11,6 +11,7 @@ import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import java.util.UUID
 import kotlin.uuid.Uuid
 
 class PlaylistRepository {
@@ -26,8 +27,7 @@ class PlaylistRepository {
         spotifyUrl: String?,
         youtubeUrl: String?
     ): Playlist {
-
-        val id = Uuid.random()
+        val id = UUID.randomUUID().toString()
 
         transaction {
             Playlists.insert {
@@ -45,7 +45,7 @@ class PlaylistRepository {
         }
 
         return Playlist(
-            id = id.toString(),
+            id = id,
             title = title,
             genre = genre,
             mood = mood,
@@ -58,16 +58,14 @@ class PlaylistRepository {
             youtubeUrl = youtubeUrl
         )
     }
+
     fun getPlaylists(): List<PlaylistResponse> {
-
         return transaction {
-
             Playlists
                 .selectAll()
                 .map { playlist ->
-
                     PlaylistResponse(
-                        id = playlist[Playlists.id].toString(),
+                        id = playlist[Playlists.id],
                         title = playlist[Playlists.title],
                         genre = playlist[Playlists.genre],
                         mood = playlist[Playlists.mood],
@@ -75,9 +73,7 @@ class PlaylistRepository {
                         weather = playlist[Playlists.weather],
                         temperature = playlist[Playlists.temperature],
                         location = playlist[Playlists.location],
-                        songs = getSongsForPlaylist(
-                            playlist[Playlists.id]
-                        ),
+                        songs = getSongsForPlaylist(playlist[Playlists.id]),
                         likes = playlist[Playlists.likes],
                         spotifyUrl = playlist[Playlists.spotifyUrl],
                         youtubeUrl = playlist[Playlists.youtubeUrl],
@@ -85,19 +81,17 @@ class PlaylistRepository {
                 }
         }
     }
-    fun getPlaylistById(id: Uuid): PlaylistResponse? {
 
+    fun getPlaylistById(id: String): PlaylistResponse? {
         return transaction {
             Playlists
                 .selectAll()
                 .where { Playlists.id eq id }
                 .singleOrNull()
                 ?.let {
-
                     val songs = getSongsForPlaylist(id)
-
                     PlaylistResponse(
-                        id = it[Playlists.id].toString(),
+                        id = it[Playlists.id],
                         title = it[Playlists.title],
                         genre = it[Playlists.genre],
                         mood = it[Playlists.mood],
@@ -115,8 +109,8 @@ class PlaylistRepository {
     }
 
     fun addSongToPlaylist(
-        playlistId: Uuid,
-        musicId: Uuid
+        playlistId: String,
+        musicId: String
     ) {
         transaction {
             PlaylistSongs.insert {
@@ -125,17 +119,17 @@ class PlaylistRepository {
             }
         }
     }
-    fun getSongsForPlaylist(
-        playlistId: Uuid
-    ): List<Music> {
 
+    fun getSongsForPlaylist(
+        playlistId: String
+    ): List<Music> {
         return transaction {
             (PlaylistSongs innerJoin Musics)
                 .selectAll()
                 .where { PlaylistSongs.playlistId eq playlistId }
                 .map {
                     Music(
-                        id = it[Musics.id].toString(),
+                        id = it[Musics.id],
                         title = it[Musics.title],
                         artist = it[Musics.artist],
                         duration = it[Musics.duration],
@@ -146,22 +140,18 @@ class PlaylistRepository {
     }
 
     fun getFavoritePlaylists(
-        userId: Uuid
+        userId: String
     ): List<PlaylistResponse> {
-
         return transaction {
-
             (FavoritePlaylists innerJoin Playlists)
                 .selectAll()
                 .where {
                     FavoritePlaylists.userId eq userId
                 }
                 .map { row ->
-
                     val playlistId = row[Playlists.id]
-
                     PlaylistResponse(
-                        id = playlistId.toString(),
+                        id = playlistId,
                         title = row[Playlists.title],
                         genre = row[Playlists.genre],
                         mood = row[Playlists.mood],
@@ -179,22 +169,23 @@ class PlaylistRepository {
     }
 
     fun getFavoritePlaylistIds(
-        userId:Uuid
-    ):List<String>{
-        return transaction{
+        userId: String
+    ): List<String> {
+        return transaction {
             FavoritePlaylists
                 .selectAll()
-                .where{
+                .where {
                     FavoritePlaylists.userId eq userId
                 }
-                .map{
-                    it[FavoritePlaylists.playlistId].toString()
+                .map {
+                    it[FavoritePlaylists.playlistId]
                 }
         }
     }
+
     fun favoritePlaylist(
-        userId: Uuid,
-        playlistId: Uuid
+        userId: String,
+        playlistId: String
     ) {
         transaction {
             FavoritePlaylists.insert {
@@ -205,8 +196,8 @@ class PlaylistRepository {
     }
 
     fun unfavoritePlaylist(
-        userId: Uuid,
-        playlistId: Uuid
+        userId: String,
+        playlistId: String
     ) {
         transaction {
             FavoritePlaylists.deleteWhere {

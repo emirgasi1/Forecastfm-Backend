@@ -12,8 +12,8 @@ import kotlin.uuid.Uuid
 class SavedPostRepository {
 
     fun savePost(
-        userId: Uuid,
-        postId: Uuid
+        userId: String,
+        postId: String
     ) {
         transaction {
             SavedPosts.insert {
@@ -24,8 +24,8 @@ class SavedPostRepository {
     }
 
     fun unsavePost(
-        userId: Uuid,
-        postId: Uuid
+        userId: String,
+        postId: String
     ) {
         transaction {
             SavedPosts.deleteWhere {
@@ -36,10 +36,9 @@ class SavedPostRepository {
     }
 
     fun isPostSaved(
-        userId: Uuid,
-        postId: Uuid
+        userId: String,
+        postId: String
     ): Boolean {
-
         return transaction {
             SavedPosts
                 .selectAll()
@@ -52,17 +51,16 @@ class SavedPostRepository {
     }
 
     fun getSavedPosts(
-        userId: Uuid
+        userId: String
     ): List<Post> {
-
         return transaction {
             (SavedPosts innerJoin Posts)
                 .selectAll()
                 .where { SavedPosts.userId eq userId }
                 .map {
                     Post(
-                        id = it[Posts.id].toString(),
-                        userId = it[Posts.userId].toString(),
+                        id = it[Posts.id],
+                        userId = it[Posts.userId],
                         caption = it[Posts.caption],
                         imageUrl = it[Posts.imageUrl],
                         createdAt = it[Posts.createdAt].toString()
@@ -70,12 +68,11 @@ class SavedPostRepository {
                 }
         }
     }
+
     fun getSavedPostCount(
-        userId: Uuid
+        userId: String
     ): Int {
-
         return transaction {
-
             SavedPosts
                 .selectAll()
                 .where {

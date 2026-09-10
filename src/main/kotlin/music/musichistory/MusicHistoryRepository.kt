@@ -8,16 +8,16 @@ import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.time.Instant
+import java.util.UUID
 import kotlin.uuid.Uuid
 
 class MusicHistoryRepository {
 
     fun addHistory(
-        userId: Uuid,
-        playlistId: Uuid
+        userId: String,
+        playlistId: String
     ) {
-
-        val id = Uuid.random()
+        val id = UUID.randomUUID().toString()
 
         transaction {
             MusicHistory.insert {
@@ -30,9 +30,8 @@ class MusicHistoryRepository {
     }
 
     fun getHistory(
-        userId: Uuid
+        userId: String
     ): List<MusicHistoryEntry> {
-
         return transaction {
             (MusicHistory innerJoin Playlists)
                 .selectAll()
@@ -41,8 +40,8 @@ class MusicHistoryRepository {
                 }
                 .map {
                     MusicHistoryEntry(
-                        id = it[MusicHistory.id].toString(),
-                        playlistId = it[MusicHistory.playlistId].toString(),
+                        id = it[MusicHistory.id],
+                        playlistId = it[MusicHistory.playlistId],
                         title = it[Playlists.title],
                         weather = it[Playlists.weather],
                         temperature = it[Playlists.temperature],
@@ -52,6 +51,4 @@ class MusicHistoryRepository {
                 }
         }
     }
-
-
 }

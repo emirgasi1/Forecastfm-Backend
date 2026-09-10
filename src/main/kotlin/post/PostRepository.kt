@@ -4,18 +4,19 @@ import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.update
 import java.time.Instant
+import java.util.UUID
 import kotlin.uuid.Uuid
 
 class PostRepository {
 
     fun createPost(
-        userId: Uuid,
+        userId: String,
         caption: String?,
         imageUrl: String?
     ): Post {
-
-        val id = Uuid.random()
+        val id = UUID.randomUUID().toString()
         val createdAt = Instant.now()
 
         transaction {
@@ -29,21 +30,22 @@ class PostRepository {
         }
 
         return Post(
-            id = id.toString(),
-            userId = userId.toString(),
+            id = id,
+            userId = userId,
             caption = caption,
             imageUrl = imageUrl,
             createdAt = createdAt.toString()
         )
     }
+
     fun getPosts(): List<Post> {
         return transaction {
             Posts
                 .selectAll()
                 .map {
                     Post(
-                        id = it[Posts.id].toString(),
-                        userId = it[Posts.userId].toString(),
+                        id = it[Posts.id],
+                        userId = it[Posts.userId],
                         caption = it[Posts.caption],
                         imageUrl = it[Posts.imageUrl],
                         createdAt = it[Posts.createdAt].toString()
@@ -51,16 +53,16 @@ class PostRepository {
                 }
         }
     }
-    fun getPostById(id: Uuid): Post? {
 
+    fun getPostById(id: String): Post? {
         return transaction {
             Posts
                 .selectAll()
                 .where { Posts.id eq id }
                 .map {
                     Post(
-                        id = it[Posts.id].toString(),
-                        userId = it[Posts.userId].toString(),
+                        id = it[Posts.id],
+                        userId = it[Posts.userId],
                         caption = it[Posts.caption],
                         imageUrl = it[Posts.imageUrl],
                         createdAt = it[Posts.createdAt].toString()
@@ -70,16 +72,15 @@ class PostRepository {
         }
     }
 
-    fun getPostsByUserId(userId: Uuid): List<Post> {
-
+    fun getPostsByUserId(userId: String): List<Post> {
         return transaction {
             Posts
                 .selectAll()
                 .where { Posts.userId eq userId }
                 .map {
                     Post(
-                        id = it[Posts.id].toString(),
-                        userId = it[Posts.userId].toString(),
+                        id = it[Posts.id],
+                        userId = it[Posts.userId],
                         caption = it[Posts.caption],
                         imageUrl = it[Posts.imageUrl],
                         createdAt = it[Posts.createdAt].toString()
@@ -88,5 +89,12 @@ class PostRepository {
         }
     }
 
-
+    fun updatePostImage(postId: String, imageUrl: String): Post {
+        transaction {
+            Posts.update({ Posts.id eq postId }) {
+                it[Posts.imageUrl] = imageUrl
+            }
+        }
+        return getPostById(postId)!!
+    }
 }

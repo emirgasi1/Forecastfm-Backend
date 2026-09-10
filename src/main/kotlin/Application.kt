@@ -6,6 +6,7 @@ import com.example.weather.WeatherApi
 import com.example.weather.WeatherRepository
 import com.example.routes.weatherRoutes
 import io.ktor.server.application.Application
+import java.io.File
 
 fun Application.rootModule() {
 
@@ -16,7 +17,10 @@ fun Application.rootModule() {
     val weatherApi = WeatherApi(httpClient)
 
     val weatherRepository = WeatherRepository(weatherApi)
-
+    val uploadDir = File("uploads")
+    if (!uploadDir.exists()) {
+        uploadDir.mkdirs()
+    }
     configureResources()
     configureSerialization()
 

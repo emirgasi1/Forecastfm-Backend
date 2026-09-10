@@ -11,44 +11,30 @@ import io.ktor.server.routing.post
 import kotlin.uuid.Uuid
 
 fun Route.commentRoutes() {
-
-    val commentRepository= CommentRepository()
+    val commentRepository = CommentRepository()
 
     post("/api/comments") {
-
         val request = call.receive<CreateCommentRequest>()
 
         val comment = commentRepository.createComment(
-            userId = Uuid.parse(request.userId),
-            postId = Uuid.parse(request.postId),
+            userId = request.userId,
+            postId = request.postId,
             text = request.text
         )
 
-        call.respond(
-            HttpStatusCode.Created,
-            comment
-        )
+        call.respond(HttpStatusCode.Created, comment)
     }
 
     get("/api/comments/{id}") {
-
         val id = call.parameters["id"]
-            ?: return@get call.respond(HttpStatusCode.BadRequest)
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing comment ID")
 
-        val commentId = try {
-            Uuid.parse(id)
-        } catch (e: IllegalArgumentException) {
-            return@get call.respond(HttpStatusCode.BadRequest)
-        }
-
-        val comment = commentRepository.getCommentById(commentId)
+        val comment = commentRepository.getCommentById(id)
 
         if (comment == null) {
-            call.respond(HttpStatusCode.NotFound)
+            call.respond(HttpStatusCode.NotFound, "Comment not found")
         } else {
             call.respond(comment)
         }
     }
-
-
 }
