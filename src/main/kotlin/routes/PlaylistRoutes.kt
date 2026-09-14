@@ -10,6 +10,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
+import playlist.UpdatePlaylistImageRequest
 import kotlin.uuid.Uuid
 
 fun Route.playlistRoutes() {
@@ -110,5 +112,17 @@ fun Route.playlistRoutes() {
 
         val savedPlaylists = playlistRepository.getFavoritePlaylists(userId)
         call.respond(savedPlaylists)
+    }
+    put("/api/playlists/{playlistId}/image") {
+        val playlistId = call.parameters["playlistId"]
+            ?: return@put call.respond(HttpStatusCode.BadRequest, "Missing playlist ID")
+
+        val request = call.receive<UpdatePlaylistImageRequest>()
+
+        playlistRepository.updatePlaylistImage(
+            playlistId = playlistId,
+            imageUrl = request.imageUrl
+        )
+        call.respond(HttpStatusCode.OK)
     }
 }

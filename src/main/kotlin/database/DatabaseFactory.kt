@@ -1,6 +1,7 @@
 package com.example.database
 
 import com.example.database.seed.SeedData
+import com.example.database.table.BusStations
 import database.table.Comments
 import com.example.database.table.FavoritePlaylists
 import com.example.database.table.Locations
@@ -53,7 +54,8 @@ object DatabaseFactory {
                 Outfits,
                 PlaceRecommendations,
                 Places,
-                SavedOutfits
+                SavedOutfits,
+                BusStations
             )
         }
 

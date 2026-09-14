@@ -11,8 +11,9 @@ import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.update
+import playlist.Playlist
 import java.util.UUID
-import kotlin.uuid.Uuid
 
 class PlaylistRepository {
 
@@ -25,7 +26,8 @@ class PlaylistRepository {
         temperature: String,
         location: String,
         spotifyUrl: String?,
-        youtubeUrl: String?
+        youtubeUrl: String?,
+        bestFor: List<String> = emptyList()
     ): Playlist {
         val id = UUID.randomUUID().toString()
 
@@ -41,6 +43,7 @@ class PlaylistRepository {
                 it[Playlists.location] = location
                 it[Playlists.spotifyUrl] = spotifyUrl
                 it[Playlists.youtubeUrl] = youtubeUrl
+                it[Playlists.bestFor] = bestFor.joinToString(",")
             }
         }
 
@@ -55,7 +58,8 @@ class PlaylistRepository {
             location = location,
             likes = 0,
             spotifyUrl = spotifyUrl,
-            youtubeUrl = youtubeUrl
+            youtubeUrl = youtubeUrl,
+            bestFor = bestFor
         )
     }
 
@@ -77,6 +81,10 @@ class PlaylistRepository {
                         likes = playlist[Playlists.likes],
                         spotifyUrl = playlist[Playlists.spotifyUrl],
                         youtubeUrl = playlist[Playlists.youtubeUrl],
+                        bestFor = playlist[Playlists.bestFor]
+                            ?.split(",")
+                            ?.filter { it.isNotBlank() }
+                            ?: emptyList()
                     )
                 }
         }
@@ -103,6 +111,10 @@ class PlaylistRepository {
                         likes = it[Playlists.likes],
                         spotifyUrl = it[Playlists.spotifyUrl],
                         youtubeUrl = it[Playlists.youtubeUrl],
+                        bestFor = it[Playlists.bestFor]
+                            ?.split(",")
+                            ?.filter { it.isNotBlank() }
+                            ?: emptyList()
                     )
                 }
         }
@@ -163,6 +175,10 @@ class PlaylistRepository {
                         likes = row[Playlists.likes],
                         spotifyUrl = row[Playlists.spotifyUrl],
                         youtubeUrl = row[Playlists.youtubeUrl],
+                        bestFor = row[Playlists.bestFor]
+                            ?.split(",")
+                            ?.filter { it.isNotBlank() }
+                            ?: emptyList()
                     )
                 }
         }
@@ -203,6 +219,16 @@ class PlaylistRepository {
             FavoritePlaylists.deleteWhere {
                 (FavoritePlaylists.userId eq userId) and
                         (FavoritePlaylists.playlistId eq playlistId)
+            }
+        }
+    }
+    fun updatePlaylistImage(
+        playlistId: String,
+        imageUrl: String
+    ) {
+        transaction {
+            Playlists.update({ Playlists.id eq playlistId }) {
+                it[Playlists.albumImageUrl] = imageUrl
             }
         }
     }

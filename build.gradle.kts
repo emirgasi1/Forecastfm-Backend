@@ -37,7 +37,10 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.freemarker)
 
-
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)
+}
+
+tasks.withType<JavaExec> {
+    systemProperty("YOUTUBE_API_KEY", project.findProperty("YOUTUBE_API_KEY") ?: "")
 }

@@ -17,6 +17,24 @@ fun Route.placesRoutes() {
         call.respond(places)
     }
 
+    get("/api/places/search") {
+        val query = call.request.queryParameters["q"]
+            ?: return@get call.respond(
+                HttpStatusCode.BadRequest,
+                "Missing query parameter 'q'"
+            )
+
+        try {
+            val places = repository.searchPlaces(query)
+            call.respond(places)
+        } catch (e: Exception) {
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                e.message ?: "Search failed"
+            )
+        }
+    }
+
     get("/api/places/{id}") {
         val id = call.parameters["id"]
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing place ID")

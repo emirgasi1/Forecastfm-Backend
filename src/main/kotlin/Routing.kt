@@ -2,6 +2,7 @@ package com.example
 
 
 import com.example.routes.authRoutes
+import com.example.routes.busStationRoutes
 import com.example.routes.commentRoutes
 import com.example.routes.locationRoutes
 import com.example.routes.musicHistoryRoutes
@@ -11,6 +12,7 @@ import com.example.routes.placeRecommendationRoutes
 import com.example.routes.placesRoutes
 import com.example.routes.playlistRoutes
 import com.example.routes.postRoutes
+import com.example.routes.routeRoutes
 import com.example.routes.userRoutes
 import com.example.user.CreateUserRequest
 import com.example.user.UserRepository
@@ -44,13 +46,15 @@ fun Application.configureRouting(
         postRoutes()
         commentRoutes()
         playlistRoutes()
-        musicRoutes()
+        musicRoutes(httpClient)
         musicHistoryRoutes()
         locationRoutes()
         authRoutes()
         outfitRoutes()
         placeRecommendationRoutes()
         placesRoutes()
+        busStationRoutes()
+        routeRoutes(httpClient)
 
 
 

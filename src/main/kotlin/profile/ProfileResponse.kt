@@ -1,6 +1,5 @@
 package com.example.profile
 
-import com.example.playlist.Playlist
 import com.example.playlist.PlaylistResponse
 import com.example.post.Post
 import kotlinx.serialization.Serializable
