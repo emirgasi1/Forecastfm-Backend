@@ -10,8 +10,7 @@ import io.ktor.http.HttpStatusCode
 class YouTubeApi(
     private val client: HttpClient
 ) {
-    private val apiKey: String = System.getProperty("YOUTUBE_API_KEY") ?: ""
-
+    private val apiKey: String = System.getenv("YOUTUBE_API_KEY") ?: ""
     suspend fun getPlaylistItems(playlistId: String, maxResults: Int = 50): List<YouTubePlaylistItem> {
         if (apiKey.isBlank()) {
             throw Exception("YouTube API key not set")

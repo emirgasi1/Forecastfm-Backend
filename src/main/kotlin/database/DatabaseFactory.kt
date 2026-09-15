@@ -70,6 +70,6 @@ object DatabaseFactory {
             }
         }
 
-        SeedData.seedLocations()
+        SeedData.seedAll()
     }
 }
