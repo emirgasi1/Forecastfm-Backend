@@ -407,7 +407,7 @@ object SeedData {
 
             val venue = Locations
                 .select(Locations.id)
-                .where { Locations.name eq place.venueName }
+                .where { Locations.id eq place.venueName }
                 .singleOrNull()
 
             if (venue != null) {
