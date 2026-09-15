@@ -88,4 +88,25 @@ class PlacesRepository {
                 }
         }
     }
+    fun getAllPlaces(): List<Place> {
+        return transaction {
+            Places
+                .selectAll()
+                .map { row ->
+                    Place(
+                        id = row[Places.id],
+                        name = row[Places.name],
+                        category = row[Places.category],
+                        venueId = row[Places.venueId],
+                        address = row[Places.address],
+                        latitude = row[Places.latitude],
+                        longitude = row[Places.longitude],
+                        description = row[Places.description],
+                        imageUrl = row[Places.imageUrl],
+                        rating = row[Places.rating],
+                        createdAt = row[Places.createdAt].toString()
+                    )
+                }
+        }
+    }
 }
