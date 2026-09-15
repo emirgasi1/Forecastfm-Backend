@@ -1,3 +1,10 @@
+import java.util.Properties
+
+val secrets = Properties().apply {
+    val f = rootProject.file("secrets.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(ktorLibs.plugins.ktor)
@@ -42,5 +49,5 @@ dependencies {
 }
 
 tasks.withType<JavaExec> {
-    systemProperty("YOUTUBE_API_KEY", project.findProperty("YOUTUBE_API_KEY") ?: "")
+    systemProperty("YOUTUBE_API_KEY", secrets.getProperty("YOUTUBE_API_KEY", ""))
 }
