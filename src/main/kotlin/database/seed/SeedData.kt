@@ -29,20 +29,25 @@ object SeedData {
     private const val SEED_USER_05 = "seed-user-sara"
 
     fun seedAll() {
-        transaction {
-            seedUsers()
-            seedLocations()
-            seedMusics()
-            seedPlaylists()
-            seedPlaylistSongs()
-            seedOutfits()
-            seedPlaces()
-            seedPlaceRecommendations()
-            seedBusStations()
-            seedPosts()
+        try {
+            println("SeedAll starting")
+            transaction {
+                seedUsers()
+                seedLocations()
+                seedMusics()
+                seedPlaylists()
+                seedPlaylistSongs()
+                seedOutfits()
+                seedPlaces()
+                seedPlaceRecommendations()
+                seedBusStations()
+                seedPosts()
+            }
+            println("Forecast FM seed data completed successfully.")
+        } catch (e: Exception) {
+            println("SEED FAILED: ${e::class.simpleName}: ${e.message}")
+            e.printStackTrace()
         }
-
-        println("Forecast FM seed data completed successfully.")
     }
 
     private fun seedUsers() {
