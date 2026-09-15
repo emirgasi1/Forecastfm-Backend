@@ -1,14 +1,14 @@
 import java.util.Properties
 
-val secrets = Properties().apply {
-    val f = rootProject.file("secrets.properties")
-    if (f.exists()) f.inputStream().use { load(it) }
-}
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(ktorLibs.plugins.ktor)
     alias(libs.plugins.kotlin.serialization)
+}
+
+val secrets = Properties().apply {
+    val f = rootProject.file("secrets.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
 }
 
 group = "com.example"
