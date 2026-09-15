@@ -46,4 +46,8 @@ fun Route.placesRoutes() {
             call.respond(place)
         }
     }
+    get("/api/places") {
+        val places = repository.getAllPlaces()
+        call.respond(places)
+    }
 }
