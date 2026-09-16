@@ -2,6 +2,7 @@ package com.example.database
 
 import com.example.database.seed.SeedData
 import com.example.database.table.BusStations
+import com.example.database.table.CommentLikes
 import database.table.Comments
 import com.example.database.table.FavoritePlaylists
 import com.example.database.table.Locations
@@ -43,6 +44,7 @@ object DatabaseFactory {
                 UserSessions,
                 Posts,
                 Comments,
+                CommentLikes,
                 Musics,
                 Playlists,
                 PlaylistSongs,
