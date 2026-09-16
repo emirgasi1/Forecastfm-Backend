@@ -117,4 +117,29 @@ class UserRepository {
             }
         }
     }
+
+    fun updateProfile(
+        userId: String,
+        username: String,
+        bio: String?,
+        favoriteLocation: String?
+    ): Boolean {
+        return transaction {
+            val updated = Users.update({ Users.id eq userId }) {
+                it[Users.username] = username
+                it[Users.bio] = bio
+                it[Users.favoriteLocation] = favoriteLocation
+            }
+            updated > 0
+        }
+    }
+
+    fun updateProfileImage(userId: String, imageUrl: String): Boolean {
+        return transaction {
+            val updated = Users.update({ Users.id eq userId }) {
+                it[Users.profileImageUrl] = imageUrl
+            }
+            updated > 0
+        }
+    }
 }
