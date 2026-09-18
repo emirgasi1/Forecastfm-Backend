@@ -15,6 +15,7 @@ object PlaceRecommendations : Table("place_recommendations") {
     val rating = double("rating")
     val imageUrl = text("imageUrl").nullable()
     val createdAt = timestamp("createdAt")
+    val placeId = text("place_id").references(Places.id)
 
     override val primaryKey = PrimaryKey(id)
 }

@@ -15,5 +15,7 @@ data class PlaceRecommendation(
     val rating: Double,
     val imageUrl: String? = null,
     val address: String? = null,
-    val createdAt: String
+    val createdAt: String,
+    val placeId: String
+
 )

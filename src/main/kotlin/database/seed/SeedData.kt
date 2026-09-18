@@ -355,21 +355,26 @@ object SeedData {
 
     private fun seedPlaceRecommendations() {
         val recommendations = listOf(
-            RecommendationSeed("seed-recommendation-01", "Morning Coffee in Baščaršija", "Cafe", "Baščaršija", "Start the morning with traditional coffee and a relaxed city atmosphere.", "alone,couple,friends", "clear,cloudy", "young,adult,senior", 4.6),
-            RecommendationSeed("seed-recommendation-02", "Walk Through Vrelo Bosne", "Outdoor", "Ilidža", "A peaceful nature walk suitable for a relaxed day outdoors.", "alone,couple,friends,family", "sunny,cloudy", "child,young,adult,senior", 4.8),
-            RecommendationSeed("seed-recommendation-03", "Trebević Adventure", "Outdoor", "Trebević", "Spend the afternoon in nature with panoramic views of Sarajevo.", "alone,couple,friends", "sunny,cloudy", "young,adult", 4.7),
-            RecommendationSeed("seed-recommendation-04", "Romantic Sarajevo Sunset", "Viewpoint", "Zmajevac", "Enjoy a relaxed sunset with a panoramic view of Sarajevo.", "couple", "clear", "young,adult,senior", 4.8),
-            RecommendationSeed("seed-recommendation-05", "Family Day at Ilidža", "Park", "Ilidža", "A relaxed outdoor activity for families with children.", "family", "sunny,cloudy", "child,young,adult", 4.6),
-            RecommendationSeed("seed-recommendation-06", "Historic Baščaršija Walk", "Culture", "Baščaršija", "Explore historic streets, markets and landmarks.", "alone,couple,friends,family", "sunny,cloudy", "child,young,adult,senior", 4.9),
-            RecommendationSeed("seed-recommendation-07", "Rainy Day Cafe", "Cafe", "Marijin Dvor", "A cozy indoor option for rainy weather.", "alone,couple,friends", "rain", "young,adult,senior", 4.4),
-            RecommendationSeed("seed-recommendation-08", "Evening City Walk", "Outdoor", "Skenderija", "Take an easy evening walk beside the Miljacka.", "couple,friends", "clear,cloudy", "young,adult", 4.3),
-            RecommendationSeed("seed-recommendation-09", "Coffee with a View", "Cafe", "Zmajevac", "Enjoy coffee while looking over the Sarajevo valley.", "alone,couple,friends", "clear", "young,adult,senior", 4.7),
-            RecommendationSeed("seed-recommendation-10", "Winter City Walk", "Outdoor", "Bistrik", "Explore a historic Sarajevo neighbourhood during a cool day.", "alone,couple,friends", "snow,cold", "young,adult,senior", 4.4),
-            RecommendationSeed("seed-recommendation-11", "Friends Afternoon", "Cafe", "Otoka", "Casual place for meeting friends during the afternoon.", "friends", "sunny,cloudy", "young,adult", 4.2),
-            RecommendationSeed("seed-recommendation-12", "Family Weekend Walk", "Outdoor", "Koševo", "Easy outdoor activity for a relaxed family weekend.", "family", "sunny,cloudy", "child,young,adult", 4.3),
-            RecommendationSeed("seed-recommendation-13", "Downtown Date", "Restaurant", "Marijin Dvor", "A simple downtown option for an evening date.", "couple", "clear,cloudy,rain", "young,adult", 4.5),
-            RecommendationSeed("seed-recommendation-14", "Sunny City Exploration", "Culture", "Marijin Dvor", "Explore the modern side of Sarajevo on a sunny day.", "alone,couple,friends", "sunny", "young,adult", 4.4),
-            RecommendationSeed("seed-recommendation-15", "Quiet Senior Afternoon", "Park", "Ilidža", "A calm environment for a slower afternoon outdoors.", "alone,couple,family", "sunny,cloudy", "adult,senior", 4.6)
+            RecommendationSeed("seed-recommendation-01", "Traditional ćevapi in Baščaršija", "Restaurant", "Baščaršija", "seed-place-01", "The classic Sarajevo experience — ćevapi at a historic spot.", "alone,couple,friends,family", "sunny,clear,cloudy", "young,adult,senior", 4.6),
+            RecommendationSeed("seed-recommendation-02", "Coffee break at Morica Han", "Cafe", "Baščaršija", "seed-place-02", "A quiet courtyard for traditional Bosnian coffee.", "alone,couple,friends", "clear,cloudy,rain", "young,adult,senior", 4.5),
+            RecommendationSeed("seed-recommendation-03", "Historic Vijećnica visit", "Attraction", "Vijećnica", "seed-place-03", "One of Sarajevo's most iconic landmarks by the Miljacka.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.8),
+            RecommendationSeed("seed-recommendation-04", "Sunset at Yellow Fortress", "Viewpoint", "Bijela Tabija", "seed-place-04", "Panoramic views over the whole city, best at golden hour.", "alone,couple,friends", "sunny,clear", "young,adult,senior", 4.8),
+            RecommendationSeed("seed-recommendation-05", "Family walk at Vrelo Bosne", "Park", "Vrelo Bosne", "seed-place-05", "A peaceful nature escape on the outskirts of Sarajevo.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.7),
+            RecommendationSeed("seed-recommendation-06", "Trebević viewpoint hike", "Outdoor", "Trebević", "seed-place-06", "Mountain air and panoramic city views.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult", 4.8),
+            RecommendationSeed("seed-recommendation-07", "City views from Avaz Tower", "Viewpoint", "Avaz Twist Tower", "seed-place-07", "Sarajevo from 176 meters up.", "alone,couple,friends", "sunny,clear", "young,adult,senior", 4.4),
+            RecommendationSeed("seed-recommendation-08", "Coffee in Marijin Dvor", "Cafe", "Marijin Dvor", "seed-place-08", "Urban coffee spot close to the city centre.", "alone,couple,friends", "clear,cloudy,rain", "young,adult,senior", 4.3),
+            RecommendationSeed("seed-recommendation-09", "Riverside walk at Skenderija", "Outdoor", "Skenderija", "seed-place-09", "Easy walk along the Miljacka.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult,senior", 4.2),
+            RecommendationSeed("seed-recommendation-10", "Green escape at Koševo", "Park", "Koševo", "seed-place-10", "A quiet park for a slower afternoon.", "alone,couple,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.3),
+            RecommendationSeed("seed-recommendation-11", "Ciglane city view", "Viewpoint", "Ciglane", "seed-place-11", "Urban viewpoint over central Sarajevo.", "alone,couple,friends", "sunny,clear", "young,adult", 4.1),
+            RecommendationSeed("seed-recommendation-12", "Pofalići cafe district", "Cafe", "Pofalići", "seed-place-12", "A neighbourhood full of cafes and restaurants.", "alone,couple,friends", "clear,cloudy,rain", "young,adult,senior", 4.2),
+            RecommendationSeed("seed-recommendation-13", "Otoka meetup spot", "Outdoor", "Otoka", "seed-place-13", "Casual spot for meeting friends in the afternoon.", "friends", "sunny,clear,cloudy", "young,adult", 4.2),
+            RecommendationSeed("seed-recommendation-14", "Čengić Vila tram walk", "Outdoor", "Čengić Vila", "seed-place-14", "Urban walking connected to the tram network.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult,senior", 4.1),
+            RecommendationSeed("seed-recommendation-15", "Stup shopping stop", "Shopping", "Stup", "seed-place-15", "Shopping and dining in the western part of the city.", "alone,couple,friends,family", "sunny,clear,cloudy,rain", "young,adult,senior", 4.0),
+            RecommendationSeed("seed-recommendation-16", "Bistrik old town walk", "Outdoor", "Bistrik", "seed-place-16", "Historic streets and quiet corners.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult,senior", 4.5),
+            RecommendationSeed("seed-recommendation-17", "Vraca viewpoint", "Viewpoint", "Vraca", "seed-place-17", "Quiet viewpoint over southern Sarajevo.", "alone,couple", "sunny,clear", "young,adult,senior", 4.4),
+            RecommendationSeed("seed-recommendation-18", "Sebilj square meetup", "Attraction", "Sebilj", "seed-place-18", "The heart of Baščaršija — a natural meeting point.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.8),
+            RecommendationSeed("seed-recommendation-19", "Zmajevac sunset coffee", "Viewpoint", "Zmajevac", "seed-place-19", "Coffee with a view over the Sarajevo valley.", "alone,couple,friends", "sunny,clear", "young,adult,senior", 4.6),
+            RecommendationSeed("seed-recommendation-20", "Katedrala square stroll", "Attraction", "Katedrala", "seed-place-20", "Historic central square surrounded by Sarajevo landmarks.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.6)
         )
 
         recommendations.forEach { recommendation ->
@@ -384,6 +389,7 @@ object SeedData {
                     it[PlaceRecommendations.name] = recommendation.name
                     it[PlaceRecommendations.category] = recommendation.category
                     it[PlaceRecommendations.location] = recommendation.location
+                    it[PlaceRecommendations.placeId] = recommendation.placeId
                     it[PlaceRecommendations.description] = recommendation.description
                     it[PlaceRecommendations.suitableFor] = recommendation.suitableFor
                     it[PlaceRecommendations.weatherCondition] = recommendation.weatherCondition
@@ -529,6 +535,7 @@ object SeedData {
         val name: String,
         val category: String,
         val location: String,
+        val placeId: String,
         val description: String,
         val suitableFor: String,
         val weatherCondition: String,
