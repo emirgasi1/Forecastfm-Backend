@@ -21,7 +21,6 @@ import java.time.LocalDateTime
 
 object SeedData {
 
-
     private const val SEED_USER_01 = "seed-user-amina"
     private const val SEED_USER_02 = "seed-user-adnan"
     private const val SEED_USER_03 = "seed-user-lejla"
@@ -52,41 +51,11 @@ object SeedData {
 
     private fun seedUsers() {
         val users = listOf(
-            UserSeed(
-                SEED_USER_01,
-                "amina.kovac@forecastfm.demo",
-                "amina_kovac",
-                "Coffee, sunsets and Sarajevo walks.",
-                "Baščaršija"
-            ),
-            UserSeed(
-                SEED_USER_02,
-                "adnan.hadzic@forecastfm.demo",
-                "adnan_hadzic",
-                "Music, food and exploring new places.",
-                "Marijin Dvor"
-            ),
-            UserSeed(
-                SEED_USER_03,
-                "lejla.basic@forecastfm.demo",
-                "lejla_basic",
-                "Finding the perfect outfit for every weather.",
-                "Ilidža"
-            ),
-            UserSeed(
-                SEED_USER_04,
-                "dino.memisevic@forecastfm.demo",
-                "dino_m",
-                "Always looking for the next good playlist.",
-                "Trebević"
-            ),
-            UserSeed(
-                SEED_USER_05,
-                "sara.kovacevic@forecastfm.demo",
-                "sara_k",
-                "Sarajevo through my camera.",
-                "Vijećnica"
-            )
+            UserSeed(SEED_USER_01, "amina.kovac@forecastfm.demo", "amina_kovac", "Coffee, sunsets and Sarajevo walks.", "Baščaršija"),
+            UserSeed(SEED_USER_02, "adnan.hadzic@forecastfm.demo", "adnan_hadzic", "Music, food and exploring new places.", "Marijin Dvor"),
+            UserSeed(SEED_USER_03, "lejla.basic@forecastfm.demo", "lejla_basic", "Finding the perfect outfit for every weather.", "Ilidža"),
+            UserSeed(SEED_USER_04, "dino.memisevic@forecastfm.demo", "dino_m", "Always looking for the next good playlist.", "Trebević"),
+            UserSeed(SEED_USER_05, "sara.kovacevic@forecastfm.demo", "sara_k", "Sarajevo through my camera.", "Vijećnica")
         )
 
         users.forEach { user ->
@@ -140,17 +109,12 @@ object SeedData {
         )
 
         locations.forEach { location ->
-            val idExists = Locations
+            val exists = Locations
                 .select(Locations.id)
                 .where { Locations.id eq location.id }
                 .count() > 0
 
-            val nameExists = Locations
-                .select(Locations.id)
-                .where { Locations.name eq location.name }
-                .count() > 0
-
-            if (!idExists && !nameExists) {
+            if (!exists) {
                 Locations.insert {
                     it[Locations.id] = location.id
                     it[Locations.name] = location.name
@@ -215,150 +179,18 @@ object SeedData {
 
     private fun seedPlaylists() {
         val playlists = listOf(
-            PlaylistSeed(
-                "seed-playlist-morning",
-                "Sarajevo Morning",
-                "Indie Pop",
-                "Chill",
-                "Clear",
-                "15-22°C",
-                "Sarajevo",
-                "Alone,Coffee,Work",
-                18,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-sunny",
-                "Sunny Sarajevo",
-                "Pop",
-                "Feel Good",
-                "Sunny",
-                "20-30°C",
-                "Sarajevo",
-                "Friends,Outdoor,Day Out",
-                34,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-rainy",
-                "Rainy Baščaršija",
-                "Indie",
-                "Cozy",
-                "Rain",
-                "8-18°C",
-                "Baščaršija",
-                "Alone,Couple,Coffee",
-                27,
-                "https://www.youtube.com/watch?v=j7X3vq6GY2c"
-            ),
-            PlaylistSeed(
-                "seed-playlist-sunset",
-                "Sarajevo Sunset",
-                "R&B",
-                "Romantic",
-                "Cloudy",
-                "12-24°C",
-                "Trebević",
-                "Couple,Date,Relax",
-                41,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-night",
-                "Sarajevo Night",
-                "Pop",
-                "Energetic",
-                "Clear",
-                "10-25°C",
-                "Marijin Dvor",
-                "Friends,Night Out,Party",
-                56,
-                "https://www.youtube.com/playlist?list=PLkShY3_KwgIIHz8OsRyAu2dTQcHg1dmWl"
-            ),
-            PlaylistSeed(
-                "seed-playlist-rock",
-                "Sarajevo Rock",
-                "Rock",
-                "Energetic",
-                "Cloudy",
-                "10-22°C",
-                "Sarajevo",
-                "Friends,Night Out",
-                44,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-hiphop",
-                "Baščaršija Beats",
-                "Hip-Hop",
-                "Energetic",
-                "Clear",
-                "15-28°C",
-                "Baščaršija",
-                "Friends,Work,Focus",
-                38,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-sevdah",
-                "Sevdah Nights",
-                "Sevdah",
-                "Romantic",
-                "Clear",
-                "12-22°C",
-                "Baščaršija",
-                "Couple,Relax,Coffee",
-                52,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-electronic",
-                "Sarajevo Electronic",
-                "Electronic",
-                "Energetic",
-                "Clear",
-                "12-26°C",
-                "Marijin Dvor",
-                "Friends,Night Out,Party",
-                48,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-jazz",
-                "Late Night Jazz",
-                "Jazz",
-                "Chill",
-                "Rain",
-                "10-20°C",
-                "Bistrik",
-                "Alone,Couple,Relax",
-                36,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-classical",
-                "Sarajevo Classical",
-                "Classical",
-                "Focused",
-                "Clear",
-                "12-24°C",
-                "Vijećnica",
-                "Alone,Focus,Work",
-                29,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            ),
-            PlaylistSeed(
-                "seed-playlist-indie",
-                "Indie Sarajevo",
-                "Indie",
-                "Chill",
-                "Cloudy",
-                "10-22°C",
-                "Skenderija",
-                "Alone,Couple,Coffee",
-                33,
-                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
-            )
+            PlaylistSeed("seed-playlist-morning", "Sarajevo Morning", "Indie Pop", "Chill", "Clear", "15-22°C", "Sarajevo", "Alone,Coffee,Work", 18, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-sunny", "Sunny Sarajevo", "Pop", "Feel Good", "Sunny", "20-30°C", "Sarajevo", "Friends,Outdoor,Day Out", 34, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-rainy", "Rainy Baščaršija", "Indie", "Cozy", "Rain", "8-18°C", "Baščaršija", "Alone,Couple,Coffee", 27, "https://www.youtube.com/watch?v=j7X3vq6GY2c"),
+            PlaylistSeed("seed-playlist-sunset", "Sarajevo Sunset", "R&B", "Romantic", "Cloudy", "12-24°C", "Trebević", "Couple,Date,Relax", 41, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-night", "Sarajevo Night", "Pop", "Energetic", "Clear", "10-25°C", "Marijin Dvor", "Friends,Night Out,Party", 56, "https://www.youtube.com/playlist?list=PLkShY3_KwgIIHz8OsRyAu2dTQcHg1dmWl"),
+            PlaylistSeed("seed-playlist-rock", "Sarajevo Rock", "Rock", "Energetic", "Cloudy", "10-22°C", "Sarajevo", "Friends,Night Out", 44, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-hiphop", "Baščaršija Beats", "Hip-Hop", "Energetic", "Clear", "15-28°C", "Baščaršija", "Friends,Work,Focus", 38, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-sevdah", "Sevdah Nights", "Sevdah", "Romantic", "Clear", "12-22°C", "Baščaršija", "Couple,Relax,Coffee", 52, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-electronic", "Sarajevo Electronic", "Electronic", "Energetic", "Clear", "12-26°C", "Marijin Dvor", "Friends,Night Out,Party", 48, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDXzY"),
+            PlaylistSeed("seed-playlist-jazz", "Late Night Jazz", "Jazz", "Chill", "Rain", "10-20°C", "Bistrik", "Alone,Couple,Relax", 36, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-classical", "Sarajevo Classical", "Classical", "Focused", "Clear", "12-24°C", "Vijećnica", "Alone,Focus,Work", 29, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
+            PlaylistSeed("seed-playlist-indie", "Indie Sarajevo", "Indie", "Chill", "Cloudy", "10-22°C", "Skenderija", "Alone,Couple,Coffee", 33, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR")
         )
 
         playlists.forEach { playlist ->
@@ -496,33 +328,24 @@ object SeedData {
                 .where { Places.id eq place.id }
                 .count() > 0
 
-            val venue = Locations
-                .select(Locations.id)
-                .where { Locations.id eq place.venueName }
-                .singleOrNull()
+            if (!exists) {
+                val venue = Locations
+                    .select(Locations.id)
+                    .where { Locations.id eq place.venueName }
+                    .singleOrNull()
 
-            if (venue != null) {
-                val venueId = venue[Locations.id]
-
-                val exists = Places
-                    .select(Places.id)
-                    .where { Places.id eq place.id }
-                    .count() > 0
-
-                if (!exists) {
-                    Places.insert {
-                        it[Places.id] = place.id
-                        it[Places.name] = place.name
-                        it[Places.category] = place.category
-                        it[Places.venueId] = venueId
-                        it[Places.address] = place.address
-                        it[Places.latitude] = place.latitude
-                        it[Places.longitude] = place.longitude
-                        it[Places.description] = place.description
-                        it[Places.imageUrl] = null
-                        it[Places.rating] = place.rating
-                        it[Places.createdAt] = Instant.now()
-                    }
+                Places.insert {
+                    it[Places.id] = place.id
+                    it[Places.name] = place.name
+                    it[Places.category] = place.category
+                    it[Places.venueId] = venue?.get(Locations.id) ?: place.venueName
+                    it[Places.address] = place.address
+                    it[Places.latitude] = place.latitude
+                    it[Places.longitude] = place.longitude
+                    it[Places.description] = place.description
+                    it[Places.imageUrl] = null
+                    it[Places.rating] = place.rating
+                    it[Places.createdAt] = Instant.now()
                 }
             }
         }
@@ -614,31 +437,11 @@ object SeedData {
 
     private fun seedPosts() {
         val posts = listOf(
-            PostSeed(
-                "seed-post-01",
-                SEED_USER_01,
-                "Morning coffee and Baščaršija streets. Sarajevo never gets old. ☕",
-            ),
-            PostSeed(
-                "seed-post-02",
-                SEED_USER_02,
-                "Perfect weather for a walk around the city today. 🌤️",
-            ),
-            PostSeed(
-                "seed-post-03",
-                SEED_USER_03,
-                "Trying a new outfit for this rainy Sarajevo afternoon. 🌧️",
-            ),
-            PostSeed(
-                "seed-post-04",
-                SEED_USER_04,
-                "Sunset from Trebević was absolutely worth the climb. 🌅",
-            ),
-            PostSeed(
-                "seed-post-05",
-                SEED_USER_05,
-                "Vijećnica looks incredible in the evening. 📸",
-            )
+            PostSeed("seed-post-01", SEED_USER_01, "Morning coffee and Baščaršija streets. Sarajevo never gets old. ☕"),
+            PostSeed("seed-post-02", SEED_USER_02, "Perfect weather for a walk around the city today. 🌤️"),
+            PostSeed("seed-post-03", SEED_USER_03, "Trying a new outfit for this rainy Sarajevo afternoon. 🌧️"),
+            PostSeed("seed-post-04", SEED_USER_04, "Sunset from Trebević was absolutely worth the climb. 🌅"),
+            PostSeed("seed-post-05", SEED_USER_05, "Vijećnica looks incredible in the evening. 📸")
         )
 
         posts.forEach { post ->
@@ -746,5 +549,4 @@ object SeedData {
         val userId: String,
         val caption: String
     )
-
 }
