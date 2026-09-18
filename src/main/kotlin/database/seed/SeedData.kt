@@ -274,6 +274,90 @@ object SeedData {
                 "Friends,Night Out,Party",
                 56,
                 "https://www.youtube.com/playlist?list=PLkShY3_KwgIIHz8OsRyAu2dTQcHg1dmWl"
+            ),
+            PlaylistSeed(
+                "seed-playlist-rock",
+                "Sarajevo Rock",
+                "Rock",
+                "Energetic",
+                "Cloudy",
+                "10-22°C",
+                "Sarajevo",
+                "Friends,Night Out",
+                44,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
+            ),
+            PlaylistSeed(
+                "seed-playlist-hiphop",
+                "Baščaršija Beats",
+                "Hip-Hop",
+                "Energetic",
+                "Clear",
+                "15-28°C",
+                "Baščaršija",
+                "Friends,Work,Focus",
+                38,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
+            ),
+            PlaylistSeed(
+                "seed-playlist-sevdah",
+                "Sevdah Nights",
+                "Sevdah",
+                "Romantic",
+                "Clear",
+                "12-22°C",
+                "Baščaršija",
+                "Couple,Relax,Coffee",
+                52,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
+            ),
+            PlaylistSeed(
+                "seed-playlist-electronic",
+                "Sarajevo Electronic",
+                "Electronic",
+                "Energetic",
+                "Clear",
+                "12-26°C",
+                "Marijin Dvor",
+                "Friends,Night Out,Party",
+                48,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
+            ),
+            PlaylistSeed(
+                "seed-playlist-jazz",
+                "Late Night Jazz",
+                "Jazz",
+                "Chill",
+                "Rain",
+                "10-20°C",
+                "Bistrik",
+                "Alone,Couple,Relax",
+                36,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
+            ),
+            PlaylistSeed(
+                "seed-playlist-classical",
+                "Sarajevo Classical",
+                "Classical",
+                "Focused",
+                "Clear",
+                "12-24°C",
+                "Vijećnica",
+                "Alone,Focus,Work",
+                29,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
+            ),
+            PlaylistSeed(
+                "seed-playlist-indie",
+                "Indie Sarajevo",
+                "Indie",
+                "Chill",
+                "Cloudy",
+                "10-22°C",
+                "Skenderija",
+                "Alone,Couple,Coffee",
+                33,
+                "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"
             )
         )
 
@@ -310,7 +394,14 @@ object SeedData {
             "seed-playlist-sunny" to listOf("seed-music-05", "seed-music-06", "seed-music-08", "seed-music-17", "seed-music-19"),
             "seed-playlist-rainy" to listOf("seed-music-09", "seed-music-10", "seed-music-11", "seed-music-12", "seed-music-20"),
             "seed-playlist-sunset" to listOf("seed-music-07", "seed-music-13", "seed-music-14", "seed-music-15", "seed-music-22"),
-            "seed-playlist-night" to listOf("seed-music-16", "seed-music-17", "seed-music-18", "seed-music-24", "seed-music-25")
+            "seed-playlist-night" to listOf("seed-music-16", "seed-music-17", "seed-music-18", "seed-music-24", "seed-music-25"),
+            "seed-playlist-rock" to listOf("seed-music-08", "seed-music-16", "seed-music-23", "seed-music-24", "seed-music-20"),
+            "seed-playlist-hiphop" to listOf("seed-music-07", "seed-music-16", "seed-music-17", "seed-music-24", "seed-music-25"),
+            "seed-playlist-sevdah" to listOf("seed-music-21", "seed-music-22", "seed-music-13", "seed-music-07", "seed-music-14"),
+            "seed-playlist-electronic" to listOf("seed-music-13", "seed-music-16", "seed-music-24", "seed-music-08", "seed-music-20"),
+            "seed-playlist-jazz" to listOf("seed-music-21", "seed-music-03", "seed-music-14", "seed-music-10", "seed-music-15"),
+            "seed-playlist-classical" to listOf("seed-music-21", "seed-music-22", "seed-music-15", "seed-music-03", "seed-music-13"),
+            "seed-playlist-indie" to listOf("seed-music-09", "seed-music-10", "seed-music-11", "seed-music-12", "seed-music-23")
         )
 
         playlistSongs.forEach { (playlistId, musicIds) ->
