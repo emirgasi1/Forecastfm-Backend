@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 class RouteApi(
     private val client: HttpClient
 ) {
-    private val apiKey: String = System.getProperty("ORS_API_KEY") ?: ""
+    private val apiKey: String = System.getenv("ORS_API_KEY") ?: ""
 
     suspend fun getRoute(request: RouteRequest): RouteResponse {
         if (apiKey.isBlank()) {

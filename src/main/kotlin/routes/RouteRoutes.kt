@@ -18,11 +18,12 @@ fun Route.routeRoutes(httpClient: HttpClient) {
         try {
             val response = routeApi.getRoute(request)
             call.respond(response)
-        } catch (e: Exception) {
-            call.respond(
-                HttpStatusCode.InternalServerError,
-                e.message ?: "Route calculation failed"
-            )
-        }
+        }  catch (e: Exception) {
+        e.printStackTrace()
+        call.respond(
+            HttpStatusCode.InternalServerError,
+            e.message ?: "Route calculation failed"
+        )
+    }
     }
 }
