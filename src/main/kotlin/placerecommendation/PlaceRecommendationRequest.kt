@@ -7,6 +7,7 @@ data class CreatePlaceRecommendationRequest(
     val name: String,
     val category: String,
     val location: String,
+    val placeId: String,
     val description: String,
     val suitableFor: List<String>,
     val weatherCondition: String,

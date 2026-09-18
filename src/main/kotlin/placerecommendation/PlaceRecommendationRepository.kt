@@ -15,6 +15,7 @@ class PlaceRecommendationRepository {
         name: String,
         category: String,
         location: String,
+        placeId: String,
         description: String,
         suitableFor: List<String>,
         weatherCondition: String,
@@ -31,6 +32,7 @@ class PlaceRecommendationRepository {
                 it[PlaceRecommendations.name] = name
                 it[PlaceRecommendations.category] = category
                 it[PlaceRecommendations.location] = location
+                it[PlaceRecommendations.placeId] = placeId
                 it[PlaceRecommendations.description] = description
                 it[PlaceRecommendations.suitableFor] = suitableFor.joinToString(",")
                 it[PlaceRecommendations.weatherCondition] = weatherCondition
@@ -46,6 +48,7 @@ class PlaceRecommendationRepository {
             name = name,
             category = category,
             location = location,
+            placeId = placeId,
             description = description,
             suitableFor = suitableFor,
             weatherCondition = weatherCondition,
@@ -66,6 +69,7 @@ class PlaceRecommendationRepository {
                         name = row[PlaceRecommendations.name],
                         category = row[PlaceRecommendations.category],
                         location = row[PlaceRecommendations.location],
+                        placeId = row[PlaceRecommendations.placeId],
                         description = row[PlaceRecommendations.description],
                         suitableFor = row[PlaceRecommendations.suitableFor].split(",").filter { it.isNotEmpty() },
                         weatherCondition = row[PlaceRecommendations.weatherCondition],
@@ -113,6 +117,7 @@ class PlaceRecommendationRepository {
                     name = row[PlaceRecommendations.name],
                     category = row[PlaceRecommendations.category],
                     location = row[PlaceRecommendations.location],
+                    placeId = row[PlaceRecommendations.placeId],
                     description = row[PlaceRecommendations.description],
                     suitableFor = row[PlaceRecommendations.suitableFor].split(",").filter { it.isNotEmpty() },
                     weatherCondition = row[PlaceRecommendations.weatherCondition],
@@ -137,6 +142,7 @@ class PlaceRecommendationRepository {
                         name = row[PlaceRecommendations.name],
                         category = row[PlaceRecommendations.category],
                         location = row[PlaceRecommendations.location],
+                        placeId = row[PlaceRecommendations.placeId],
                         description = row[PlaceRecommendations.description],
                         suitableFor = row[PlaceRecommendations.suitableFor].split(",").filter { it.isNotEmpty() },
                         weatherCondition = row[PlaceRecommendations.weatherCondition],

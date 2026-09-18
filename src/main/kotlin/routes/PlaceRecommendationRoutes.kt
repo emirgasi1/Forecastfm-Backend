@@ -18,6 +18,7 @@ fun Route.placeRecommendationRoutes() {
             name = request.name,
             category = request.category,
             location = request.location,
+            placeId = request.placeId,
             description = request.description,
             suitableFor = request.suitableFor,
             weatherCondition = request.weatherCondition,
