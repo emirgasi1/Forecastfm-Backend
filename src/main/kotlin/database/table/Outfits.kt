@@ -16,6 +16,9 @@ object Outfits : Table("outfits") {
     val storeName = text("storename").nullable()
     val storeAddress = text("storeaddress").nullable()
     val price = text("price").nullable()
+    val storePhone = varchar("store_phone", 50).nullable()
+    val productUrl = varchar("product_url", 500).nullable()
+
 
     override val primaryKey = PrimaryKey(id)
 }

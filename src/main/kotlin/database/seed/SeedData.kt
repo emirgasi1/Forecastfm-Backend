@@ -187,7 +187,7 @@ object SeedData {
             PlaylistSeed("seed-playlist-rock", "Sarajevo Rock", "Rock", "Energetic", "Cloudy", "10-22°C", "Sarajevo", "Friends,Night Out", 44, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
             PlaylistSeed("seed-playlist-hiphop", "Baščaršija Beats", "Hip-Hop", "Energetic", "Clear", "15-28°C", "Baščaršija", "Friends,Work,Focus", 38, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
             PlaylistSeed("seed-playlist-sevdah", "Sevdah Nights", "Sevdah", "Romantic", "Clear", "12-22°C", "Baščaršija", "Couple,Relax,Coffee", 52, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
-            PlaylistSeed("seed-playlist-electronic", "Sarajevo Electronic", "Electronic", "Energetic", "Clear", "12-26°C", "Marijin Dvor", "Friends,Night Out,Party", 48, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDXzY"),
+            PlaylistSeed("seed-playlist-electronic", "Sarajevo Electronic", "Electronic", "Energetic", "Clear", "12-26°C", "Marijin Dvor", "Friends,Night Out,Party", 48, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
             PlaylistSeed("seed-playlist-jazz", "Late Night Jazz", "Jazz", "Chill", "Rain", "10-20°C", "Bistrik", "Alone,Couple,Relax", 36, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
             PlaylistSeed("seed-playlist-classical", "Sarajevo Classical", "Classical", "Focused", "Clear", "12-24°C", "Vijećnica", "Alone,Focus,Work", 29, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR"),
             PlaylistSeed("seed-playlist-indie", "Indie Sarajevo", "Indie", "Chill", "Cloudy", "10-22°C", "Skenderija", "Alone,Couple,Coffee", 33, "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR")
@@ -260,16 +260,36 @@ object SeedData {
 
     private fun seedOutfits() {
         val outfits = listOf(
-            OutfitSeed("seed-outfit-01", SEED_USER_01, "Sunny City Casual", "Sunny", "Summer", "Zara", "Maršala Tita, Sarajevo", "60-100 KM", 24),
-            OutfitSeed("seed-outfit-02", SEED_USER_02, "Coffee & Chill", "Cloudy", "Spring", "LC Waikiki", "Bingo City Center, Sarajevo", "40-80 KM", 18),
-            OutfitSeed("seed-outfit-03", SEED_USER_03, "Rainy Day Layers", "Rain", "Autumn", "Reserved", "Sarajevo City Center", "80-140 KM", 31),
-            OutfitSeed("seed-outfit-04", SEED_USER_04, "Baščaršija Weekend", "Clear", "Summer", "Mango", "Sarajevo City Center", "90-150 KM", 42),
-            OutfitSeed("seed-outfit-05", SEED_USER_05, "Trebević Adventure", "Cool", "Autumn", "Sport Vision", "Džidžikovac, Sarajevo", "120-220 KM", 27),
-            OutfitSeed("seed-outfit-06", SEED_USER_01, "Winter Walk", "Snow", "Winter", "Sport Reality", "Stup, Sarajevo", "150-280 KM", 35),
-            OutfitSeed("seed-outfit-07", SEED_USER_02, "Spring Afternoon", "Clear", "Spring", "H&M", "Sarajevo City Center", "70-130 KM", 21),
-            OutfitSeed("seed-outfit-08", SEED_USER_03, "Evening Downtown", "Clear", "Autumn", "Pull&Bear", "Sarajevo City Center", "80-140 KM", 38),
-            OutfitSeed("seed-outfit-09", SEED_USER_04, "Hot Summer Day", "Sunny", "Summer", "DeFacto", "Bingo City Center, Sarajevo", "40-90 KM", 29),
-            OutfitSeed("seed-outfit-10", SEED_USER_05, "Cozy Evening", "Cold", "Winter", "Reserved", "Sarajevo City Center", "100-180 KM", 46)
+            OutfitSeed("seed-outfit-clear-01", SEED_USER_01, "Sunny City Casual", "Clear", "Summer", "Zara", "Sarajevo City Center, Vrbanja 1", "60-100 KM", 24, "https://picsum.photos/seed/outfit-clear-01/400/600", "080 083 080", "https://www.zara.com/ba/"),
+            OutfitSeed("seed-outfit-clear-02", SEED_USER_02, "Bright Day Layers", "Clear", "Spring", "Mango", "Sarajevo City Center, Vrbanja 1", "80-140 KM", 32, "https://picsum.photos/seed/outfit-clear-02/400/600", "38733271360", "https://shop.mango.com/ba"),
+            OutfitSeed("seed-outfit-clear-03", SEED_USER_03, "Weekend in Baščaršija", "Clear", "Summer", "H&M", "Sarajevo City Center, Vrbanja 1", "50-120 KM", 18, "https://picsum.photos/seed/outfit-clear-03/400/600", null, "https://www2.hm.com/ba_bs/index.html"),
+            OutfitSeed("seed-outfit-clear-04", SEED_USER_04, "Golden Hour Walk", "Clear", "Autumn", "Pull&Bear", "Sarajevo City Center, Vrbanja 1", "60-110 KM", 27, "https://picsum.photos/seed/outfit-clear-04/400/600", null, "https://www.pullandbear.com/ba/"),
+            OutfitSeed("seed-outfit-clear-05", SEED_USER_05, "City Chic", "Clear", "Summer", "Bershka", "Sarajevo City Center, Vrbanja 1", "70-130 KM", 35, "https://picsum.photos/seed/outfit-clear-05/400/600", "033 957-772", "https://www.bershka.com/ba/"),
+            OutfitSeed("seed-outfit-clouds-01", SEED_USER_01, "Coffee & Chill", "Clouds", "Spring", "LC Waikiki", "Bingo City Center, Ilidža", "40-80 KM", 18, "https://picsum.photos/seed/outfit-clouds-01/400/600", "+387 33 873 368", "https://www.lcwaikiki.com/ba/"),
+            OutfitSeed("seed-outfit-clouds-02", SEED_USER_02, "Overcast Neutrals", "Clouds", "Autumn", "Reserved", "Sarajevo City Center, Vrbanja 1", "80-150 KM", 41, "https://picsum.photos/seed/outfit-clouds-02/400/600", null, "https://www.reserved.com/ba/"),
+            OutfitSeed("seed-outfit-clouds-03", SEED_USER_03, "Layered Look", "Clouds", "Spring", "Zara", "Sarajevo City Center, Vrbanja 1", "70-140 KM", 22, "https://picsum.photos/seed/outfit-clouds-03/400/600", "080 083 080", "https://www.zara.com/ba/"),
+            OutfitSeed("seed-outfit-clouds-04", SEED_USER_04, "Muted Tones", "Clouds", "Autumn", "Mango", "Sarajevo City Center, Vrbanja 1", "90-160 KM", 29, "https://picsum.photos/seed/outfit-clouds-04/400/600", "38733271360", "https://shop.mango.com/ba"),
+            OutfitSeed("seed-outfit-clouds-05", SEED_USER_05, "Grey Day Comfort", "Clouds", "Winter", "H&M", "Sarajevo City Center, Vrbanja 1", "50-110 KM", 16, "https://picsum.photos/seed/outfit-clouds-05/400/600", null, "https://www2.hm.com/ba_bs/index.html"),
+            OutfitSeed("seed-outfit-rain-01", SEED_USER_01, "Rainy Day Layers", "Rain", "Autumn", "Reserved", "Sarajevo City Center, Vrbanja 1", "80-140 KM", 31, "https://picsum.photos/seed/outfit-rain-01/400/600", null, "https://www.reserved.com/ba/"),
+            OutfitSeed("seed-outfit-rain-02", SEED_USER_02, "Waterproof Style", "Rain", "Spring", "Sport Vision", "Džidžikovac, Sarajevo", "120-220 KM", 27, "https://picsum.photos/seed/outfit-rain-02/400/600", "(+387) 33 733 045", "https://www.sportvision.ba/"),
+            OutfitSeed("seed-outfit-rain-03", SEED_USER_03, "City Raincoat", "Rain", "Autumn", "Zara", "Sarajevo City Center, Vrbanja 1", "100-180 KM", 38, "https://picsum.photos/seed/outfit-rain-03/400/600", "080 083 080", "https://www.zara.com/ba/"),
+            OutfitSeed("seed-outfit-rain-04", SEED_USER_04, "Rainy Commute", "Rain", "Winter", "LC Waikiki", "Bingo City Center, Ilidža", "60-120 KM", 21, "https://picsum.photos/seed/outfit-rain-04/400/600", "+387 33 873 368", "https://www.lcwaikiki.com/ba/"),
+            OutfitSeed("seed-outfit-rain-05", SEED_USER_05, "Storm Ready", "Rain", "Autumn", "Sport Reality", "Stup, Sarajevo", "130-240 KM", 44, "https://picsum.photos/seed/outfit-rain-05/400/600", null, "https://sportreality.ba/"),
+            OutfitSeed("seed-outfit-drizzle-01", SEED_USER_01, "Light Mist Layers", "Drizzle", "Spring", "H&M", "Sarajevo City Center, Vrbanja 1", "50-100 KM", 19, "https://picsum.photos/seed/outfit-drizzle-01/400/600", null, "https://www2.hm.com/ba_bs/index.html"),
+            OutfitSeed("seed-outfit-drizzle-02", SEED_USER_02, "Drizzly Day Out", "Drizzle", "Autumn", "Mango", "Sarajevo City Center, Vrbanja 1", "80-150 KM", 26, "https://picsum.photos/seed/outfit-drizzle-02/400/600", "38733271360", "https://shop.mango.com/ba"),
+            OutfitSeed("seed-outfit-drizzle-03", SEED_USER_03, "Soft Rain Style", "Drizzle", "Spring", "Zara", "Sarajevo City Center, Vrbanja 1", "90-160 KM", 33, "https://picsum.photos/seed/outfit-drizzle-03/400/600", "080 083 080", "https://www.zara.com/ba/"),
+            OutfitSeed("seed-outfit-drizzle-04", SEED_USER_04, "Urban Drizzle", "Drizzle", "Autumn", "Pull&Bear", "Sarajevo City Center, Vrbanja 1", "60-110 KM", 24, "https://picsum.photos/seed/outfit-drizzle-04/400/600", null, "https://www.pullandbear.com/ba/"),
+            OutfitSeed("seed-outfit-drizzle-05", SEED_USER_05, "Cozy Overcast", "Drizzle", "Winter", "Reserved", "Sarajevo City Center, Vrbanja 1", "100-180 KM", 39, "https://picsum.photos/seed/outfit-drizzle-05/400/600", null, "https://www.reserved.com/ba/"),
+            OutfitSeed("seed-outfit-snow-01", SEED_USER_01, "Winter Walk", "Snow", "Winter", "Sport Reality", "Stup, Sarajevo", "150-280 KM", 35, "https://picsum.photos/seed/outfit-snow-01/400/600", null, "https://sportreality.ba/"),
+            OutfitSeed("seed-outfit-snow-02", SEED_USER_02, "Snow Day Layers", "Snow", "Winter", "Zara", "Sarajevo City Center, Vrbanja 1", "120-220 KM", 42, "https://picsum.photos/seed/outfit-snow-02/400/600", "080 083 080", "https://www.zara.com/ba/"),
+            OutfitSeed("seed-outfit-snow-03", SEED_USER_03, "Warm Winter Coat", "Snow", "Winter", "Reserved", "Sarajevo City Center, Vrbanja 1", "140-260 KM", 48, "https://picsum.photos/seed/outfit-snow-03/400/600", null, "https://www.reserved.com/ba/"),
+            OutfitSeed("seed-outfit-snow-04", SEED_USER_04, "Alpine Casual", "Snow", "Winter", "Sport Vision", "Džidžikovac, Sarajevo", "160-300 KM", 51, "https://picsum.photos/seed/outfit-snow-04/400/600", "(+387) 33 733 045", "https://www.sportvision.ba/"),
+            OutfitSeed("seed-outfit-snow-05", SEED_USER_05, "Snowy Street Style", "Snow", "Winter", "Mango", "Sarajevo City Center, Vrbanja 1", "130-240 KM", 37, "https://picsum.photos/seed/outfit-snow-05/400/600", "38733271360", "https://shop.mango.com/ba"),
+            OutfitSeed("seed-outfit-thunder-01", SEED_USER_01, "Storm Proof", "Thunderstorm", "Autumn", "Sport Reality", "Stup, Sarajevo", "150-270 KM", 28, "https://picsum.photos/seed/outfit-thunder-01/400/600", null, "https://sportreality.ba/"),
+            OutfitSeed("seed-outfit-thunder-02", SEED_USER_02, "Thunder Ready", "Thunderstorm", "Summer", "Sport Vision", "Džidžikovac, Sarajevo", "140-260 KM", 22, "https://picsum.photos/seed/outfit-thunder-02/400/600", "(+387) 33 733 045", "https://www.sportvision.ba/"),
+            OutfitSeed("seed-outfit-thunder-03", SEED_USER_03, "Rain Shield Style", "Thunderstorm", "Spring", "Zara", "Sarajevo City Center, Vrbanja 1", "100-190 KM", 30, "https://picsum.photos/seed/outfit-thunder-03/400/600", "080 083 080", "https://www.zara.com/ba/"),
+            OutfitSeed("seed-outfit-thunder-04", SEED_USER_04, "Heavy Weather Layers", "Thunderstorm", "Autumn", "H&M", "Sarajevo City Center, Vrbanja 1", "80-150 KM", 25, "https://picsum.photos/seed/outfit-thunder-04/400/600", null, "https://www2.hm.com/ba_bs/index.html"),
+            OutfitSeed("seed-outfit-thunder-05", SEED_USER_05, "Stormy City", "Thunderstorm", "Summer", "LC Waikiki", "Bingo City Center, Ilidža", "70-140 KM", 20, "https://picsum.photos/seed/outfit-thunder-05/400/600", "+387 33 873 368", "https://www.lcwaikiki.com/ba/")
         )
 
         outfits.forEach { outfit ->
@@ -282,7 +302,7 @@ object SeedData {
                 Outfits.insert {
                     it[Outfits.id] = outfit.id
                     it[Outfits.userId] = outfit.userId
-                    it[Outfits.imageUrl] = ""
+                    it[Outfits.imageUrl] = outfit.imageUrl
                     it[Outfits.title] = outfit.title
                     it[Outfits.weatherCondition] = outfit.weatherCondition
                     it[Outfits.season] = outfit.season
@@ -291,6 +311,8 @@ object SeedData {
                     it[Outfits.storeName] = outfit.storeName
                     it[Outfits.storeAddress] = outfit.storeAddress
                     it[Outfits.price] = outfit.price
+                    it[Outfits.storePhone] = outfit.storePhone
+                    it[Outfits.productUrl] = outfit.productUrl
                 }
             }
         }
@@ -515,7 +537,10 @@ object SeedData {
         val storeName: String,
         val storeAddress: String,
         val price: String,
-        val likes: Int
+        val likes: Int,
+        val imageUrl: String,
+        val storePhone: String?,
+        val productUrl: String?
     )
 
     private data class PlaceSeed(
