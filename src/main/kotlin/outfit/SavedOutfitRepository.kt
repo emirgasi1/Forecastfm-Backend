@@ -53,6 +53,11 @@ class SavedOutfitRepository {
                         weatherCondition = row[Outfits.weatherCondition],
                         season = row[Outfits.season],
                         likes = row[Outfits.likes],
+                        storeName = row[Outfits.storeName],
+                        storeAddress = row[Outfits.storeAddress],
+                        price = row[Outfits.price],
+                        storePhone = row[Outfits.storePhone],
+                        productUrl = row[Outfits.productUrl],
                         createdAt = row[Outfits.createdAt].toString()
                     )
                 }

@@ -14,6 +14,8 @@ data class Outfit(
     val storeName: String? = null,
     val storeAddress: String? = null,
     val price: String? = null,
+    val storePhone: String? = null,
+    val productUrl: String? = null,
     val createdAt: String
 )
 
@@ -26,5 +28,7 @@ data class CreateOutfitRequest(
     val season: String,
     val storeName: String? = null,
     val storeAddress: String? = null,
-    val price: String? = null
+    val price: String? = null,
+    val storePhone: String? = null,
+    val productUrl: String? = null
 )

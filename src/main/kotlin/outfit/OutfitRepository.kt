@@ -21,7 +21,9 @@ class OutfitRepository {
         season: String,
         storeName: String? = null,
         storeAddress: String? = null,
-        price: String? = null
+        price: String? = null,
+        storePhone: String? = null,
+        productUrl: String? = null
     ): Outfit {
         val id = UUID.randomUUID().toString()
         val createdAt = Instant.now().toString()
@@ -37,6 +39,8 @@ class OutfitRepository {
                 it[Outfits.storeName] = storeName
                 it[Outfits.storeAddress] = storeAddress
                 it[Outfits.price] = price
+                it[Outfits.storePhone] = storePhone
+                it[Outfits.productUrl] = productUrl
                 it[Outfits.createdAt] = Instant.now()
             }
         }
@@ -52,6 +56,8 @@ class OutfitRepository {
             storeName = storeName,
             storeAddress = storeAddress,
             price = price,
+            storePhone = storePhone,
+            productUrl = productUrl,
             createdAt = createdAt
         )
     }
@@ -74,6 +80,8 @@ class OutfitRepository {
                         storeName = row[Outfits.storeName],
                         storeAddress = row[Outfits.storeAddress],
                         price = row[Outfits.price],
+                        storePhone = row[Outfits.storePhone],
+                        productUrl = row[Outfits.productUrl],
                         createdAt = row[Outfits.createdAt].toString()
                     )
                 }
@@ -99,6 +107,8 @@ class OutfitRepository {
                         storeName = row[Outfits.storeName],
                         storeAddress = row[Outfits.storeAddress],
                         price = row[Outfits.price],
+                        storePhone = row[Outfits.storePhone],
+                        productUrl = row[Outfits.productUrl],
                         createdAt = row[Outfits.createdAt].toString()
                     )
                 }
@@ -123,6 +133,8 @@ class OutfitRepository {
                         storeName = row[Outfits.storeName],
                         storeAddress = row[Outfits.storeAddress],
                         price = row[Outfits.price],
+                        storePhone = row[Outfits.storePhone],
+                        productUrl = row[Outfits.productUrl],
                         createdAt = row[Outfits.createdAt].toString()
                     )
                 }

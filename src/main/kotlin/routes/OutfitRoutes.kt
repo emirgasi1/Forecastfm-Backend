@@ -22,7 +22,12 @@ fun Route.outfitRoutes() {
             imageUrl = request.imageUrl,
             title = request.title,
             weatherCondition = request.weatherCondition,
-            season = request.season
+            season = request.season,
+            storeName = request.storeName,
+            storeAddress = request.storeAddress,
+            price = request.price,
+            storePhone = request.storePhone,
+            productUrl = request.productUrl
         )
         call.respond(HttpStatusCode.Created, outfit)
     }
@@ -45,6 +50,7 @@ fun Route.outfitRoutes() {
         outfitRepository.likeOutfit(id)
         call.respond(HttpStatusCode.OK)
     }
+
     post("/api/outfits/{outfitId}/save") {
         val outfitId = call.parameters["outfitId"]
             ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing outfit ID")
@@ -94,6 +100,7 @@ fun Route.outfitRoutes() {
         val savedOutfits = savedOutfitRepository.getSavedOutfits(userId)
         call.respond(savedOutfits)
     }
+
     get("/api/outfits/{id}") {
         val id = call.parameters["id"]
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing outfit ID")
