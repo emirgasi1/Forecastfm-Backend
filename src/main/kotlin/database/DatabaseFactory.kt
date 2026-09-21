@@ -16,6 +16,7 @@ import com.example.database.table.Playlists
 import com.example.database.table.PostLikes
 import com.example.database.table.Posts
 import com.example.database.table.SavedOutfits
+import com.example.database.table.SavedPlaces
 import com.example.database.table.SavedPosts
 import database.table.UserSessions
 import database.table.Users
@@ -45,6 +46,7 @@ object DatabaseFactory {
                 Posts,
                 Comments,
                 CommentLikes,
+                SavedPlaces,
                 Musics,
                 Playlists,
                 PlaylistSongs,
