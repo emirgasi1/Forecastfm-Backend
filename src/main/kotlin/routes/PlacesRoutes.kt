@@ -37,7 +37,13 @@ fun Route.placesRoutes() {
             )
         }
     }
+    get("/api/places/count") {
+        val venueId = call.request.queryParameters["venueId"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing venueId")
 
+        val count = PlacesRepository().countPlacesByVenue(venueId)
+        call.respond(mapOf("count" to count))
+    }
     get("/api/places/{id}") {
         val id = call.parameters["id"]
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing place ID")

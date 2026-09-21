@@ -109,4 +109,13 @@ class PlacesRepository {
                 }
         }
     }
+    fun countPlacesByVenue(venueId: String): Int {
+        return transaction {
+            Places
+                .selectAll()
+                .where { Places.venueId eq venueId }
+                .count()
+                .toInt()
+        }
+    }
 }
