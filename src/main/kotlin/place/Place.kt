@@ -7,7 +7,7 @@ data class Place(
     val id: String,
     val name: String,
     val category: String,
-    val venueId: String,
+    val venueId: String?,
     val address: String,
     val latitude: Double,
     val longitude: Double,
