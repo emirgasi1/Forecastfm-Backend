@@ -99,4 +99,11 @@ fun Route.placesRoutes() {
         val saved = SavedPlaceRepository().getSavedPlaces(userId)
         call.respond(saved)
     }
+    get("/api/places/venue/{venueId}/recommendations") {
+        val venueId = call.parameters["venueId"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing venue ID")
+
+        val places = repository.getPlacesByVenue(venueId)
+        call.respond(places)
+    }
 }
