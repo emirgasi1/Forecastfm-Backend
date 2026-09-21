@@ -10,6 +10,8 @@ class OverpassApi(
     private val client: HttpClient
 ) {
 
+
+
     suspend fun getCafesInSarajevo(): List<OsmPlace> {
         val query = """
             [out:json][timeout:25];
@@ -29,6 +31,8 @@ class OverpassApi(
         }
 
         val body: OverpassResponse = response.body()
+        println("Overpass raw response: $body")
+        println("Overpass elements count: ${body.elements.size}")
         return body.elements.mapNotNull { it.toOsmPlace() }
     }
 }
