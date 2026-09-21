@@ -85,30 +85,117 @@ object SeedData {
     }
 
     private fun seedLocations() {
-        val locations = listOf(
-            LocationSeed("seed-location-bascarsija", "Baščaršija", "Stari gradski trg i historijsko srce Sarajeva.", 43.8608, 18.4288),
-            LocationSeed("seed-location-vrelo-bosne", "Vrelo Bosne", "Prirodni park na izvoru rijeke Bosne.", 43.8196, 18.2695),
-            LocationSeed("seed-location-avaz", "Avaz Twist Tower", "Jedan od najpoznatijih simbola modernog Sarajeva.", 43.8584, 18.4055),
-            LocationSeed("seed-location-bijela-tabija", "Bijela Tabija", "Historijska tvrđava sa panoramskim pogledom na Sarajevo.", 43.8620, 18.4462),
-            LocationSeed("seed-location-katedrala", "Katedrala Srca Isusova", "Poznata katedrala u centru Sarajeva.", 43.8593, 18.4248),
-            LocationSeed("seed-location-sebilj", "Sebilj - Baščaršija", "Jedan od najpoznatijih simbola Sarajeva.", 43.8607, 18.4290),
-            LocationSeed("seed-location-zmajevac", "Zmajevac", "Popularno mjesto sa pogledom na Sarajevo.", 43.8672, 18.4122),
-            LocationSeed("seed-location-vijecnica", "Vijećnica", "Poznata historijska građevina uz Miljacku.", 43.8595, 18.4331),
-            LocationSeed("seed-location-trebevic", "Trebević", "Planina iznad Sarajeva idealna za prirodu i šetnju.", 43.8271, 18.4485),
-            LocationSeed("seed-location-ilidza", "Ilidža", "Područje poznato po parkovima i prirodi.", 43.8297, 18.3118),
-            LocationSeed("seed-location-marijin-dvor", "Marijin Dvor", "Centralni dio Sarajeva sa urbanom atmosferom.", 43.8564, 18.4105),
-            LocationSeed("seed-location-skenderija", "Skenderija", "Urbano područje uz Miljacku.", 43.8535, 18.4078),
-            LocationSeed("seed-location-kosevo", "Koševo", "Gradsko područje sa zelenim površinama.", 43.8702, 18.4075),
-            LocationSeed("seed-location-ciglane", "Ciglane", "Naselje na padinama Sarajeva.", 43.8654, 18.4070),
-            LocationSeed("seed-location-pofalici", "Pofalići", "Urbano područje zapadno od centra.", 43.8546, 18.3898),
-            LocationSeed("seed-location-otoka", "Otoka", "Živahno gradsko područje sa sportskim sadržajima.", 43.8465, 18.3667),
-            LocationSeed("seed-location-cengic-vila", "Čengić Vila", "Popularno gradsko naselje povezano tramvajem.", 43.8447, 18.3650),
-            LocationSeed("seed-location-stup", "Stup", "Važno urbano i saobraćajno područje.", 43.8397, 18.3218),
-            LocationSeed("seed-location-bistrik", "Bistrik", "Historijsko sarajevsko naselje.", 43.8547, 18.4298),
-            LocationSeed("seed-location-vraca", "Vraca", "Područje na južnim padinama Sarajeva.", 43.8448, 18.3935)
+        val osmLocations = listOf(
+            LocationSeed("osm-loc-aerodromsko-naselje", "Aerodromsko naselje", "Naselje u Sarajevu.", 43.8291397, 18.3386362),
+            LocationSeed("osm-loc-ahatovici", "Ahatovići", "Naselje u Sarajevu.", 43.8846542, 18.2829095),
+            LocationSeed("osm-loc-alipasin-most", "Alipašin most", "Naselje u Sarajevu.", 43.8486024, 18.3456776),
+            LocationSeed("osm-loc-alipasino-polje", "Alipašino Polje", "Naselje u Sarajevu.", 43.8431072, 18.3478944),
+            LocationSeed("osm-loc-aneks", "Aneks", "Naselje u Sarajevu.", 43.8452675, 18.3709967),
+            LocationSeed("osm-loc-azici", "Azići", "Naselje u Sarajevu.", 43.8472394, 18.3136793),
+            LocationSeed("osm-loc-babica-basca", "Babića bašča", "Naselje u Sarajevu.", 43.8573853, 18.4351632),
+            LocationSeed("osm-loc-bare", "Bare", "Naselje u Sarajevu.", 43.875697, 18.4027942),
+            LocationSeed("osm-loc-bascarsija", "Baščaršija", "Naselje u Sarajevu.", 43.8591032, 18.4309501),
+            LocationSeed("osm-loc-bijelo-polje", "Bijelo Polje", "Naselje u Sarajevu.", 43.819639, 18.3530161),
+            LocationSeed("osm-loc-bistrik", "Bistrik", "Naselje u Sarajevu.", 43.8550903, 18.4301122),
+            LocationSeed("osm-loc-bjelave", "Bjelave", "Naselje u Sarajevu.", 43.8637854, 18.4195229),
+            LocationSeed("osm-loc-blazuj", "Blažuj", "Naselje u Sarajevu.", 43.8401451, 18.258022),
+            LocationSeed("osm-loc-boljakov-potok", "Boljakov Potok", "Naselje u Sarajevu.", 43.8562415, 18.3478016),
+            LocationSeed("osm-loc-breka", "Breka", "Naselje u Sarajevu.", 43.8711996, 18.417406),
+            LocationSeed("osm-loc-brijesce", "Briješće", "Naselje u Sarajevu.", 43.8614041, 18.3299047),
+            LocationSeed("osm-loc-brijesce-polje", "Briješće polje", "Naselje u Sarajevu.", 43.8564713, 18.3109988),
+            LocationSeed("osm-loc-butmir", "Butmir", "Naselje u Sarajevu.", 43.8190637, 18.3256681),
+            LocationSeed("osm-loc-buca-potok", "Buća Potok", "Naselje u Sarajevu.", 43.8611585, 18.3585336),
+            LocationSeed("osm-loc-cicin-han", "Cicin Han", "Naselje u Sarajevu.", 43.8501127, 18.419702),
+            LocationSeed("osm-loc-ciglane", "Ciglane", "Naselje u Sarajevu.", 43.8645049, 18.408036),
+            LocationSeed("osm-loc-crni-vrh", "Crni vrh", "Naselje u Sarajevu.", 43.8618287, 18.4071042),
+            LocationSeed("osm-loc-dobrinja", "Dobrinja", "Naselje u Sarajevu.", 43.8291255, 18.3463543),
+            LocationSeed("osm-loc-dobrinja-i", "Dobrinja I", "Naselje u Sarajevu.", 43.823389, 18.3522447),
+            LocationSeed("osm-loc-dobrinja-ii", "Dobrinja II", "Naselje u Sarajevu.", 43.8279694, 18.3492282),
+            LocationSeed("osm-loc-dobrinja-iii", "Dobrinja III", "Naselje u Sarajevu.", 43.8303246, 18.3510055),
+            LocationSeed("osm-loc-dobrinja-iv", "Dobrinja IV", "Naselje u Sarajevu.", 43.8280287, 18.3583108),
+            LocationSeed("osm-loc-dobrinja-v", "Dobrinja V", "Naselje u Sarajevu.", 43.8336463, 18.3433173),
+            LocationSeed("osm-loc-dobrinjska-mahala", "Dobrinjska Mahala", "Naselje u Sarajevu.", 43.8316528, 18.3402436),
+            LocationSeed("osm-loc-dobrosevici", "Dobroševići", "Naselje u Sarajevu.", 43.880004, 18.2897631),
+            LocationSeed("osm-loc-doglodi", "Doglodi", "Naselje u Sarajevu.", 43.8534488, 18.295338),
+            LocationSeed("osm-loc-dolac-malta", "Dolac Malta", "Naselje u Sarajevu.", 43.8533947, 18.3792689),
+            LocationSeed("osm-loc-donja-josanica", "Donja Jošanica", "Naselje u Sarajevu.", 43.8956907, 18.3377699),
+            LocationSeed("osm-loc-donje-mladice", "Donje Mladice", "Naselje u Sarajevu.", 43.8098648, 18.3633044),
+            LocationSeed("osm-loc-donji-kotorac", "Donji Kotorac", "Naselje u Sarajevu.", 43.8177692, 18.3378372),
+            LocationSeed("osm-loc-drvenija", "Drvenija", "Naselje u Sarajevu.", 43.8559992, 18.4230501),
+            LocationSeed("osm-loc-dzidzikovac", "Džidžikovac", "Naselje u Sarajevu.", 43.8616456, 18.4163868),
+            LocationSeed("osm-loc-gorica", "Gorica", "Naselje u Sarajevu.", 43.8635717, 18.4062616),
+            LocationSeed("osm-loc-gornja-josanica", "Gornja Jošanica", "Naselje u Sarajevu.", 43.9073347, 18.3401415),
+            LocationSeed("osm-loc-gornji-kotorac", "Gornji Kotorac", "Naselje u Sarajevu.", 43.8080843, 18.3547178),
+            LocationSeed("osm-loc-gornji-velesici", "Gornji Velešići", "Naselje u Sarajevu.", 43.8701631, 18.3979098),
+            LocationSeed("osm-loc-grbavica", "Grbavica", "Naselje u Sarajevu.", 43.8512613, 18.3984371),
+            LocationSeed("osm-loc-hipodrom", "Hipodrom", "Naselje u Sarajevu.", 43.8073363, 18.3306921),
+            LocationSeed("osm-loc-hodzin-otok", "Hodžin otok", "Naselje u Sarajevu.", 43.7999933, 18.3027785),
+            LocationSeed("osm-loc-hrasno", "Hrasno", "Naselje u Sarajevu.", 43.8490518, 18.3835027),
+            LocationSeed("osm-loc-hrasno-brdo", "Hrasno Brdo", "Naselje u Sarajevu.", 43.8442823, 18.3817432),
+            LocationSeed("osm-loc-hrid", "Hrid", "Naselje u Sarajevu.", 43.85374, 18.4379446),
+            LocationSeed("osm-loc-jarcedoli", "Jarčedoli", "Naselje u Sarajevu.", 43.8540572, 18.4491777),
+            LocationSeed("osm-loc-jezero", "Jezero", "Naselje u Sarajevu.", 43.8762114, 18.4130708),
+            LocationSeed("osm-loc-korea", "Korea", "Naselje u Sarajevu.", 43.8561386, 18.3850087),
+            LocationSeed("osm-loc-kovaci", "Kovači", "Naselje u Sarajevu.", 43.862549, 18.4340373),
+            LocationSeed("osm-loc-kovacici", "Kovačići", "Naselje u Sarajevu.", 43.8504988, 18.4037989),
+            LocationSeed("osm-loc-kosevo", "Koševo", "Naselje u Sarajevu.", 43.8715709, 18.4134142),
+            LocationSeed("osm-loc-kosevsko-brdo", "Koševsko brdo", "Naselje u Sarajevu.", 43.8679888, 18.4047143),
+            LocationSeed("osm-loc-kula", "Kula", "Naselje u Sarajevu.", 43.8153388, 18.3547214),
+            LocationSeed("osm-loc-lemezi", "Lemezi", "Naselje u Sarajevu.", 43.8704401, 18.317337),
+            LocationSeed("osm-loc-lukavica", "Lukavica", "Naselje u Sarajevu.", 43.8388743, 18.37345),
+            LocationSeed("osm-loc-luzani", "Lužani", "Naselje u Sarajevu.", 43.8288155, 18.2998328),
+            LocationSeed("osm-loc-mahmutovac", "Mahmutovac", "Naselje u Sarajevu.", 43.8500653, 18.4345333),
+            LocationSeed("osm-loc-marijin-dvor", "Marijin Dvor", "Naselje u Sarajevu.", 43.8559143, 18.408278),
+            LocationSeed("osm-loc-medrese", "Medrese", "Naselje u Sarajevu.", 43.8675566, 18.4330819),
+            LocationSeed("osm-loc-mejtas", "Mejtaš", "Naselje u Sarajevu.", 43.8612082, 18.4194456),
+            LocationSeed("osm-loc-miljevici", "Miljevići", "Naselje u Sarajevu.", 43.8443118, 18.4032252),
+            LocationSeed("osm-loc-mladicko-polje", "Mladičko Polje", "Naselje u Sarajevu.", 43.8075869, 18.3720762),
+            LocationSeed("osm-loc-mojmilo", "Mojmilo", "Naselje u Sarajevu.", 43.8381724, 18.346157),
+            LocationSeed("osm-loc-mojmilo-brdo", "Mojmilo brdo", "Naselje u Sarajevu.", 43.8395003, 18.3560312),
+            LocationSeed("osm-loc-moscanica", "Mošćanica", "Naselje u Sarajevu.", 43.8681919, 18.449001),
+            LocationSeed("osm-loc-naselje-bulevar", "Naselje Bulevar", "Naselje u Sarajevu.", 43.840292, 18.3230076),
+            LocationSeed("osm-loc-naselje-starosjedilaca", "Naselje Starosjedilaca", "Naselje u Sarajevu.", 43.8308259, 18.3654286),
+            LocationSeed("osm-loc-naselje-heroja-sokolje", "Naselje heroja Sokolje", "Naselje u Sarajevu.", 43.8665427, 18.3195949),
+            LocationSeed("osm-loc-nedzarici", "Nedžarići", "Naselje u Sarajevu.", 43.8367867, 18.3364819),
+            LocationSeed("osm-loc-osjek", "Osjek", "Naselje u Sarajevu.", 43.8435516, 18.277292),
+            LocationSeed("osm-loc-otes", "Otes", "Naselje u Sarajevu.", 43.8408185, 18.2969773),
+            LocationSeed("osm-loc-otoka", "Otoka", "Naselje u Sarajevu.", 43.8474072, 18.3655732),
+            LocationSeed("osm-loc-pavlovac", "Pavlovac", "Naselje u Sarajevu.", 43.811998, 18.3753523),
+            LocationSeed("osm-loc-pejton", "Pejton", "Naselje u Sarajevu.", 43.8353483, 18.302551),
+            LocationSeed("osm-loc-podhrastovi", "Podhrastovi", "Naselje u Sarajevu.", 43.8685862, 18.4235918),
+            LocationSeed("osm-loc-pofalici-i", "Pofalići I", "Naselje u Sarajevu.", 43.8622786, 18.3875445),
+            LocationSeed("osm-loc-pofalici-ii", "Pofalići II", "Naselje u Sarajevu.", 43.8603727, 18.3772064),
+            LocationSeed("osm-loc-radica-potok", "Radića potok", "Naselje u Sarajevu.", 43.9091269, 18.3475878),
+            LocationSeed("osm-loc-rajlovac", "Rajlovac", "Naselje u Sarajevu.", 43.8786557, 18.3121057),
+            LocationSeed("osm-loc-reljevo", "Reljevo", "Naselje u Sarajevu.", 43.8878098, 18.3119075),
+            LocationSeed("osm-loc-rosulje", "Rosulje", "Naselje u Sarajevu.", 43.9033656, 18.3522963),
+            LocationSeed("osm-loc-sedrenik", "Sedrenik", "Naselje u Sarajevu.", 43.8729546, 18.434655),
+            LocationSeed("osm-loc-skenderija", "Skenderija", "Naselje u Sarajevu.", 43.8551592, 18.4139241),
+            LocationSeed("osm-loc-socijalno", "Socijalno", "Naselje u Sarajevu.", 43.8530077, 18.3853281),
+            LocationSeed("osm-loc-soko", "Soko", "Naselje u Sarajevu.", 43.8243381, 18.3569368),
+            LocationSeed("osm-loc-sokolovic-kolonija", "Sokolović-kolonija", "Naselje u Sarajevu.", 43.8136895, 18.3155943),
+            LocationSeed("osm-loc-soukbunar", "Soukbunar", "Naselje u Sarajevu.", 43.8503081, 18.4145842),
+            LocationSeed("osm-loc-stup", "Stup", "Naselje u Sarajevu.", 43.8428262, 18.3243),
+            LocationSeed("osm-loc-stupsko-brdo", "Stupsko Brdo", "Naselje u Sarajevu.", 43.8402336, 18.3337406),
+            LocationSeed("osm-loc-sumbulusa", "Sumbuluša", "Naselje u Sarajevu.", 43.8636576, 18.4360116),
+            LocationSeed("osm-loc-turkusici", "Turkušići", "Naselje u Sarajevu.", 43.8347519, 18.3598373),
+            LocationSeed("osm-loc-velesici", "Velešići", "Naselje u Sarajevu.", 43.865026, 18.3956098),
+            LocationSeed("osm-loc-veljine", "Veljine", "Naselje u Sarajevu.", 43.8253416, 18.3597714),
+            LocationSeed("osm-loc-vitkovac", "Vitkovac", "Naselje u Sarajevu.", 43.8596393, 18.3396992),
+            LocationSeed("osm-loc-vojnicko-polje", "Vojničko polje", "Naselje u Sarajevu.", 43.8411129, 18.340426),
+            LocationSeed("osm-loc-vraca", "Vraca", "Naselje u Sarajevu.", 43.8453046, 18.3948453),
+            LocationSeed("osm-loc-vranjes", "Vranješ", "Naselje u Sarajevu.", 43.817619, 18.3723485),
+            LocationSeed("osm-loc-vratnik", "Vratnik", "Naselje u Sarajevu.", 43.8623357, 18.4406951),
+            LocationSeed("osm-loc-vreoca", "Vreoca", "Naselje u Sarajevu.", 43.8343861, 18.2894414),
+            LocationSeed("osm-loc-zabrde", "Zabrđe", "Naselje u Sarajevu.", 43.8763839, 18.3212035),
+            LocationSeed("osm-loc-cengic-vila-i", "Čengić Vila I", "Naselje u Sarajevu.", 43.8508596, 18.3694409),
+            LocationSeed("osm-loc-cengic-vila-ii", "Čengić Vila II", "Naselje u Sarajevu.", 43.8477057, 18.3707873),
+            LocationSeed("osm-loc-sip", "Šip", "Naselje u Sarajevu.", 43.88139, 18.3968664),
+            LocationSeed("osm-loc-sirokaca", "Širokača", "Naselje u Sarajevu.", 43.8516902, 18.4250643),
+            LocationSeed("osm-loc-svrakino-selo", "Švrakino selo", "Naselje u Sarajevu.", 43.8422588, 18.3579112),
         )
 
-        locations.forEach { location ->
+        osmLocations.forEach { location ->
             val exists = Locations
                 .select(Locations.id)
                 .where { Locations.id eq location.id }
@@ -645,56 +732,7 @@ object SeedData {
         println("Seeded places.")
     }
 
-    private fun seedPlaceRecommendations() {
-        val recommendations = listOf(
-            RecommendationSeed("seed-recommendation-01", "Traditional ćevapi in Baščaršija", "Restaurant", "Baščaršija", "seed-place-01", "The classic Sarajevo experience — ćevapi at a historic spot.", "alone,couple,friends,family", "sunny,clear,cloudy", "young,adult,senior", 4.6),
-            RecommendationSeed("seed-recommendation-02", "Coffee break at Morica Han", "Cafe", "Baščaršija", "seed-place-02", "A quiet courtyard for traditional Bosnian coffee.", "alone,couple,friends", "clear,cloudy,rain", "young,adult,senior", 4.5),
-            RecommendationSeed("seed-recommendation-03", "Historic Vijećnica visit", "Attraction", "Vijećnica", "seed-place-03", "One of Sarajevo's most iconic landmarks by the Miljacka.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.8),
-            RecommendationSeed("seed-recommendation-04", "Sunset at Yellow Fortress", "Viewpoint", "Bijela Tabija", "seed-place-04", "Panoramic views over the whole city, best at golden hour.", "alone,couple,friends", "sunny,clear", "young,adult,senior", 4.8),
-            RecommendationSeed("seed-recommendation-05", "Family walk at Vrelo Bosne", "Park", "Vrelo Bosne", "seed-place-05", "A peaceful nature escape on the outskirts of Sarajevo.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.7),
-            RecommendationSeed("seed-recommendation-06", "Trebević viewpoint hike", "Outdoor", "Trebević", "seed-place-06", "Mountain air and panoramic city views.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult", 4.8),
-            RecommendationSeed("seed-recommendation-07", "City views from Avaz Tower", "Viewpoint", "Avaz Twist Tower", "seed-place-07", "Sarajevo from 176 meters up.", "alone,couple,friends", "sunny,clear", "young,adult,senior", 4.4),
-            RecommendationSeed("seed-recommendation-08", "Coffee in Marijin Dvor", "Cafe", "Marijin Dvor", "seed-place-08", "Urban coffee spot close to the city centre.", "alone,couple,friends", "clear,cloudy,rain", "young,adult,senior", 4.3),
-            RecommendationSeed("seed-recommendation-09", "Riverside walk at Skenderija", "Outdoor", "Skenderija", "seed-place-09", "Easy walk along the Miljacka.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult,senior", 4.2),
-            RecommendationSeed("seed-recommendation-10", "Green escape at Koševo", "Park", "Koševo", "seed-place-10", "A quiet park for a slower afternoon.", "alone,couple,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.3),
-            RecommendationSeed("seed-recommendation-11", "Ciglane city view", "Viewpoint", "Ciglane", "seed-place-11", "Urban viewpoint over central Sarajevo.", "alone,couple,friends", "sunny,clear", "young,adult", 4.1),
-            RecommendationSeed("seed-recommendation-12", "Pofalići cafe district", "Cafe", "Pofalići", "seed-place-12", "A neighbourhood full of cafes and restaurants.", "alone,couple,friends", "clear,cloudy,rain", "young,adult,senior", 4.2),
-            RecommendationSeed("seed-recommendation-13", "Otoka meetup spot", "Outdoor", "Otoka", "seed-place-13", "Casual spot for meeting friends in the afternoon.", "friends", "sunny,clear,cloudy", "young,adult", 4.2),
-            RecommendationSeed("seed-recommendation-14", "Čengić Vila tram walk", "Outdoor", "Čengić Vila", "seed-place-14", "Urban walking connected to the tram network.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult,senior", 4.1),
-            RecommendationSeed("seed-recommendation-15", "Stup shopping stop", "Shopping", "Stup", "seed-place-15", "Shopping and dining in the western part of the city.", "alone,couple,friends,family", "sunny,clear,cloudy,rain", "young,adult,senior", 4.0),
-            RecommendationSeed("seed-recommendation-16", "Bistrik old town walk", "Outdoor", "Bistrik", "seed-place-16", "Historic streets and quiet corners.", "alone,couple,friends", "sunny,clear,cloudy", "young,adult,senior", 4.5),
-            RecommendationSeed("seed-recommendation-17", "Vraca viewpoint", "Viewpoint", "Vraca", "seed-place-17", "Quiet viewpoint over southern Sarajevo.", "alone,couple", "sunny,clear", "young,adult,senior", 4.4),
-            RecommendationSeed("seed-recommendation-18", "Sebilj square meetup", "Attraction", "Sebilj", "seed-place-18", "The heart of Baščaršija — a natural meeting point.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.8),
-            RecommendationSeed("seed-recommendation-19", "Zmajevac sunset coffee", "Viewpoint", "Zmajevac", "seed-place-19", "Coffee with a view over the Sarajevo valley.", "alone,couple,friends", "sunny,clear", "young,adult,senior", 4.6),
-            RecommendationSeed("seed-recommendation-20", "Katedrala square stroll", "Attraction", "Katedrala", "seed-place-20", "Historic central square surrounded by Sarajevo landmarks.", "alone,couple,friends,family", "sunny,clear,cloudy", "child,young,adult,senior", 4.6)
-        )
 
-        recommendations.forEach { recommendation ->
-            val exists = PlaceRecommendations
-                .select(PlaceRecommendations.id)
-                .where { PlaceRecommendations.id eq recommendation.id }
-                .count() > 0
-
-            if (!exists) {
-                PlaceRecommendations.insert {
-                    it[PlaceRecommendations.id] = recommendation.id
-                    it[PlaceRecommendations.name] = recommendation.name
-                    it[PlaceRecommendations.category] = recommendation.category
-                    it[PlaceRecommendations.location] = recommendation.location
-                    it[PlaceRecommendations.placeId] = recommendation.placeId
-                    it[PlaceRecommendations.description] = recommendation.description
-                    it[PlaceRecommendations.suitableFor] = recommendation.suitableFor
-                    it[PlaceRecommendations.weatherCondition] = recommendation.weatherCondition
-                    it[PlaceRecommendations.ageGroup] = recommendation.ageGroup
-                    it[PlaceRecommendations.rating] = recommendation.rating
-                    it[PlaceRecommendations.imageUrl] = null
-                    it[PlaceRecommendations.createdAt] = Instant.now()
-                }
-            }
-        }
-
-        println("Seeded recommendations.")
-    }
 
     private fun seedBusStations() {
         val stations = listOf(
