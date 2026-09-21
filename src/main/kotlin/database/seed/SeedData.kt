@@ -38,7 +38,6 @@ object SeedData {
                 seedPlaylistSongs()
                 seedOutfits()
                 seedPlaces()
-                seedPlaceRecommendations()
                 seedBusStations()
                 seedPosts()
             }
