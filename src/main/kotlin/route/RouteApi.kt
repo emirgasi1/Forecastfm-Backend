@@ -5,7 +5,6 @@ import io.ktor.client.call.body
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -28,8 +27,7 @@ class RouteApi(
 
         val url = "https://api.openrouteservice.org/v2/directions/$profile"
 
-        val response = client.post {
-            url(url)
+        val response = client.post(url) {
             header(HttpHeaders.Authorization, apiKey)
             header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(
