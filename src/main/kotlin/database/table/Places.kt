@@ -7,7 +7,7 @@ object Places : Table("places") {
     val id = text("id")
     val name = text("name")
     val category = text("category")
-    val venueId = text("venueId").references(Locations.id)
+    val venueId = text("venueId").references(Locations.id).nullable()
     val address = text("address")
     val latitude = double("latitude")
     val longitude = double("longitude")

@@ -360,7 +360,7 @@ object SeedData {
                     it[Places.id] = place.id
                     it[Places.name] = place.name
                     it[Places.category] = place.category
-                    it[Places.venueId] = venue?.get(Locations.id) ?: place.venueName
+                    it[Places.venueId] = venue?.get(Locations.id)
                     it[Places.address] = place.address
                     it[Places.latitude] = place.latitude
                     it[Places.longitude] = place.longitude
@@ -630,7 +630,7 @@ object SeedData {
                     it[Places.id] = place.id
                     it[Places.name] = place.name
                     it[Places.category] = place.category
-                    it[Places.venueId] = place.venueName
+                    it[Places.venueId] = null
                     it[Places.address] = place.address
                     it[Places.latitude] = place.latitude
                     it[Places.longitude] = place.longitude
