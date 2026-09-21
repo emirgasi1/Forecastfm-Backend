@@ -1,10 +1,13 @@
 package com.example.routes
 
 import com.example.place.PlacesRepository
+import com.example.place.SavedPlaceRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 
 fun Route.placesRoutes() {
     val repository = PlacesRepository()
@@ -49,5 +52,45 @@ fun Route.placesRoutes() {
     get("/api/places") {
         val places = repository.getAllPlaces()
         call.respond(places)
+    }
+    post("/api/places/{placeId}/save") {
+        val placeId = call.parameters["placeId"]
+            ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing place ID")
+
+        val userId = call.request.headers["User-Id"]
+            ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing User-Id")
+
+        SavedPlaceRepository().savePlace(userId, placeId)
+        call.respond(HttpStatusCode.Created)
+    }
+
+    delete("/api/places/{placeId}/save") {
+        val placeId = call.parameters["placeId"]
+            ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing place ID")
+
+        val userId = call.request.headers["User-Id"]
+            ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing User-Id")
+
+        SavedPlaceRepository().unsavePlace(userId, placeId)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    get("/api/places/{placeId}/save") {
+        val placeId = call.parameters["placeId"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing place ID")
+
+        val userId = call.request.headers["User-Id"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing User-Id")
+
+        val isSaved = SavedPlaceRepository().isPlaceSaved(userId, placeId)
+        call.respond(mapOf("saved" to isSaved))
+    }
+
+    get("/api/places/saved") {
+        val userId = call.request.headers["User-Id"]
+            ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing User-Id")
+
+        val saved = SavedPlaceRepository().getSavedPlaces(userId)
+        call.respond(saved)
     }
 }
