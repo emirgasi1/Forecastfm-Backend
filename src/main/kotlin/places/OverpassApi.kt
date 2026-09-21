@@ -3,14 +3,13 @@ package com.example.places
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.http.HttpStatusCode
 
 class OverpassApi(
     private val client: HttpClient
 ) {
-
-
 
     suspend fun getCafesInSarajevo(): List<OsmPlace> {
         val query = """
@@ -22,17 +21,21 @@ class OverpassApi(
             out center;
         """.trimIndent()
 
-        val response = client.get("https://overpass-api.de/api/interpreter") {
+        val response =  client.get("https://overpass.kumi.systems/api/interpreter") {
+            header("User-Agent", "ForecastFM/1.0 (contact@forecastfm.demo)")
             parameter("data", query)
         }
 
         if (response.status != HttpStatusCode.OK) {
-            throw Exception("Overpass API error: ${response.status}")
+            val errorBody: String = try {
+                response.body()
+            } catch (e: Exception) {
+                "unreadable"
+            }
+            throw Exception("Overpass API error: ${response.status} — $errorBody")
         }
 
         val body: OverpassResponse = response.body()
-        println("Overpass raw response: $body")
-        println("Overpass elements count: ${body.elements.size}")
         return body.elements.mapNotNull { it.toOsmPlace() }
     }
 }
