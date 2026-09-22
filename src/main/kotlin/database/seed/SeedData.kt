@@ -14,10 +14,12 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
 import java.time.Instant
 import java.time.LocalDateTime
+import kotlin.math.abs
 
 object SeedData {
 
@@ -36,6 +38,7 @@ object SeedData {
                 seedMusics()
                 seedPlaylists()
                 seedPlaylistSongs()
+                seedLocationPlaylists()
                 seedOutfits()
                 seedPlaces()
                 seedBusStations()
@@ -191,7 +194,7 @@ object SeedData {
             LocationSeed("osm-loc-cengic-vila-ii", "Čengić Vila II", "Naselje u Sarajevu.", 43.8477057, 18.3707873),
             LocationSeed("osm-loc-sip", "Šip", "Naselje u Sarajevu.", 43.88139, 18.3968664),
             LocationSeed("osm-loc-sirokaca", "Širokača", "Naselje u Sarajevu.", 43.8516902, 18.4250643),
-            LocationSeed("osm-loc-svrakino-selo", "Švrakino selo", "Naselje u Sarajevu.", 43.8422588, 18.3579112),
+            LocationSeed("osm-loc-svrakino-selo", "Švrakino selo", "Naselje u Sarajevu.", 43.8422588, 18.3579112)
         )
 
         osmLocations.forEach { location ->
@@ -344,6 +347,79 @@ object SeedData {
         println("Seeded playlist songs.")
     }
 
+    private fun seedLocationPlaylists() {
+        val musicPool = listOf(
+            "seed-music-01", "seed-music-02", "seed-music-03", "seed-music-04",
+            "seed-music-05", "seed-music-06", "seed-music-07", "seed-music-08",
+            "seed-music-09", "seed-music-10", "seed-music-11", "seed-music-12",
+            "seed-music-13", "seed-music-14", "seed-music-15", "seed-music-16",
+            "seed-music-17", "seed-music-18", "seed-music-19", "seed-music-20",
+            "seed-music-21", "seed-music-22", "seed-music-23", "seed-music-24",
+            "seed-music-25"
+        )
+
+        val youtubePool = listOf(
+            "https://www.youtube.com/playlist?list=PL-zl0Qa3WDZ-XYzFHodllO2vHmE7kGODR",
+            "https://www.youtube.com/playlist?list=PLkShY3_KwgIIHz8OsRyAu2dTQcHg1dmWl",
+            "https://www.youtube.com/watch?v=j7X3vq6GY2c"
+        )
+
+        val genres = listOf("Mixed", "Indie", "Pop", "Chill", "Sevdah", "Electronic")
+        val moods = listOf("Chill", "Feel Good", "Cozy", "Energetic", "Relax")
+
+        val allLocations = Locations.selectAll().map {
+            it[Locations.id] to it[Locations.name]
+        }
+
+        allLocations.forEach { (locationId, locationName) ->
+
+            val existing = Playlists
+                .select(Playlists.id)
+                .where { Playlists.location eq locationName }
+                .count() > 0
+
+            if (existing) return@forEach
+
+            val seed = abs(locationId.hashCode())
+
+            val startIndex = seed % musicPool.size
+            val songs = (0 until 5).map { offset ->
+                musicPool[(startIndex + offset) % musicPool.size]
+            }
+
+            val genre = genres[seed % genres.size]
+            val mood = moods[(seed / 3) % moods.size]
+            val youtube = youtubePool[seed % youtubePool.size]
+            val likes = 5 + (seed % 40)
+
+            val playlistId = "seed-loc-playlist-$locationId"
+
+            Playlists.insert {
+                it[Playlists.id] = playlistId
+                it[Playlists.title] = "Sounds of $locationName"
+                it[Playlists.genre] = genre
+                it[Playlists.mood] = mood
+                it[Playlists.albumImageUrl] = null
+                it[Playlists.weather] = "Any"
+                it[Playlists.temperature] = "Any"
+                it[Playlists.location] = locationName
+                it[Playlists.likes] = likes
+                it[Playlists.spotifyUrl] = null
+                it[Playlists.youtubeUrl] = youtube
+                it[Playlists.bestFor] = "Alone,Coffee,Relax"
+            }
+
+            songs.forEach { musicId ->
+                PlaylistSongs.insert {
+                    it[PlaylistSongs.playlistId] = playlistId
+                    it[PlaylistSongs.musicId] = musicId
+                }
+            }
+        }
+
+        println("Seeded location playlists.")
+    }
+
     private fun seedOutfits() {
         val outfits = listOf(
             OutfitSeed("seed-outfit-clear-01", SEED_USER_01, "Sunny City Casual", "Clear", "Summer", "Zara", "Sarajevo City Center, Vrbanja 1", "60-100 KM", 24, "https://picsum.photos/seed/outfit-clear-01/400/600", "080 083 080", "https://www.zara.com/ba/"),
@@ -458,280 +534,8 @@ object SeedData {
             }
         }
 
-        val osmCafes = listOf(
-            PlaceSeed("osm-cafe-492137265", "Art", "Cafe", "", "", 43.867595, 18.4122772, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-938872352", "Coccinelle", "Cafe", "", "", 43.8585111, 18.4024088, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1234334175", "Coffee Station", "Cafe", "", "", 43.8287705, 18.3458721, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1234438782", "Caffé slastičarna Kup", "Cafe", "", "", 43.8295798, 18.3530992, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1305811322", "Kafanica", "Cafe", "", "", 43.8689867, 18.4059183, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1307576634", "Dezert", "Cafe", "", "", 43.8286667, 18.340349, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1313668803", "SO.BA", "Cafe", "", "", 43.8679342, 18.4129938, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1314030921", "Caffe London", "Cafe", "", "", 43.8652336, 18.4093962, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1314030923", "Caffe Paris", "Cafe", "", "", 43.8649969, 18.4093361, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1374933816", "Stella", "Cafe", "", "", 43.8549379, 18.3925676, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1415371399", "Vitraz", "Cafe", "", "", 43.9009838, 18.3447189, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1415371403", "Azra", "Cafe", "", "", 43.901009, 18.3445932, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1427483920", "Caffe Park", "Cafe", "", "", 43.901708, 18.3420123, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1502091202", "Luxor", "Cafe", "", "", 43.8196677, 18.3641758, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1502091205", "Sydney II", "Cafe", "", "", 43.8195076, 18.3622692, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1502091208", "Ogi", "Cafe", "", "", 43.8227774, 18.3552108, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1502091209", "Resume", "Cafe", "", "", 43.8205834, 18.3632219, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1502091210", "Piano", "Cafe", "", "", 43.8192367, 18.3638671, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1502708000", "Kod Spomenka", "Cafe", "", "", 43.9077466, 18.4603553, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1506250053", "Palma", "Cafe", "", "", 43.8490286, 18.3856871, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1506274157", "Valentino", "Cafe", "", "", 43.850166, 18.3852901, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1559277423", "Segafredo", "Cafe", "", "", 43.849422, 18.3916407, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1676577470", "Caffe bar Fancy", "Cafe", "", "", 43.839931, 18.3413918, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1676577836", "Caffe bar New York", "Cafe", "", "", 43.841434, 18.3406121, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1684372379", "Cafe-bar Đea", "Cafe", "", "", 43.8431653, 18.3525832, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1684383458", "Cafe-bar GOLD", "Cafe", "", "", 43.8421013, 18.3426849, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1684384766", "Caffe slastičarna - pizzeria Fellini", "Cafe", "", "", 43.8445659, 18.342262, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1740557553", "Caffe Club Le Figaro", "Cafe", "", "", 43.8523361, 18.3779925, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1758524638", "Cappuccino", "Cafe", "", "", 43.819227, 18.3631038, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1821606547", "Verona", "Cafe", "", "", 43.821587, 18.3651456, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1889511881", "Gradski Bar", "Cafe", "", "", 43.8230216, 18.2056728, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1904838174", "Kafe galerija", "Cafe", "", "", 43.8206808, 18.3590416, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1918833495", "CAFFE BAR V.I.P.", "Cafe", "", "", 43.9609183, 18.2671939, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1920598265", "Orange", "Cafe", "", "", 43.822522, 18.3572502, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1922342697", "Roma", "Cafe", "", "", 43.8267796, 18.3659199, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1928842503", "Meeting Point", "Cafe", "", "", 43.8556219, 18.4182292, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-1933113958", "Caffe \"Mistik\"", "Cafe", "", "", 43.9611732, 18.2672342, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2003829841", "Spazio", "Cafe", "", "", 43.8574792, 18.4172202, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2005544547", "Papagaj", "Cafe", "", "", 43.8522194, 18.3956633, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2005572843", "Aquarius", "Cafe", "", "", 43.849937, 18.3920186, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2006881409", "Vatra", "Cafe", "", "", 43.852834, 18.40116, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2006881497", "CHE2", "Cafe", "", "", 43.8519935, 18.4028619, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2006951052", "Vrt", "Cafe", "", "", 43.853186, 18.4005736, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007221618", "VIP caffe club", "Cafe", "", "", 43.8561074, 18.4195944, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007221928", "Linea M", "Cafe", "", "", 43.8561036, 18.4194952, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007962354", "Mash", "Cafe", "", "", 43.8575073, 18.4215661, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007962407", "Kogo", "Cafe", "", "", 43.8591202, 18.4205227, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007962650", "Michele's", "Cafe", "", "", 43.8588785, 18.4246828, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007962718", "Impasto", "Cafe", "", "", 43.8588978, 18.4247391, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007962982", "Vatra", "Cafe", "", "", 43.8585981, 18.4222661, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007963209", "Brasil", "Cafe", "", "", 43.8594335, 18.420528, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2007963244", "Delikatesna Radnia", "Cafe", "", "", 43.8567675, 18.4219845, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2010483918", "Komshilook", "Cafe", "", "", 43.830286, 18.339529, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2010490132", "FACES", "Cafe", "", "", 43.866101, 18.408481, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2012076461", "A2", "Cafe", "", "", 43.8507443, 18.3918519, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2102967519", "Soho", "Cafe", "", "", 43.8269287, 18.3691617, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2107013473", "Dialog", "Cafe", "", "", 43.8584964, 18.4235381, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2107067570", "Cafe Hotel Hecco", "Cafe", "", "", 43.8586477, 18.4217497, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2107075697", "Julius Meinl", "Cafe", "", "", 43.85792, 18.4155478, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2122714181", "Mirage", "Cafe", "", "", 43.8241414, 18.3623226, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2132236803", "El Kazbah", "Cafe", "", "", 43.8594291, 18.4304459, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2134792480", "Curry", "Cafe", "", "", 43.8523329, 18.4031685, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2136025433", "Muzički paviljon - At mejdan", "Cafe", "", "", 43.8570547, 18.4282809, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2145389745", "Caffe Viktorija", "Cafe", "", "", 43.8218102, 18.2034844, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2163545844", "Ljetna bašta Stojčevac", "Cafe", "", "", 43.8098117, 18.2931404, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2169681620", "Moskva", "Cafe", "", "", 43.8217652, 18.3642362, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2276889686", "Galerija Boris Smoje", "Cafe", "", "", 43.8573282, 18.417248, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2311542032", "Parkuša", "Cafe", "", "", 43.8591016, 18.417452, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2322179281", "Divne Stvari", "Cafe", "", "", 43.8565409, 18.4147541, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2322230236", "Boulevard", "Cafe", "", "", 43.857038, 18.4059925, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2322234124", "Academia del caffe", "Cafe", "", "", 43.8484151, 18.3795047, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2322257668", "Azzuro", "Cafe", "", "", 43.8486892, 18.3733748, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2322291641", "Film", "Cafe", "", "", 43.8314651, 18.3052085, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2322306311", "Srce", "Cafe", "", "", 43.828853, 18.3024217, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2379851032", "Kafana", "Cafe", "", "", 43.8241076, 18.3550598, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2380370962", "Kafana", "Cafe", "", "", 43.9026491, 18.3433166, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2381601799", "Maranello", "Cafe", "", "", 43.901955, 18.3403969, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2393814663", "Gala", "Cafe", "", "", 43.8511465, 18.372544, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2421002178", "Coffee Time", "Cafe", "", "", 43.8588606, 18.3967284, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2496733533", "Bosanska Kafa", "Cafe", "", "", 43.8596678, 18.4319118, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2523293560", "Coffee \"HOUSE\"", "Cafe", "", "", 43.85554, 18.4174831, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2529430092", "Caffe Enzzo", "Cafe", "", "", 43.8303892, 18.3086811, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2529430185", "Caffe Club Trendy", "Cafe", "", "", 43.8303783, 18.3084808, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2529433036", "Music Club PREMIUM", "Cafe", "", "", 43.829903, 18.309134, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2888213025", "B-faza", "Cafe", "", "", 43.8417267, 18.3446848, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2893227109", "Fratelo", "Cafe", "", "", 43.8467065, 18.3548092, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2895940266", "BENJO", "Cafe", "", "", 43.8399813, 18.3438972, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2895940268", "ASPEK", "Cafe", "", "", 43.8426951, 18.3517669, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2905508694", "Playkids", "Cafe", "", "", 43.8457387, 18.3499597, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-2922315023", "Brazil", "Cafe", "", "", 43.8510351, 18.3957501, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3015930359", "Coppa d'Oro", "Cafe", "", "", 43.8447258, 18.3431155, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3104655030", "slastičarna Ideja", "Cafe", "", "", 43.87524, 18.4122889, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3296379461", "Venecia", "Cafe", "", "", 43.8502317, 18.3960751, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3320385090", "My name is Luka", "Cafe", "", "", 43.8289639, 18.371883, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3359821480", "Svijet Čokolade", "Cafe", "", "", 43.8557467, 18.4201814, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3367674059", "Sport", "Cafe", "", "", 43.8271189, 18.358579, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3377229210", "JAZZ Radio Caffe", "Cafe", "", "", 43.8490801, 18.3819829, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3514061076", "La Verna", "Cafe", "", "", 43.8172455, 18.3603241, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3631168631", "Square", "Cafe", "", "", 43.8290939, 18.3451896, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3631956185", "Coco cafe", "Cafe", "", "", 43.8338834, 18.3452861, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3762360454", "Barometar", "Cafe", "", "", 43.8575398, 18.4209679, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3784203144", "Cafe Firma", "Cafe", "", "", 43.8224052, 18.3674167, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3784216276", "Contra", "Cafe", "", "", 43.8224458, 18.3673175, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-3862534889", "Caffe Paris", "Cafe", "", "", 43.9019599, 18.3406041, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4019761726", "Cream Shop", "Cafe", "", "", 43.8591233, 18.4307593, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4206744903", "Caffe LoLeMi", "Cafe", "", "", 43.8482019, 18.3863947, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4206840695", "Caffe Kiss", "Cafe", "", "", 43.8512699, 18.3745509, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4238990996", "Torte i To", "Cafe", "", "", 43.8595887, 18.4282114, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4250033189", "Torte i To", "Cafe", "", "", 43.8580769, 18.416476, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4285066936", "Cafe Milano", "Cafe", "", "", 43.8205515, 18.2074446, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4306153803", "Caffe \"Biblioteka\"", "Cafe", "", "", 43.8536147, 18.3825555, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4350766604", "Caffe Bar Havana", "Cafe", "", "", 43.8585546, 18.4298825, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4383029890", "Ramis", "Cafe", "", "", 43.8593773, 18.4281988, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4383171290", "Demirović", "Cafe", "", "", 43.8593637, 18.4281003, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4383173289", "Slatko Ćoše", "Cafe", "", "", 43.8592952, 18.4281968, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4385011992", "Manolo", "Cafe", "", "", 43.8589428, 18.4192153, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4424350193", "Caffe bar", "Cafe", "", "", 43.8247122, 18.3501411, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4424352890", "Caffe bar \"Džan\"", "Cafe", "", "", 43.8264404, 18.3482188, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4447843218", "Mrvica", "Cafe", "", "", 43.8534988, 18.371781, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4457468892", "Đulagin dvor", "Cafe", "", "", 43.88042, 18.3991154, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4463793090", "NOOVA", "Cafe", "", "", 43.8420052, 18.4148374, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4565219253", "Izlog", "Cafe", "", "", 43.8203333, 18.3638031, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4579359292", "Hookah bar DEJA VU", "Cafe", "", "", 43.8509119, 18.3730216, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4642790184", "Coffee O Clock", "Cafe", "", "", 43.8579514, 18.4253414, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4689152733", "Caffe & Pizzeria HAPPY", "Cafe", "", "", 43.8489196, 18.384131, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4796996136", "Sova", "Cafe", "", "", 43.8578809, 18.4048148, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4833131019", "Caffe von Habsburg", "Cafe", "", "", 43.8577982, 18.4198372, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4887821525", "Promaha - kod Dragana", "Cafe", "", "", 43.9344216, 18.4236386, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4896938921", "Mr & Mrs Cue", "Cafe", "", "", 43.8540746, 18.3979914, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4935314126", "Sova caffé bar", "Cafe", "", "", 43.8583287, 18.4297931, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-4978636721", "Čajdžinica Džirlo", "Cafe", "", "", 43.8601786, 18.432098, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5073459496", "Cafe Bar Forza", "Cafe", "", "", 43.8524931, 18.3452562, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5136995540", "Aksaraj", "Cafe", "", "", 43.859352, 18.4309396, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5150549047", "Opera caffe bar", "Cafe", "", "", 43.8575938, 18.4213096, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5183803683", "Caffe Grad", "Cafe", "", "", 43.8591814, 18.4020977, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5185742050", "Caffe bar BarSA", "Cafe", "", "", 43.8198938, 18.3648572, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5203905647", "Rajvosa", "Cafe", "", "", 43.8582372, 18.4210028, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5223253222", "Coffee Shop Minasa", "Cafe", "", "", 43.8590128, 18.4319764, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5223393141", "Dia", "Cafe", "", "", 43.8593244, 18.4246386, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5228716077", "Theatre Cafe", "Cafe", "", "", 43.8591934, 18.4206243, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5246969911", "Caffe Kamarija", "Cafe", "", "", 43.8609914, 18.4385894, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5305441004", "Caffe Felicita", "Cafe", "", "", 43.8579274, 18.4087327, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5310352726", "Carigrad", "Cafe", "", "", 43.8593535, 18.4307817, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5313596801", "Casa del Caffe", "Cafe", "", "", 43.8565175, 18.4060492, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5313596806", "Marcaffe", "Cafe", "", "", 43.8564337, 18.4060492, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5319781938", "Tranzit", "Cafe", "", "", 43.9477195, 18.2665297, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5345042580", "Čeka", "Cafe", "", "", 43.858698, 18.4198704, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5528752841", "Saraj", "Cafe", "", "", 43.8597979, 18.4316193, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5536154266", "Hippy Klupa", "Cafe", "", "", 43.8591928, 18.4171201, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5557386931", "ANDALUZIJA", "Cafe", "", "", 43.8482324, 18.367483, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5581282221", "Art Kuca Sevdaha", "Cafe", "", "", 43.8586895, 18.4310017, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5709336625", "Penny Cafe", "Cafe", "", "", 43.865749, 18.4030329, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5739085929", "Ministry of Ćejf", "Cafe", "", "", 43.8555444, 18.4095133, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5743675476", "Giannini", "Cafe", "", "", 43.8548957, 18.4140663, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5784712838", "New Folder", "Cafe", "", "", 43.8270377, 18.3665656, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5825439453", "August Cafe", "Cafe", "", "", 43.8585808, 18.4192255, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5840301785", "Baklava Shop", "Cafe", "", "", 43.8589515, 18.4312714, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-5939106291", "Andar", "Cafe", "", "", 43.8594124, 18.4293789, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6097099285", "MyFace Cafe", "Cafe", "", "", 43.8539692, 18.3972697, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6130474349", "Uno momento", "Cafe", "", "", 43.8172286, 18.3622366, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6175095870", "Hookah Bar Čiko", "Cafe", "", "", 43.8684082, 18.4077522, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6362427023", "CAFFE TWINS", "Cafe", "", "", 43.8384309, 18.345881, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6483125291", "Zdravo", "Cafe", "", "", 43.850811, 18.3563118, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6612102578", "Caffe bar POINT", "Cafe", "", "", 43.8592626, 18.4183371, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6618524309", "Caffe Elefant", "Cafe", "", "", 43.8181287, 18.3627933, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6778902085", "Višnjik", "Cafe", "", "", 43.8667261, 18.4194366, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6840057709", "Talks & Giggles", "Cafe", "", "", 43.8565194, 18.4255113, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-6845687985", "Old School Cafe", "Cafe", "", "", 43.8584366, 18.4184391, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-7412194049", "Avlija", "Cafe", "", "", 43.7994827, 18.3125681, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-7412194050", "Old Bar", "Cafe", "", "", 43.7980917, 18.3119808, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-7711403985", "Caffe Zrno", "Cafe", "", "", 43.8696029, 18.4179087, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-7925772814", "Caffe Slastičarna Badem", "Cafe", "", "", 43.8593655, 18.4278326, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-8137688077", "Vatra", "Cafe", "", "", 43.850601, 18.3533338, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-8141478626", "Klik", "Cafe", "", "", 43.8544531, 18.391914, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-8422060344", "City Walk", "Cafe", "", "", 43.859396, 18.4256333, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-8422060345", "Cafe Restaurant Revolucija 1764", "Cafe", "", "", 43.858728, 18.4231665, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-8914317017", "Caribou Coffee", "Cafe", "", "", 43.8529857, 18.3896351, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9294750644", "R Sport Centar", "Cafe", "", "", 43.8759985, 18.4121859, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9380556809", "Juice & Smoothies", "Cafe", "", "", 43.8526861, 18.4036757, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9452711004", "Hookah Bar \"The Crown\"", "Cafe", "", "", 43.8250338, 18.3571114, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9551683284", "Caffe & Snack bar KVART", "Cafe", "", "", 43.8533943, 18.3814856, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9655798522", "Hookah Lounge Grace", "Cafe", "", "", 43.8589759, 18.4286707, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9664492039", "Asta Cafe&Restaurant", "Cafe", "", "", 43.85827, 18.4267035, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9790364217", "Fabrika", "Cafe", "", "", 43.859123, 18.4204693, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9909805826", "Divan", "Cafe", "", "", 43.8596105, 18.4299466, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9942892045", "Mona Seraa", "Cafe", "", "", 43.853743, 18.3972805, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-9946479868", "Poslastičarna Solun", "Cafe", "", "", 43.824184, 18.3541023, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10031990917", "Central Café", "Cafe", "", "", 43.8581192, 18.4266486, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10068912990", "M CAFFE", "Cafe", "", "", 43.8471539, 18.2414192, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10263490001", "GoForPixy 3", "Cafe", "", "", 43.8192907, 18.3536115, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10263573609", "GoForPixy 2", "Cafe", "", "", 43.8194488, 18.3533901, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10285720111", "Caffe bar Coshe", "Cafe", "", "", 43.8658128, 18.4220061, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10565803201", "Caribou Coffee", "Cafe", "", "", 43.8295248, 18.3100859, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10565803202", "Caribou Coffee", "Cafe", "", "", 43.8561688, 18.4072187, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10601082906", "Caffe  \"City bar\"", "Cafe", "", "", 43.8657367, 18.4097788, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10601138405", "Caffe bar \"Que Passa\"", "Cafe", "", "", 43.8615428, 18.4166108, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10619841105", "Cafe CapCarap", "Cafe", "", "", 43.8495766, 18.3984787, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10675912529", "Andalucia", "Cafe", "", "", 43.8573684, 18.3850879, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10702980676", "D-Moll", "Cafe", "", "", 43.8292661, 18.3111612, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10842253005", "Kawa", "Cafe", "", "", 43.8601572, 18.4230299, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-10958552823", "Milk-Bar", "Cafe", "", "", 43.8636265, 18.4147329, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11026900187", "Argelini", "Cafe", "", "", 43.8514933, 18.3801902, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11026943921", "Orient", "Cafe", "", "", 43.8523748, 18.3782324, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11026943924", "Mon Cheri", "Cafe", "", "", 43.851725, 18.3776547, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11039773890", "coffee2go", "Cafe", "", "", 43.8400901, 18.4501505, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11091090906", "So I čokolada", "Cafe", "", "", 43.8558521, 18.4206104, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11159424025", "Lateral", "Cafe", "", "", 43.8398316, 18.3231235, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11253112710", "Hotel Europe", "Cafe", "", "", 43.8586591, 18.4277115, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11253112724", "Carlsberg Beer Garden", "Cafe", "", "", 43.8519337, 18.3883001, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11414257098", "Ma Lu", "Cafe", "", "", 43.8169324, 18.3639333, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11553891888", "Mado", "Cafe", "", "", 43.830532, 18.3003156, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11951273319", "Mauricius", "Cafe", "", "", 43.8600237, 18.399076, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-11954147280", "Since 2K23 Concept", "Cafe", "", "", 43.8528768, 18.3994261, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12037315017", "BA", "Cafe", "", "", 43.8588634, 18.3968191, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12084006454", "Cafe bar Fratelli", "Cafe", "", "", 43.9225642, 18.317225, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12088763303", "Cordoba Cafe", "Cafe", "", "", 43.8582481, 18.4162354, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12357784014", "habitus", "Cafe", "", "", 43.8598169, 18.4184523, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12395846001", "Caffe R", "Cafe", "", "", 43.8554389, 18.4151968, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12631327194", "Corner", "Cafe", "", "", 43.8163081, 18.3096546, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12631327195", "imperial", "Cafe", "", "", 43.8153573, 18.312547, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12640565285", "Caribou Coffee", "Cafe", "", "", 43.8305764, 18.300662, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12771927631", "Barcelona", "Cafe", "", "", 43.8385102, 18.3463287, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12902327709", "Vanila", "Cafe", "", "", 43.8237584, 18.3617004, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12990027680", "Djul Café", "Cafe", "", "", 43.8587317, 18.4325343, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12990117802", "Kafa Šehar", "Cafe", "", "", 43.8589355, 18.4321007, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-12990117804", "Aksaraj", "Cafe", "", "", 43.8590238, 18.4324246, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13086948697", "Juice & coffee Life bar", "Cafe", "", "", 43.8502053, 18.3628579, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13086959008", "Caffe Avalon", "Cafe", "", "", 43.8501864, 18.3627041, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13114224754", "Озеро", "Cafe", "", "", 43.8163463, 18.3665318, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13192278307", "Fuka", "Cafe", "", "", 43.858696, 18.4225643, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13238540848", "Dolar", "Cafe", "", "", 43.8683157, 18.4056948, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13249441072", "Fabrika", "Cafe", "", "", 43.8593003, 18.4205374, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13249590747", "Funky Chef", "Cafe", "", "", 43.8571378, 18.4172765, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13249590748", "Cordoba", "Cafe", "", "", 43.8584933, 18.4170692, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13410043655", "Laheri Book Caffe", "Cafe", "", "", 43.8586331, 18.4308476, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13418753994", "Caffe Slastičarna Centar", "Cafe", "", "", 43.8219217, 18.2015254, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13622222101", "Ayna", "Cafe", "", "", 43.8593481, 18.4303429, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13624541502", "Caffe Putnik", "Cafe", "", "", 43.8236402, 18.3565677, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13624573302", "Caffe SN", "Cafe", "", "", 43.8238322, 18.3561973, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13704272799", "Le.Sal+Co.", "Cafe", "", "", 43.8578836, 18.4041467, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13901427512", "Diverzija", "Cafe", "", "", 43.8349892, 18.3283235, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-13908979873", "Brčko gas", "Cafe", "", "", 43.8160582, 18.3609651, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-14075691035", "Hookah Bar Barista", "Cafe", "", "", 43.8227181, 18.2064874, "OSM cafe in Sarajevo.", 0.0),
-            PlaceSeed("osm-cafe-14099010101", "Franck Experience Store Sarajevo", "Cafe", "", "", 43.8583291, 18.4256711, "OSM cafe in Sarajevo.", 0.0)
-        )
-
-        osmCafes.forEach { place ->
-            val exists = Places
-                .select(Places.id)
-                .where { Places.id eq place.id }
-                .count() > 0
-
-            if (!exists) {
-                Places.insert {
-                    it[Places.id] = place.id
-                    it[Places.name] = place.name
-                    it[Places.category] = place.category
-                    it[Places.venueId] = null
-                    it[Places.address] = place.address
-                    it[Places.latitude] = place.latitude
-                    it[Places.longitude] = place.longitude
-                    it[Places.description] = place.description
-                    it[Places.imageUrl] = null
-                    it[Places.rating] = place.rating
-                    it[Places.createdAt] = Instant.now()
-                }
-            }
-        }
-
         println("Seeded places.")
     }
-
-
 
     private fun seedBusStations() {
         val stations = listOf(
