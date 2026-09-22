@@ -42,10 +42,10 @@ object SeedData {
                 seedLocationPlaylists()
                 seedOutfits()
                 seedPlaces()
-                PlaceGeoJsonSeeder.seed()
                 seedBusStations()
                 seedPosts()
             }
+            PlaceGeoJsonSeeder.seed()
             println("Forecast FM seed data completed successfully.")
         } catch (e: Exception) {
             println("SEED FAILED: ${e::class.simpleName}: ${e.message}")
