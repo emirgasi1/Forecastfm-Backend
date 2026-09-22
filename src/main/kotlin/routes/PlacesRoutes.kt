@@ -104,6 +104,24 @@ fun Route.placesRoutes() {
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing venue ID")
 
         val places = repository.getPlacesByVenue(venueId)
-        call.respond(places)
+
+        val responses = places.map { place ->
+            com.example.placerecommendation.PlaceRecommendationFromPlaceResponse(
+                id = place.id,
+                placeId = place.id,
+                name = place.name,
+                category = place.category,
+                location = place.venueId ?: "",
+                description = place.description,
+                suitableFor = com.example.places.PlaceTagMapper.suitableFor(place.category),
+                weatherCondition = com.example.places.PlaceTagMapper.weatherCondition(place.category),
+                ageGroup = com.example.places.PlaceTagMapper.ageGroup(place.category),
+                rating = place.rating,
+                imageUrl = place.imageUrl,
+                address = place.address
+            )
+        }
+
+        call.respond(responses)
     }
 }
