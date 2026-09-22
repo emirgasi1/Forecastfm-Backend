@@ -100,8 +100,12 @@ object PlaceGeoJsonSeeder {
 
     private fun insertFeature(feature: JsonObject, locations: List<LocationRow>): InsertResult {
         val props = feature["properties"]?.jsonObject ?: return InsertResult.BAD_DATA
-        val osmId = props["osm_id"]?.jsonPrimitive?.contentOrNull ?: return InsertResult.BAD_DATA
-        val fclass = props["fclass"]?.jsonPrimitive?.contentOrNull ?: return InsertResult.BAD_DATA
+        val osmId = props["osm_id"]?.jsonPrimitive?.contentOrNull
+            ?: props["@id"]?.jsonPrimitive?.contentOrNull
+            ?: return InsertResult.BAD_DATA
+        val fclass = props["fclass"]?.jsonPrimitive?.contentOrNull
+            ?: props["amenity"]?.jsonPrimitive?.contentOrNull
+            ?: return InsertResult.BAD_DATA
         val name = props["name"]?.jsonPrimitive?.contentOrNull ?: fclass
 
         val category = FclassCategoryMapper.categoryFor(fclass) ?: return InsertResult.BAD_DATA
@@ -141,6 +145,15 @@ object PlaceGeoJsonSeeder {
     }
 
     private fun centroidOf(geometry: JsonObject): Pair<Double, Double>? {
+        val type = geometry["type"]?.jsonPrimitive?.contentOrNull
+
+        if (type == "Point") {
+            val coords = geometry["coordinates"]?.jsonArray ?: return null
+            val lon = coords.getOrNull(0)?.jsonPrimitive?.doubleOrNull ?: return null
+            val lat = coords.getOrNull(1)?.jsonPrimitive?.doubleOrNull ?: return null
+            return Pair(lat, lon)
+        }
+
         val coords = geometry["coordinates"]?.jsonArray ?: return null
         var sumLat = 0.0
         var sumLon = 0.0
