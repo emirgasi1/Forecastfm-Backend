@@ -118,7 +118,8 @@ fun Route.placesRoutes() {
                 ageGroup = com.example.places.PlaceTagMapper.ageGroup(place.category),
                 rating = place.rating,
                 imageUrl = place.imageUrl,
-                address = place.address
+                address = place.address,
+                createdAt = place.createdAt.toString()
             )
         }
 
