@@ -105,6 +105,7 @@ object PlaceGeoJsonSeeder {
             ?: return InsertResult.BAD_DATA
         val fclass = props["fclass"]?.jsonPrimitive?.contentOrNull
             ?: props["amenity"]?.jsonPrimitive?.contentOrNull
+            ?: props["shop"]?.jsonPrimitive?.contentOrNull
             ?: return InsertResult.BAD_DATA
         val name = props["name"]?.jsonPrimitive?.contentOrNull ?: fclass
 
