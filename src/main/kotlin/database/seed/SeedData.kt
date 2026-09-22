@@ -9,6 +9,7 @@ import com.example.database.table.Places
 import com.example.database.table.PlaylistSongs
 import com.example.database.table.Playlists
 import com.example.database.table.Posts
+import com.example.places.PlaceGeoJsonSeeder
 import database.table.Users
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
@@ -41,6 +42,7 @@ object SeedData {
                 seedLocationPlaylists()
                 seedOutfits()
                 seedPlaces()
+                PlaceGeoJsonSeeder.seed()
                 seedBusStations()
                 seedPosts()
             }
