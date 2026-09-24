@@ -56,6 +56,18 @@ fun Route.placesRoutes() {
         }
     }
     get("/api/places") {
+        val id = call.request.queryParameters["id"]
+
+        if (id != null) {
+            val place = repository.getPlaceById(id)
+            if (place == null) {
+                call.respond(HttpStatusCode.NotFound, "Place not found")
+            } else {
+                call.respond(place)
+            }
+            return@get
+        }
+
         val places = repository.getAllPlaces()
         call.respond(places)
     }
