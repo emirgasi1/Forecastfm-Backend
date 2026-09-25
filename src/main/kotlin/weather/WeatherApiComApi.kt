@@ -106,7 +106,7 @@ class WeatherApiComApi(
         val allHours = raw.forecast.forecastday.flatMap { it.hour }
 
         val hourly = OpenMeteoHourly(
-            time = allHours.map { it.time },
+            time = allHours.map { convertHourTime(it.time) },
             temperature_2m = allHours.map { it.temp_c },
             weather_code = allHours.map { mapConditionToWmo(it.condition.code) }
         )
@@ -129,6 +129,10 @@ class WeatherApiComApi(
             hourly = hourly,
             daily = daily
         )
+    }
+
+    private fun convertHourTime(weatherApiTime: String): String {
+        return weatherApiTime.replace(" ", "T")
     }
 
     private fun mapConditionToWmo(code: Int): Int {
