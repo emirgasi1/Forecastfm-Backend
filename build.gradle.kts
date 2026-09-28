@@ -33,6 +33,10 @@ dependencies {
     implementation(ktorLibs.client.cio)
     implementation(ktorLibs.client.contentNegotiation)
 
+    testImplementation("com.h2database:h2:2.2.224")
+    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation("org.jetbrains.exposed:exposed-java-time:1.0.0")
@@ -44,10 +48,22 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.freemarker)
 
-    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit5"))
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
     testImplementation(ktorLibs.server.testHost)
 }
 
 tasks.withType<JavaExec> {
     systemProperty("YOUTUBE_API_KEY", secrets.getProperty("YOUTUBE_API_KEY", ""))
+}
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("started", "passed", "skipped", "failed")
+        showStandardStreams = true
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
 }

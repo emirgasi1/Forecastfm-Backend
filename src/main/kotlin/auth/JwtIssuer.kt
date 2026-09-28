@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import java.util.Date
+import java.util.UUID
 
 class JwtIssuer {
     private val secretKey = System.getenv("JWT_SECRET") ?: "default-secret-key-change-in-production"
@@ -12,6 +13,7 @@ class JwtIssuer {
     fun generateToken(userId: String): String {
         return JWT.create()
             .withSubject(userId)
+            .withJWTId(UUID.randomUUID().toString())
             .withClaim("type", "access")
             .withIssuedAt(Date())
             .withExpiresAt(Date(System.currentTimeMillis() + 3600000))
@@ -21,6 +23,7 @@ class JwtIssuer {
     fun generateRefreshToken(userId: String): String {
         return JWT.create()
             .withSubject(userId)
+            .withJWTId(UUID.randomUUID().toString())
             .withClaim("type", "refresh")
             .withIssuedAt(Date())
             .withExpiresAt(Date(System.currentTimeMillis() + 604800000))

@@ -23,18 +23,17 @@ import database.table.Users
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import java.sql.DriverManager
 
 object DatabaseFactory {
 
     fun init() {
-        val url = System.getenv("DB_URL")
-        val user = System.getenv("DB_USER")
-        val password = System.getenv("DB_PASSWORD")
+        val url = System.getProperty("DB_URL") ?: System.getenv("DB_URL")
+        val user = System.getProperty("DB_USER") ?: System.getenv("DB_USER")
+        val password = System.getProperty("DB_PASSWORD") ?: System.getenv("DB_PASSWORD")
 
         Database.connect(
             url = url,
-            driver = "org.postgresql.Driver",
+            driver = driverFor(url),
             user = user,
             password = password
         )
@@ -63,17 +62,14 @@ object DatabaseFactory {
             )
         }
 
-
-        DriverManager.getConnection(url, user, password).use { connection ->
-            connection.createStatement().use { statement ->
-                statement.executeQuery("SELECT 1").use { result ->
-                    if (result.next() && result.getInt(1) == 1) {
-                        println("PostgreSQL connection successful!")
-                    }
-                }
-            }
+        if (url.startsWith("jdbc:postgresql")) {
+            SeedData.seedAll()
         }
+    }
 
-        SeedData.seedAll()
+    private fun driverFor(url: String): String = when {
+        url.startsWith("jdbc:h2") -> "org.h2.Driver"
+        url.startsWith("jdbc:postgresql") -> "org.postgresql.Driver"
+        else -> throw IllegalArgumentException("Unsupported DB URL: $url")
     }
 }
