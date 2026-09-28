@@ -20,7 +20,7 @@ class AuthRepository(
     private val jwtIssuer: JwtIssuer = JwtIssuer(),
     private val passwordHasher: PasswordHasher = PasswordHasher()
 ) {
-    fun register(request: RegisterRequest): Result<User> {
+    fun register(request: RegisterRequest): Result<AuthResponse> {
         return try {
             if (!request.email.matches(Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"))) {
                 return Result.failure(ValidationException("Invalid email format"))
@@ -42,6 +42,7 @@ class AuthRepository(
 
                 val userId = UUID.randomUUID().toString()
                 val hashedPassword = passwordHasher.hash(request.password)
+                val now = LocalDateTime.now()
 
                 Users.insert {
                     it[Users.id] = userId
@@ -54,8 +55,36 @@ class AuthRepository(
                     it[Users.status] = "ACTIVE"
                 }
 
-                val user = getUserById(userId)
-                Result.success(user!!)
+                val user = getUserById(userId)!!
+
+                val token = jwtIssuer.generateToken(user.id)
+                val refreshToken = jwtIssuer.generateRefreshToken(user.id)
+                val expiresAt = System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)
+
+                val sessionId = UUID.randomUUID().toString()
+                val userIdStr = UUID.fromString(user.id).toString()
+
+                UserSessions.insert {
+                    it[UserSessions.id] = sessionId
+                    it[UserSessions.userId] = userIdStr
+                    it[UserSessions.token] = token
+                    it[UserSessions.refreshToken] = refreshToken
+                    it[UserSessions.expiresAt] = now.plusDays(7)
+                    it[UserSessions.isActive] = true
+                }
+
+                Users.update({ Users.id eq userIdStr }) {
+                    it[Users.lastLoginAt] = now
+                }
+
+                Result.success(
+                    AuthResponse(
+                        token = token,
+                        refreshToken = refreshToken,
+                        user = user,
+                        expiresAt = expiresAt
+                    )
+                )
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -85,7 +114,7 @@ class AuthRepository(
                     profileImageUrl = userRow[Users.profileImageUrl],
                     favoriteLocation = userRow[Users.favoriteLocation],
                     isVerified = userRow[Users.isVerified],
-                    createdAt = userRow[Users.createdAt].toString(),  // ← Convert to String
+                    createdAt = userRow[Users.createdAt].toString(),
                     lastLoginAt = userRow[Users.lastLoginAt]?.toString(),
                     status = userRow[Users.status]
                 )
@@ -210,7 +239,7 @@ class AuthRepository(
                     profileImageUrl = row[Users.profileImageUrl],
                     favoriteLocation = row[Users.favoriteLocation],
                     isVerified = row[Users.isVerified],
-                    createdAt = row[Users.createdAt]?.toString(),  // ← Convert to String
+                    createdAt = row[Users.createdAt]?.toString(),
                     lastLoginAt = row[Users.lastLoginAt]?.toString(),
                     status = row[Users.status]
                 )
