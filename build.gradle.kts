@@ -47,7 +47,7 @@ dependencies {
 
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.freemarker)
-
+    testImplementation(ktorLibs.client.mock)
     testImplementation(kotlin("test-junit5"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
     testImplementation(ktorLibs.server.testHost)

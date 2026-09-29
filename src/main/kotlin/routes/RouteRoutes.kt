@@ -9,21 +9,23 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 
-fun Route.routeRoutes(httpClient: HttpClient) {
-    val routeApi = RouteApi(httpClient)
+fun Route.routeRoutes(
+    httpClient: HttpClient,
+    apiKey: String = System.getenv("ORS_API_KEY") ?: ""
+) {
+    val routeApi = RouteApi(httpClient, apiKey)
 
     post("/api/route") {
-        val request = call.receive<RouteRequest>()
-
         try {
+            val request = call.receive<RouteRequest>()
             val response = routeApi.getRoute(request)
             call.respond(response)
-        }  catch (e: Exception) {
-        e.printStackTrace()
-        call.respond(
-            HttpStatusCode.InternalServerError,
-            e.message ?: "Route calculation failed"
-        )
-    }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                e.message ?: "Route calculation failed"
+            )
+        }
     }
 }

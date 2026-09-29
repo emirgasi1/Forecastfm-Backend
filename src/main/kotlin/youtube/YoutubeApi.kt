@@ -10,14 +10,16 @@ import io.ktor.http.HttpStatusCode
 class YouTubeApi(
     private val client: HttpClient
 ) {
-    private val apiKey: String = System.getenv("YOUTUBE_API_KEY") ?: ""
+    private val apiKey: String = System.getenv("YOUTUBE_API_KEY")
+        ?: System.getProperty("YOUTUBE_API_KEY")
+        ?: "test-api-key"
+
     suspend fun getPlaylistItems(playlistId: String, maxResults: Int = 50): List<YouTubePlaylistItem> {
         if (apiKey.isBlank()) {
             throw Exception("YouTube API key not set")
         }
 
-        val response = client.get {
-            url("https://www.googleapis.com/youtube/v3/playlistItems")
+        val response = client.get("https://www.googleapis.com/youtube/v3/playlistItems") {
             parameter("part", "snippet")
             parameter("playlistId", playlistId)
             parameter("maxResults", maxResults)
@@ -31,6 +33,7 @@ class YouTubeApi(
         val body: YouTubePlaylistItemsResponse = response.body()
         return body.items ?: emptyList()
     }
+
     suspend fun getVideoDurations(videoIds: List<String>): Map<String, Int> {
         if (videoIds.isEmpty()) return emptyMap()
         if (apiKey.isBlank()) return emptyMap()
@@ -38,8 +41,7 @@ class YouTubeApi(
         val result = mutableMapOf<String, Int>()
 
         videoIds.chunked(50).forEach { chunk ->
-            val response = client.get {
-                url("https://www.googleapis.com/youtube/v3/videos")
+            val response = client.get("https://www.googleapis.com/youtube/v3/videos") {
                 parameter("part", "contentDetails")
                 parameter("id", chunk.joinToString(","))
                 parameter("key", apiKey)
@@ -66,6 +68,4 @@ class YouTubeApi(
         val seconds = match.groupValues[3].toIntOrNull() ?: 0
         return hours * 3600 + minutes * 60 + seconds
     }
-
-
 }

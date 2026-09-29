@@ -11,10 +11,9 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 
 class RouteApi(
-    private val client: HttpClient
-) {
+    private val client: HttpClient,
     private val apiKey: String = System.getenv("ORS_API_KEY") ?: ""
-
+) {
     suspend fun getRoute(request: RouteRequest): RouteResponse {
         if (apiKey.isBlank()) {
             throw Exception("ORS API key not set")
