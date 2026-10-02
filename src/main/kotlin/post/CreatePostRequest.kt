@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class CreatePostRequest(
     val userId: String,
     val caption: String?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val outfitId: String? = null
 )

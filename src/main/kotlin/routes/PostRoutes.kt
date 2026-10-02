@@ -32,7 +32,8 @@ fun Route.postRoutes() {
         val post = postRepository.createPost(
             userId = request.userId,
             caption = request.caption,
-            imageUrl = request.imageUrl
+            imageUrl = request.imageUrl,
+            outfitId = request.outfitId
         )
         call.respond(HttpStatusCode.Created, post)
     }

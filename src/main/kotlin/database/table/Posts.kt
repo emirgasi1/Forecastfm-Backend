@@ -9,6 +9,8 @@ object Posts : Table("posts") {
     val userId = text("userId").references(Users.id)
     val caption = text("caption").nullable()
     val imageUrl = text("imageUrl").nullable()
+    val outfitId = text("outfitId").nullable()
+    val outfitTitle = text("outfitTitle").nullable()
     val createdAt = timestamp("createdAt")
 
     override val primaryKey = PrimaryKey(id)
