@@ -40,7 +40,12 @@ fun Route.postRoutes() {
 
     get("/api/posts") {
         val posts = postRepository.getPosts()
-        call.respond(posts)
+        val enriched = posts.map { post ->
+            val likes = likeRepository.getPostLikeCount(post.id)
+            val commentCount = commentRepository.getCommentsByPostId(post.id).size
+            post.copy(likes = likes, commentCount = commentCount)
+        }
+        call.respond(enriched)
     }
 
     get("/api/posts/{id}") {
@@ -51,7 +56,9 @@ fun Route.postRoutes() {
         if (post == null) {
             call.respond(HttpStatusCode.NotFound, "Post not found")
         } else {
-            call.respond(post)
+            val likes = likeRepository.getPostLikeCount(post.id)
+            val commentCount = commentRepository.getCommentsByPostId(post.id).size
+            call.respond(post.copy(likes = likes, commentCount = commentCount))
         }
     }
 
@@ -153,7 +160,6 @@ fun Route.postRoutes() {
         call.respond(mapOf("saved" to saved))
     }
 
-
     post("/api/posts/{postId}/image") {
         val postId = call.parameters["postId"]
             ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing post ID")
@@ -196,6 +202,7 @@ fun Route.postRoutes() {
             call.respond(HttpStatusCode.InternalServerError, "Upload failed: ${e.message}")
         }
     }
+
     get("/api/posts/saved") {
         val userId = call.request.headers["User-Id"]
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing User-Id")

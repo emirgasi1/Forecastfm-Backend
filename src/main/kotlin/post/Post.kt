@@ -10,5 +10,7 @@ data class Post(
     val imageUrl: String?,
     val outfitId: String? = null,
     val outfitTitle: String? = null,
+    val likes: Int = 0,
+    val commentCount: Int = 0,
     val createdAt: String
 )
