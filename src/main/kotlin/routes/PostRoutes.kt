@@ -18,8 +18,9 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import java.io.File
-import kotlin.uuid.Uuid
+import kotlinx.coroutines.runBlocking
+import storage.B2Storage
+import java.util.UUID
 
 fun Route.postRoutes() {
     val postRepository = PostRepository()
@@ -43,7 +44,14 @@ fun Route.postRoutes() {
         val enriched = posts.map { post ->
             val likes = likeRepository.getPostLikeCount(post.id)
             val commentCount = commentRepository.getCommentsByPostId(post.id).size
-            post.copy(likes = likes, commentCount = commentCount)
+            val presignedImageUrl = post.imageUrl?.let { key ->
+                runCatching { B2Storage.presign(key) }.getOrNull()
+            }
+            post.copy(
+                imageUrl = presignedImageUrl,
+                likes = likes,
+                commentCount = commentCount
+            )
         }
         call.respond(enriched)
     }
@@ -58,7 +66,16 @@ fun Route.postRoutes() {
         } else {
             val likes = likeRepository.getPostLikeCount(post.id)
             val commentCount = commentRepository.getCommentsByPostId(post.id).size
-            call.respond(post.copy(likes = likes, commentCount = commentCount))
+            val presignedImageUrl = post.imageUrl?.let { key ->
+                runCatching { B2Storage.presign(key) }.getOrNull()
+            }
+            call.respond(
+                post.copy(
+                    imageUrl = presignedImageUrl,
+                    likes = likes,
+                    commentCount = commentCount
+                )
+            )
         }
     }
 
@@ -75,11 +92,7 @@ fun Route.postRoutes() {
             ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val request = call.receive<CreateLikeRequest>()
-
-        likeRepository.likePost(
-            userId = request.userId,
-            postId = postId
-        )
+        likeRepository.likePost(userId = request.userId, postId = postId)
         call.respond(HttpStatusCode.Created)
     }
 
@@ -90,10 +103,7 @@ fun Route.postRoutes() {
         val userId = call.request.queryParameters["userId"]
             ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
-        likeRepository.unlikePost(
-            userId = userId,
-            postId = postId
-        )
+        likeRepository.unlikePost(userId = userId, postId = postId)
         call.respond(HttpStatusCode.OK)
     }
 
@@ -104,10 +114,7 @@ fun Route.postRoutes() {
         val userId = call.request.queryParameters["userId"]
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
-        val liked = likeRepository.isPostLiked(
-            userId = userId,
-            postId = postId
-        )
+        val liked = likeRepository.isPostLiked(userId = userId, postId = postId)
         call.respond(mapOf("liked" to liked))
     }
 
@@ -124,11 +131,7 @@ fun Route.postRoutes() {
             ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing post ID")
 
         val request = call.receive<SavePostRequest>()
-
-        savedPostRepository.savePost(
-            userId = request.userId,
-            postId = postId
-        )
+        savedPostRepository.savePost(userId = request.userId, postId = postId)
         call.respond(HttpStatusCode.Created)
     }
 
@@ -139,10 +142,7 @@ fun Route.postRoutes() {
         val userId = call.request.queryParameters["userId"]
             ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
-        savedPostRepository.unsavePost(
-            userId = userId,
-            postId = postId
-        )
+        savedPostRepository.unsavePost(userId = userId, postId = postId)
         call.respond(HttpStatusCode.OK)
     }
 
@@ -153,10 +153,7 @@ fun Route.postRoutes() {
         val userId = call.request.queryParameters["userId"]
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
-        val saved = savedPostRepository.isPostSaved(
-            userId = userId,
-            postId = postId
-        )
+        val saved = savedPostRepository.isPostSaved(userId = userId, postId = postId)
         call.respond(mapOf("saved" to saved))
     }
 
@@ -166,34 +163,32 @@ fun Route.postRoutes() {
 
         try {
             val multipart = call.receiveMultipart()
-            var imageUrl: String? = null
+            var uploadedKey: String? = null
 
             multipart.forEachPart { part ->
                 if (part is PartData.FileItem) {
                     val fileName = part.originalFileName ?: "image.jpg"
                     val extension = fileName.substringAfterLast(".", "jpg")
-                    val uniqueFileName = "$postId.${System.currentTimeMillis()}.$extension"
+                    val key = "posts/$postId-${UUID.randomUUID()}.$extension"
 
-                    val uploadDir = File("uploads/posts")
-                    if (!uploadDir.exists()) {
-                        uploadDir.mkdirs()
+                    val bytes = part.streamProvider().use { it.readBytes() }
+
+                    runBlocking {
+                        B2Storage.upload(
+                            key = key,
+                            bytes = bytes,
+                            contentType = "image/$extension"
+                        )
                     }
 
-                    val file = File(uploadDir, uniqueFileName)
-                    part.streamProvider().use { input ->
-                        file.outputStream().use { output ->
-                            input.copyTo(output)
-                        }
-                    }
-
-                    imageUrl = "/uploads/posts/$uniqueFileName"
+                    uploadedKey = key
                 }
                 part.dispose()
             }
 
-            if (imageUrl != null) {
-                val updatedPost = postRepository.updatePostImage(postId, imageUrl)
-                call.respond(HttpStatusCode.OK, mapOf("imageUrl" to imageUrl))
+            if (uploadedKey != null) {
+                postRepository.updatePostImage(postId, uploadedKey)
+                call.respond(HttpStatusCode.OK, mapOf("imageUrl" to uploadedKey))
             } else {
                 call.respond(HttpStatusCode.BadRequest, "No image file provided")
             }
@@ -208,6 +203,12 @@ fun Route.postRoutes() {
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing User-Id")
 
         val savedPosts = savedPostRepository.getSavedPosts(userId)
-        call.respond(savedPosts)
+        val enriched = savedPosts.map { post ->
+            val presignedImageUrl = post.imageUrl?.let { key ->
+                runCatching { B2Storage.presign(key) }.getOrNull()
+            }
+            post.copy(imageUrl = presignedImageUrl)
+        }
+        call.respond(enriched)
     }
 }

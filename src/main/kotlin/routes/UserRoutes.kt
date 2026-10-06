@@ -17,7 +17,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
-import java.io.File
+import kotlinx.coroutines.runBlocking
+import storage.B2Storage
 import java.util.UUID
 
 fun Route.userRoutes() {
@@ -37,12 +38,16 @@ fun Route.userRoutes() {
             return@get
         }
 
+        val presignedProfileImage = user.profileImageUrl?.let { key ->
+            runCatching { B2Storage.presign(key) }.getOrNull()
+        }
+
         call.respond(
             UserResponse(
                 id = user.id,
                 username = user.username,
                 bio = user.bio,
-                profileImageUrl = user.profileImageUrl,
+                profileImageUrl = presignedProfileImage,
                 favoriteLocation = user.favoriteLocation
             )
         )
@@ -53,7 +58,13 @@ fun Route.userRoutes() {
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         val posts = savedPostRepository.getSavedPosts(userId)
-        call.respond(posts)
+        val signed = posts.map { post ->
+            val presigned = post.imageUrl?.let { key ->
+                runCatching { B2Storage.presign(key) }.getOrNull()
+            }
+            post.copy(imageUrl = presigned)
+        }
+        call.respond(signed)
     }
 
     get("/api/users/{userId}/posts") {
@@ -61,7 +72,13 @@ fun Route.userRoutes() {
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         val posts = postRepository.getPostsByUserId(userId)
-        call.respond(posts)
+        val signed = posts.map { post ->
+            val presigned = post.imageUrl?.let { key ->
+                runCatching { B2Storage.presign(key) }.getOrNull()
+            }
+            post.copy(imageUrl = presigned)
+        }
+        call.respond(signed)
     }
 
     get("/api/users/{userId}/profile") {
@@ -102,37 +119,41 @@ fun Route.userRoutes() {
             ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing user ID")
 
         val multipart = call.receiveMultipart()
-        var fileName: String? = null
+        var uploadedKey: String? = null
 
         multipart.forEachPart { part ->
             if (part is PartData.FileItem) {
                 val originalName = part.originalFileName ?: "image.jpg"
                 val ext = originalName.substringAfterLast('.', "jpg")
-                val generatedName = "${UUID.randomUUID()}.$ext"
-                fileName = generatedName
+                val key = "profiles/$id-${UUID.randomUUID()}.$ext"
 
-                val uploadDir = File("uploads")
-                if (!uploadDir.exists()) uploadDir.mkdirs()
+                val bytes = part.streamProvider().use { it.readBytes() }
 
-                val targetFile = File(uploadDir, generatedName)
-                part.streamProvider().use { input ->
-                    targetFile.outputStream().use { output ->
-                        input.copyTo(output)
-                    }
+                runBlocking {
+                    B2Storage.upload(
+                        key = key,
+                        bytes = bytes,
+                        contentType = "image/$ext"
+                    )
                 }
+
+                uploadedKey = key
             }
             part.dispose()
         }
 
-        val uploaded = fileName
-        if (uploaded == null) {
-            return@post call.respond(HttpStatusCode.BadRequest, "No file uploaded")
-        }
+        val uploaded = uploadedKey
+            ?: return@post call.respond(HttpStatusCode.BadRequest, "No file uploaded")
 
-        val url = "/uploads/$uploaded"
         val userRepository = UserRepository()
-        userRepository.updateProfileImage(id, url)
+        userRepository.updateProfileImage(id, uploaded)
 
-        call.respond(HttpStatusCode.OK, mapOf("url" to url))
+        val presigned = runCatching { B2Storage.presign(uploaded) }.getOrNull()
+            ?: return@post call.respond(
+                HttpStatusCode.InternalServerError,
+                "Failed to sign uploaded image"
+            )
+
+        call.respond(HttpStatusCode.OK, mapOf("url" to presigned))
     }
 }

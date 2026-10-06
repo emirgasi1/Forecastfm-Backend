@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation("org.jetbrains.exposed:exposed-java-time:1.0.0")
     implementation(libs.postgresql)
+    implementation("software.amazon.awssdk:s3:2.28.16")   // ← new
 
     implementation(libs.jbcrypt)
     implementation("com.auth0:java-jwt:4.4.0")
