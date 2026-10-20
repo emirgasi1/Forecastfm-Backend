@@ -8,7 +8,8 @@ import database.table.Users
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import kotlin.uuid.Uuid
+import storage.B2Storage.getSignedImageUrlOrOriginal
+import kotlinx.coroutines.runBlocking
 
 class ProfileRepository {
     private val postRepository = PostRepository()
@@ -24,20 +25,28 @@ class ProfileRepository {
                 .singleOrNull()
         } ?: throw IllegalArgumentException("User not found")
 
-        val posts = postRepository.getPostsByUserId(userId)
+        val rawPosts = postRepository.getPostsByUserId(userId)
+
+        // We must sign the images for the profile grid
+        val signedPosts = rawPosts.map { post ->
+            post.copy(imageUrl = runBlocking { getSignedImageUrlOrOriginal(post.imageUrl) })
+        }
+
         val likes = likeRepository.getUserReceivedLikeCount(userId)
         val saved = savedPostRepository.getSavedPostCount(userId)
         val favoritePlaylists = playlistRepository.getFavoritePlaylists(userId)
+
+        val signedProfileImage = runBlocking { getSignedImageUrlOrOriginal(user[Users.profileImageUrl]) }
 
         return ProfileResponse(
             id = user[Users.id],
             username = user[Users.username],
             bio = user[Users.bio],
-            profileImageUrl = user[Users.profileImageUrl],
+            profileImageUrl = signedProfileImage, // Now sends the full Backblaze URL
             favoriteLocation = user[Users.favoriteLocation],
             likes = likes,
             saved = saved,
-            posts = posts,
+            posts = signedPosts, // Now sends full Backblaze URLs
             favoritePlaylists = favoritePlaylists
         )
     }
