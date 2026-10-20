@@ -38,7 +38,9 @@ object B2Storage {
             .getObjectRequest(getRequest)
             .build()
 
-        B2Config.presigner.presignGetObject(presignRequest).url().toString()
+        val rawUrl = B2Config.presigner.presignGetObject(presignRequest).url().toString()
+
+        rawUrl.replace("\\u0026", "&")
     }
 
     suspend fun getSignedImageUrlOrOriginal(rawUrl: String?): String? {
