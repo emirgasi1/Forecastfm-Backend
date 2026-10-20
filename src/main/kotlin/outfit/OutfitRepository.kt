@@ -62,11 +62,11 @@ class OutfitRepository {
         )
     }
 
-    fun getTrendingOutfits(limit: Int = 10): List<Outfit> {
+    fun getTrendingOutfits(limit: Int = 20): List<Outfit> {
         return transaction {
             Outfits
                 .selectAll()
-                .orderBy(Outfits.likes to SortOrder.DESC)
+                .orderBy(Outfits.createdAt to SortOrder.DESC) // 👈 Sorts by newest!
                 .limit(limit)
                 .map { row ->
                     Outfit(
