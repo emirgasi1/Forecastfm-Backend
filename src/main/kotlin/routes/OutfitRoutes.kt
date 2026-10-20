@@ -16,6 +16,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import kotlinx.coroutines.runBlocking
 import storage.B2Storage
+import storage.B2Storage.getSignedImageUrlOrOriginal
 import java.util.UUID
 
 fun Route.outfitRoutes() {
@@ -42,10 +43,7 @@ fun Route.outfitRoutes() {
     get("/api/outfits/trending") {
         val outfits = outfitRepository.getTrendingOutfits(10)
         val signed = outfits.map { outfit ->
-            val presigned = outfit.imageUrl.let { key ->
-                runCatching { B2Storage.presign(key) }.getOrNull()
-            }
-            outfit.copy(imageUrl = presigned ?: outfit.imageUrl)
+            outfit.copy(imageUrl = getSignedImageUrlOrOriginal(outfit.imageUrl) ?: "")
         }
         call.respond(signed)
     }
@@ -55,10 +53,7 @@ fun Route.outfitRoutes() {
             ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing weather")
         val outfits = outfitRepository.getOutfitsByWeather(weather)
         val signed = outfits.map { outfit ->
-            val presigned = outfit.imageUrl.let { key ->
-                runCatching { B2Storage.presign(key) }.getOrNull()
-            }
-            outfit.copy(imageUrl = presigned ?: outfit.imageUrl)
+            outfit.copy(imageUrl = getSignedImageUrlOrOriginal(outfit.imageUrl) ?: "")
         }
         call.respond(signed)
     }
@@ -118,10 +113,7 @@ fun Route.outfitRoutes() {
 
         val savedOutfits = savedOutfitRepository.getSavedOutfits(userId)
         val signed = savedOutfits.map { outfit ->
-            val presigned = outfit.imageUrl.let { key ->
-                runCatching { B2Storage.presign(key) }.getOrNull()
-            }
-            outfit.copy(imageUrl = presigned ?: outfit.imageUrl)
+            outfit.copy(imageUrl = getSignedImageUrlOrOriginal(outfit.imageUrl) ?: "")
         }
         call.respond(signed)
     }
@@ -134,8 +126,8 @@ fun Route.outfitRoutes() {
         if (outfit == null) {
             call.respond(HttpStatusCode.NotFound, "Outfit not found")
         } else {
-            val presigned = runCatching { B2Storage.presign(outfit.imageUrl) }.getOrNull()
-            call.respond(outfit.copy(imageUrl = presigned ?: outfit.imageUrl))
+            val signedImage = getSignedImageUrlOrOriginal(outfit.imageUrl) ?: ""
+            call.respond(outfit.copy(imageUrl = signedImage))
         }
     }
 

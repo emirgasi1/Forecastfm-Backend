@@ -40,4 +40,14 @@ object B2Storage {
 
         B2Config.presigner.presignGetObject(presignRequest).url().toString()
     }
+
+    suspend fun getSignedImageUrlOrOriginal(rawUrl: String?): String? {
+        if (rawUrl.isNullOrBlank()) return null
+
+        if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
+            return rawUrl
+        }
+
+        return runCatching { B2Storage.presign(rawUrl) }.getOrNull()
+    }
 }

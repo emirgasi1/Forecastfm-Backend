@@ -19,6 +19,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import kotlinx.coroutines.runBlocking
 import storage.B2Storage
+import storage.B2Storage.getSignedImageUrlOrOriginal
 import java.util.UUID
 
 fun Route.userRoutes() {
@@ -38,16 +39,13 @@ fun Route.userRoutes() {
             return@get
         }
 
-        val presignedProfileImage = user.profileImageUrl?.let { key ->
-            runCatching { B2Storage.presign(key) }.getOrNull()
-        }
-
+        val signedProfileImage = getSignedImageUrlOrOriginal(user.profileImageUrl)
         call.respond(
             UserResponse(
                 id = user.id,
                 username = user.username,
                 bio = user.bio,
-                profileImageUrl = presignedProfileImage,
+                profileImageUrl = signedProfileImage,
                 favoriteLocation = user.favoriteLocation
             )
         )
@@ -59,10 +57,7 @@ fun Route.userRoutes() {
 
         val posts = savedPostRepository.getSavedPosts(userId)
         val signed = posts.map { post ->
-            val presigned = post.imageUrl?.let { key ->
-                runCatching { B2Storage.presign(key) }.getOrNull()
-            }
-            post.copy(imageUrl = presigned)
+            post.copy(imageUrl = getSignedImageUrlOrOriginal(post.imageUrl))
         }
         call.respond(signed)
     }
@@ -136,7 +131,6 @@ fun Route.userRoutes() {
                         contentType = "image/$ext"
                     )
                 }
-
                 uploadedKey = key
             }
             part.dispose()

@@ -8,21 +8,6 @@ import software.amazon.awssdk.services.s3.S3Configuration
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import java.net.URI
 
-/**
- * Cloud-agnostic S3-compatible storage config, pointed at Backblaze B2.
- *
- * Reads six environment variables:
- *   B2_ENDPOINT                e.g. https://s3.us-east-005.backblazeb2.com
- *   B2_REGION                  e.g. us-east-005
- *   B2_ACCESS_KEY              Application Key ID
- *   B2_SECRET_KEY              Application Key
- *   B2_BUCKET                  e.g. forecastfm-uploads
- *   B2_PRESIGN_EXPIRY_SECONDS  e.g. 3600
- *
- * The S3Client and S3Presigner are lazy singletons. First call constructs
- * them; subsequent calls reuse. Safe to warm up on startup from a
- * background thread if desired.
- */
 object B2Config {
 
     private val endpoint: String = requireEnv("B2_ENDPOINT")
@@ -39,11 +24,7 @@ object B2Config {
         AwsBasicCredentials.create(accessKey, secretKey)
     )
 
-    /**
-     * R2/B2/GCS all require path-style addressing (bucket in the URL path,
-     * not as a subdomain). Without this, the SDK will try
-     * forecastfm-uploads.s3.us-east-005.backblazeb2.com and B2 will 404.
-     */
+
     private val s3Config = S3Configuration.builder()
         .pathStyleAccessEnabled(true)
         .chunkedEncodingEnabled(false)   // see note below
@@ -63,6 +44,7 @@ object B2Config {
             .endpointOverride(URI.create(endpoint))
             .region(Region.of(region))
             .credentialsProvider(credentials)
+            .serviceConfiguration(s3Config) // 👈 Reusing the same config here!
             .build()
     }
 

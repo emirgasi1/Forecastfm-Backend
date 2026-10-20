@@ -20,6 +20,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import kotlinx.coroutines.runBlocking
 import storage.B2Storage
+import storage.B2Storage.getSignedImageUrlOrOriginal
 import java.util.UUID
 
 fun Route.postRoutes() {
@@ -44,11 +45,9 @@ fun Route.postRoutes() {
         val enriched = posts.map { post ->
             val likes = likeRepository.getPostLikeCount(post.id)
             val commentCount = commentRepository.getCommentsByPostId(post.id).size
-            val presignedImageUrl = post.imageUrl?.let { key ->
-                runCatching { B2Storage.presign(key) }.getOrNull()
-            }
+            val signedImageUrl = getSignedImageUrlOrOriginal(post.imageUrl)
             post.copy(
-                imageUrl = presignedImageUrl,
+                imageUrl = signedImageUrl,
                 likes = likes,
                 commentCount = commentCount
             )
@@ -204,10 +203,8 @@ fun Route.postRoutes() {
 
         val savedPosts = savedPostRepository.getSavedPosts(userId)
         val enriched = savedPosts.map { post ->
-            val presignedImageUrl = post.imageUrl?.let { key ->
-                runCatching { B2Storage.presign(key) }.getOrNull()
-            }
-            post.copy(imageUrl = presignedImageUrl)
+            val signedImageUrl = getSignedImageUrlOrOriginal(post.imageUrl)
+            post.copy(imageUrl = signedImageUrl)
         }
         call.respond(enriched)
     }
