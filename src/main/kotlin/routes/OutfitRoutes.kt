@@ -158,14 +158,6 @@ fun Route.outfitRoutes() {
 
         val uploaded = uploadedKey
             ?: return@post call.respond(HttpStatusCode.BadRequest, "No file uploaded")
-
-        // Sign the key so the client gets back a usable URL immediately.
-        val presigned = runCatching { B2Storage.presign(uploaded) }.getOrNull()
-            ?: return@post call.respond(
-                HttpStatusCode.InternalServerError,
-                "Failed to sign uploaded image"
-            )
-
-        call.respond(HttpStatusCode.OK, mapOf("url" to presigned))
+        call.respond(HttpStatusCode.OK, mapOf("url" to uploaded))
     }
 }
