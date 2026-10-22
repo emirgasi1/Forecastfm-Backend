@@ -1,0 +1,2351 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-10-22T16:43:58Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/11741687",
+        "historic": "yes",
+        "name": "Stari grad Vratnik",
+        "name:en": "Walled city of Vratnik",
+        "name:hr": "Stari grad Vratnik",
+        "name:sr": "Стари град Вратник",
+        "name:sr-Latn": "Stari grad Vratnik",
+        "place": "quarter",
+        "type": "multipolygon",
+        "wikidata": "Q43958640",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4413864,
+          43.8630959
+        ]
+      },
+      "id": "relation/11741687"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/17301386",
+        "name": "Doglodi",
+        "place": "suburb",
+        "type": "multipolygon",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2975674,
+          43.8535179
+        ]
+      },
+      "id": "relation/17301386"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/83710072",
+        "name": "Vojničko polje",
+        "name:sr": "Војничко поље",
+        "name:sr-Latn": "Vojničko polje",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.340426,
+          43.8411129
+        ]
+      },
+      "id": "node/83710072"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/89087032",
+        "name": "Blažuj",
+        "name:sr": "Блажуј",
+        "name:sr-Latn": "Blažuj",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.258022,
+          43.8401451
+        ]
+      },
+      "id": "node/89087032"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93784994",
+        "name": "Grbavica",
+        "name:sr": "Грбавица",
+        "name:sr-Latn": "Grbavica",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3984371,
+          43.8512613
+        ]
+      },
+      "id": "node/93784994"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93835247",
+        "name": "Butmir",
+        "name:sr": "Бутмир",
+        "name:sr-Latn": "Butmir",
+        "place": "suburb",
+        "population": "5700",
+        "wikidata": "Q1288954",
+        "wikimedia_commons": "Category:Butmir",
+        "wikipedia": "bs:Butmir"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3256681,
+          43.8190637
+        ]
+      },
+      "id": "node/93835247"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93844811",
+        "name": "Vojkovići",
+        "name:hr": "Vojkovići",
+        "name:sr": "Војковићи",
+        "name:sr-Latn": "Vojkovići",
+        "place": "suburb",
+        "population": "2971",
+        "wikidata": "Q3057139",
+        "wikimedia_commons": "Category:Vojkovići",
+        "wikipedia": "sr:Војковићи (Источна Илиџа)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3460541,
+          43.7954335
+        ]
+      },
+      "id": "node/93844811"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93896556",
+        "alt_name": "Osik",
+        "name": "Osjek",
+        "name:ar": "أوسييك",
+        "name:sr": "Осјек",
+        "name:sr-Latn": "Osjek",
+        "old_name": "Osijek",
+        "place": "suburb",
+        "wikidata": "Q3503384",
+        "wikipedia": "bs:Osjek (Ilidža)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.277292,
+          43.8435516
+        ]
+      },
+      "id": "node/93896556"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93899321",
+        "name": "Lemezi",
+        "name:sr": "Лемези",
+        "name:sr-Latn": "Lemezi",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.317337,
+          43.8704401
+        ]
+      },
+      "id": "node/93899321"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93904746",
+        "name": "Vitkovac",
+        "name:sr": "Витковац",
+        "name:sr-Latn": "Vitkovac",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3396992,
+          43.8596393
+        ]
+      },
+      "id": "node/93904746"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93905429",
+        "name": "Boljakov Potok",
+        "name:sr": "Бољаков Поток",
+        "name:sr-Latn": "Boljakov Potok",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3478016,
+          43.8562415
+        ]
+      },
+      "id": "node/93905429"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93906271",
+        "name": "Alipašin most",
+        "name:hr": "Alipašin most",
+        "name:sr": "Алипашин мост",
+        "name:sr-Latn": "Alipašin most",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3456776,
+          43.8486024
+        ]
+      },
+      "id": "node/93906271"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93906933",
+        "name": "Buća Potok",
+        "name:sr": "Бућа Поток",
+        "name:sr-Latn": "Buća Potok",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3585336,
+          43.8611585
+        ]
+      },
+      "id": "node/93906933"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93919716",
+        "name": "Vreoca",
+        "name:sr": "Вреоца",
+        "name:sr-Latn": "Vreoca",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2894414,
+          43.8343861
+        ]
+      },
+      "id": "node/93919716"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/93920290",
+        "name": "Otes",
+        "name:sr": "Отес",
+        "name:sr-Latn": "Otes",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2969773,
+          43.8408185
+        ]
+      },
+      "id": "node/93920290"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/105821021",
+        "name": "Vranješ",
+        "name:hr": "Vranješ",
+        "name:sr": "Врањеш",
+        "name:sr-Latn": "Vranješ",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3723485,
+          43.817619
+        ]
+      },
+      "id": "node/105821021"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/137481496",
+        "name": "Donji Kotorac",
+        "name:sr": "Доњи Которац",
+        "name:sr-Latn": "Donji Kotorac",
+        "place": "suburb",
+        "population": "471",
+        "wikidata": "Q3036577",
+        "wikipedia": "sr:Доњи Которац"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3378372,
+          43.8177692
+        ]
+      },
+      "id": "node/137481496"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/207279444",
+        "name": "Hodžin otok",
+        "place": "neighbourhood",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3027785,
+          43.7999933
+        ]
+      },
+      "id": "way/207279444"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/252912965",
+        "name": "Pavlovac",
+        "name:hr": "Pavlovac",
+        "name:sr": "Павловац",
+        "name:sr-Latn": "Pavlovac",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3753523,
+          43.811998
+        ]
+      },
+      "id": "node/252912965"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/252912975",
+        "name": "Donje Mladice",
+        "name:sr": "Доње Младице",
+        "name:sr-Latn": "Donje Mladice",
+        "place": "quarter",
+        "wikidata": "Q3036472",
+        "wikipedia": "sr:Доње Младице"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3633044,
+          43.8098648
+        ]
+      },
+      "id": "node/252912975"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/254088653",
+        "name": "Vraca",
+        "name:hr": "Vraca",
+        "name:sr": "Враца",
+        "name:sr-Latn": "Vraca",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3948453,
+          43.8453046
+        ]
+      },
+      "id": "node/254088653"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/254399932",
+        "alt_name": "Luke",
+        "alt_name:sr": "Луке",
+        "alt_name:sr-Latn": "Luke",
+        "name": "Obilićevo",
+        "name:sr": "Обилићево",
+        "name:sr-Latn": "Obilićevo",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.5833827,
+          43.8085285
+        ]
+      },
+      "id": "node/254399932"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/254399941",
+        "name": "Koran",
+        "name:sr": "Коран",
+        "name:sr-Latn": "Koran",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.5678286,
+          43.8107225
+        ]
+      },
+      "id": "node/254399941"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/255356668",
+        "name": "Gornji Kotorac",
+        "name:sr": "Горњи Которац",
+        "name:sr-Latn": "Gornji Kotorac",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3547178,
+          43.8080843
+        ]
+      },
+      "id": "node/255356668"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/255649599",
+        "name": "Grlica",
+        "name:sr": "Грлица",
+        "name:sr-Latn": "Grlica",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3402497,
+          43.7896441
+        ]
+      },
+      "id": "node/255649599"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/257414295",
+        "name": "Pofalići I",
+        "name:hr": "Pofalići I",
+        "name:sr": "Пофалићи И",
+        "name:sr-Latn": "Pofalići I",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3875445,
+          43.8622786
+        ]
+      },
+      "id": "node/257414295"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/257414882",
+        "name": "Dobrinja",
+        "name:sr": "Добриња",
+        "name:sr-Latn": "Dobrinja",
+        "place": "suburb",
+        "wikidata": "Q3436541",
+        "wikimedia_commons": "Category:Dobrinja",
+        "wikipedia": "bs:Dobrinja (Sarajevo)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3463543,
+          43.8291255
+        ]
+      },
+      "id": "node/257414882"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/258981362",
+        "name": "Stup",
+        "name:bs": "Stup",
+        "name:sr": "Ступ",
+        "name:sr-Latn": "Stup",
+        "place": "suburb",
+        "wikidata": "Q56706758",
+        "wikimedia_commons": "Category:Stup (Ilidža)",
+        "wikipedia": "hr:Stup (Ilidža, BiH)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3243,
+          43.8428262
+        ]
+      },
+      "id": "node/258981362"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/301382758",
+        "name": "Hrid",
+        "name:sr": "Хрид",
+        "name:sr-Latn": "Hrid",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4379446,
+          43.85374
+        ]
+      },
+      "id": "node/301382758"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/301407290",
+        "name": "Doglodi",
+        "name:sr": "Доглоди",
+        "name:sr-Latn": "Doglodi",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.295338,
+          43.8534488
+        ]
+      },
+      "id": "node/301407290"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/316063691",
+        "name": "Naselje heroja Sokolje",
+        "name:sr": "Сокоље",
+        "name:sr-Latn": "Sokolje",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3195949,
+          43.8665427
+        ]
+      },
+      "id": "node/316063691"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/316078897",
+        "name": "Rajlovac",
+        "name:sr": "Рајловац",
+        "name:sr-Latn": "Rajlovac",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3121057,
+          43.8786557
+        ]
+      },
+      "id": "node/316078897"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/320229195",
+        "name": "Donja Jošanica",
+        "name:sr": "Доња Јошаница",
+        "name:sr-Latn": "Donja Jošanica",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3377699,
+          43.8956907
+        ]
+      },
+      "id": "node/320229195"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/375768377",
+        "name": "Ciglane",
+        "name:sr": "Циглане",
+        "name:sr-Latn": "Ciglane",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.408036,
+          43.8645049
+        ]
+      },
+      "id": "node/375768377"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/375768921",
+        "name": "Breka",
+        "name:sr": "Брека",
+        "name:sr-Latn": "Breka",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.417406,
+          43.8711996
+        ]
+      },
+      "id": "node/375768921"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/389608127",
+        "name": "Soukbunar",
+        "name:hr": "Soukbunar",
+        "name:sr": "Соукбунар",
+        "name:sr-Latn": "Soukbunar",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4145842,
+          43.8503081
+        ]
+      },
+      "id": "node/389608127"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/389608136",
+        "name": "Mahmutovac",
+        "name:sr": "Махмутовац",
+        "name:sr-Latn": "Mahmutovac",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4345333,
+          43.8500653
+        ]
+      },
+      "id": "node/389608136"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/389608137",
+        "name": "Jarčedoli",
+        "name:hr": "Jarčedoli",
+        "name:sr": "Јарчедоли",
+        "name:sr-Latn": "Jarčedoli",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4491777,
+          43.8540572
+        ]
+      },
+      "id": "node/389608137"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/469110898",
+        "name": "Koševsko brdo",
+        "name:sr": "Кошевско брдо",
+        "name:sr-Latn": "Koševsko brdo",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4047143,
+          43.8679888
+        ]
+      },
+      "id": "node/469110898"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/469179940",
+        "name": "Otoka",
+        "name:sr": "Отока",
+        "name:sr-Latn": "Otoka",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3655732,
+          43.8474072
+        ]
+      },
+      "id": "node/469179940"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/469179942",
+        "name": "Nedžarići",
+        "name:sr": "Неџарићи",
+        "name:sr-Latn": "Nedžarići",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3364819,
+          43.8367867
+        ]
+      },
+      "id": "node/469179942"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/469180417",
+        "name": "Švrakino selo",
+        "name:sr": "Швракино село",
+        "name:sr-Latn": "Švrakino selo",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3579112,
+          43.8422588
+        ]
+      },
+      "id": "node/469180417"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/471182641",
+        "name": "Dobroševići",
+        "name:sr": "Доброшевићи",
+        "name:sr-Latn": "Dobroševići",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2897631,
+          43.880004
+        ]
+      },
+      "id": "node/471182641"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/471183876",
+        "name": "Ahatovići",
+        "name:sr": "Ахатовићи",
+        "name:sr-Latn": "Ahatovići",
+        "place": "suburb",
+        "wikidata": "Q122890555",
+        "wikipedia": "en:Ahatovići (Novi Grad Sarajevo)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2829095,
+          43.8846542
+        ]
+      },
+      "id": "node/471183876"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/614490471",
+        "name": "Alipašino polje",
+        "name:hr": "Alipašino polje",
+        "name:sr": "Алипашино поље",
+        "name:sr-Latn": "Alipašino polje",
+        "place": "suburb",
+        "wikidata": "Q3436419",
+        "wikimedia_commons": "Category:Alipašino Polje",
+        "wikipedia": "bs:Alipašino Polje"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3483943,
+          43.8423317
+        ]
+      },
+      "id": "node/614490471"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/904979086",
+        "name": "Cicin Han",
+        "name:sr": "Цицин Хан",
+        "name:sr-Latn": "Cicin Han",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.419702,
+          43.8501127
+        ]
+      },
+      "id": "node/904979086"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/942077652",
+        "name": "Hrasno",
+        "name:sr": "Храсно",
+        "name:sr-Latn": "Hrasno",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3835027,
+          43.8490518
+        ]
+      },
+      "id": "node/942077652"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1180981183",
+        "name": "Repca",
+        "name:sr": "Репца",
+        "name:sr-Latn": "Repca",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.5993026,
+          43.8128267
+        ]
+      },
+      "id": "node/1180981183"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1399589701",
+        "name": "Rosulje",
+        "name:sr": "Росуље",
+        "name:sr-Latn": "Rosulje",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3522963,
+          43.9033656
+        ]
+      },
+      "id": "node/1399589701"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1409743268",
+        "name": "Sokolović-kolonija",
+        "name:sr": "Соколовић-колонија",
+        "name:sr-Latn": "Sokolović-kolonija",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3155943,
+          43.8136895
+        ]
+      },
+      "id": "node/1409743268"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1443497735",
+        "name": "Alipašino Polje",
+        "name:bs": "Alipašino Polje",
+        "name:sr": "Алипашино Поље",
+        "place": "suburb",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3478944,
+          43.8431072
+        ]
+      },
+      "id": "way/1443497735"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1446990650",
+        "name": "Kovači",
+        "name:sr": "Ковачи",
+        "name:sr-Latn": "Kovači",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4340373,
+          43.862549
+        ]
+      },
+      "id": "node/1446990650"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1470615807",
+        "name": "Sumbuluša",
+        "name:sr": "Сумбулуша",
+        "name:sr-Latn": "Sumbuluša",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4360116,
+          43.8636576
+        ]
+      },
+      "id": "node/1470615807"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1488537278",
+        "name": "Sedrenik",
+        "name:sr": "Седреник",
+        "name:sr-Latn": "Sedrenik",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.434655,
+          43.8729546
+        ]
+      },
+      "id": "node/1488537278"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1488574775",
+        "name": "Medrese",
+        "name:hr": "Medrese",
+        "name:sr": "Медресе",
+        "name:sr-Latn": "Medrese",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4330819,
+          43.8675566
+        ]
+      },
+      "id": "node/1488574775"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1492813211",
+        "name": "Mošćanica",
+        "name:sr": "Мошћаница",
+        "name:sr-Latn": "Mošćanica",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.449001,
+          43.8681919
+        ]
+      },
+      "id": "node/1492813211"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1492835984",
+        "name": "Babića bašča",
+        "name:sr": "Бабића башча",
+        "name:sr-Latn": "Babića bašča",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4351632,
+          43.8573853
+        ]
+      },
+      "id": "node/1492835984"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1809449322",
+        "name": "Donji Pribanj",
+        "name:sr": "Доњи Прибањ",
+        "name:sr-Latn": "Donji Pribanj",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.5522878,
+          43.8202688
+        ]
+      },
+      "id": "node/1809449322"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1850600773",
+        "name": "Zabrđe",
+        "name:sr": "Забрђе",
+        "name:sr-Latn": "Zabrđe",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3212035,
+          43.8763839
+        ]
+      },
+      "id": "node/1850600773"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1850641789",
+        "name": "Lužani",
+        "name:sr": "Лужани",
+        "name:sr-Latn": "Lužani",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2998328,
+          43.8288155
+        ]
+      },
+      "id": "node/1850641789"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1959562613",
+        "name": "Aerodromsko naselje",
+        "name:hr": "Aerodromsko naselje",
+        "name:sr": "Аеродромско насеље",
+        "name:sr-Latn": "Aerodromsko naselje",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3386362,
+          43.8291397
+        ]
+      },
+      "id": "node/1959562613"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2019886916",
+        "name": "Aneks",
+        "name:sr": "Анекс",
+        "name:sr-Latn": "Aneks",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3709967,
+          43.8452675
+        ]
+      },
+      "id": "node/2019886916"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2021033229",
+        "name": "Bjelave",
+        "name:sr": "Бјелаве",
+        "name:sr-Latn": "Bjelave",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4195229,
+          43.8637854
+        ]
+      },
+      "id": "node/2021033229"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2021495046",
+        "name": "Velešići",
+        "name:sr": "Велешићи",
+        "name:sr-Latn": "Velešići",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3956098,
+          43.865026
+        ]
+      },
+      "id": "node/2021495046"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2021500087",
+        "name": "Bistrik",
+        "name:sr": "Бистрик",
+        "name:sr-Latn": "Bistrik",
+        "place": "suburb",
+        "wikidata": "Q3930055",
+        "wikimedia_commons": "Category:Bistrik",
+        "wikipedia": "bs:Bistrik"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4301122,
+          43.8550903
+        ]
+      },
+      "id": "node/2021500087"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2026434322",
+        "name": "Mejtaš",
+        "name:bs": "Mejtaš",
+        "name:en": "Mejtas",
+        "name:hr": "Mejtaš",
+        "name:sr": "Мејташ",
+        "name:sr-Latn": "Mejtaš",
+        "place": "suburb",
+        "wikidata": "Q6810506",
+        "wikipedia": "bs:Mejtaš"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4194456,
+          43.8612082
+        ]
+      },
+      "id": "node/2026434322"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2043629667",
+        "name": "Skenderija",
+        "name:sr": "Скендерија",
+        "name:sr-Latn": "Skenderija",
+        "place": "suburb",
+        "wikidata": "Q19738756",
+        "wikipedia": "bs:Skenderija (naselje)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4139241,
+          43.8551592
+        ]
+      },
+      "id": "node/2043629667"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2123118157",
+        "name": "Briješće",
+        "name:sr": "Бријешће",
+        "name:sr-Latn": "Briješće",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3299047,
+          43.8614041
+        ]
+      },
+      "id": "node/2123118157"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2322829671",
+        "name": "Kvadrant C5",
+        "name:sr": "Квадрант C5",
+        "name:sr-Latn": "Kvadrant C5",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3442043,
+          43.8267989
+        ]
+      },
+      "id": "node/2322829671"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2410435961",
+        "name": "Radića potok",
+        "name:sr": "Радића поток",
+        "name:sr-Latn": "Radića potok",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3475878,
+          43.9091269
+        ]
+      },
+      "id": "node/2410435961"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2540399168",
+        "name": "Stupsko Brdo",
+        "name:hr": "Stupsko Brdo",
+        "name:sr": "Ступско Брдо",
+        "name:sr-Latn": "Stupsko Brdo",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3337406,
+          43.8402336
+        ]
+      },
+      "id": "node/2540399168"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2540403330",
+        "name": "Azići",
+        "name:sr": "Азићи",
+        "name:sr-Latn": "Azići",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3136793,
+          43.8472394
+        ]
+      },
+      "id": "node/2540403330"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2540416423",
+        "name": "Pejton",
+        "name:sr": "Пејтон",
+        "name:sr-Latn": "Pejton",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.302551,
+          43.8353483
+        ]
+      },
+      "id": "node/2540416423"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2540472660",
+        "name": "Gornja Jošanica",
+        "name:sr": "Горња Јошаница",
+        "name:sr-Latn": "Gornja Jošanica",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3401415,
+          43.9073347
+        ]
+      },
+      "id": "node/2540472660"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2649588114",
+        "name": "Bare",
+        "name:sr": "Баре",
+        "name:sr-Latn": "Bare",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.5543509,
+          43.8129996
+        ]
+      },
+      "id": "node/2649588114"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2910883414",
+        "name": "Čengić Vila II",
+        "name:sr": "Ченгић Вила ИИ",
+        "name:sr-Latn": "Čengić Vila II",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3707873,
+          43.8477057
+        ]
+      },
+      "id": "node/2910883414"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2910895640",
+        "name": "Čengić Vila I",
+        "name:sr": "Ченгић Вила И",
+        "name:sr-Latn": "Čengić Vila I",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3694409,
+          43.8508596
+        ]
+      },
+      "id": "node/2910895640"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2919377376",
+        "name": "B-faza",
+        "name:hr": "Faza B",
+        "name:sr": "Фаза Б",
+        "name:sr-Latn": "Faza B",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3451684,
+          43.841883
+        ]
+      },
+      "id": "node/2919377376"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2919377378",
+        "name": "Faza C",
+        "name:sr": "Фаза Ц",
+        "name:sr-Latn": "Faza C",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3514666,
+          43.8427414
+        ]
+      },
+      "id": "node/2919377378"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2919377379",
+        "name": "Faza A",
+        "name:sr": "Фаза А",
+        "name:sr-Latn": "Faza A",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3476376,
+          43.8452257
+        ]
+      },
+      "id": "node/2919377379"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2919386409",
+        "alt_name": "Olimpijsko naselje",
+        "name": "Mojmilo",
+        "place": "quarter",
+        "wikidata": "Q10988901",
+        "wikimedia_commons": "Category:Mojmilo",
+        "wikipedia": "bs:Mojmilo (naselje)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.346157,
+          43.8381724
+        ]
+      },
+      "id": "node/2919386409"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3498798048",
+        "name": "Šip",
+        "name:sr": "Шип",
+        "name:sr-Latn": "Šip",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3968664,
+          43.88139
+        ]
+      },
+      "id": "node/3498798048"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3930391117",
+        "name": "Bare",
+        "name:sr": "Баре",
+        "name:sr-Latn": "Bare",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4027942,
+          43.875697
+        ]
+      },
+      "id": "node/3930391117"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3995932657",
+        "name": "Kula",
+        "name:sr": "Кула",
+        "name:sr-Latn": "Kula",
+        "place": "suburb",
+        "wikidata": "Q3200305",
+        "wikimedia_commons": "Category:Kula (Istočna Ilidža)",
+        "wikipedia": "sr:Кула (Источна Илиџа)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3547214,
+          43.8153388
+        ]
+      },
+      "id": "node/3995932657"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5204598747",
+        "name": "Naselje Nova otoka",
+        "name:sr": "Насеље Нова отока",
+        "name:sr-Latn": "Naselje Nova otoka",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3626117,
+          43.8498252
+        ]
+      },
+      "id": "node/5204598747"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205097685",
+        "name": "Dolac Malta",
+        "name:sr": "Долац Малта",
+        "name:sr-Latn": "Dolac Malta",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3792689,
+          43.8533947
+        ]
+      },
+      "id": "node/5205097685"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205102232",
+        "name": "Hrasno Brdo",
+        "name:sr": "Храсно Брдо",
+        "name:sr-Latn": "Hrasno Brdo",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3817432,
+          43.8442823
+        ]
+      },
+      "id": "node/5205102232"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205105250",
+        "name": "Kovačići",
+        "name:hr": "Kovačići",
+        "name:sr": "Ковачићи",
+        "name:sr-Latn": "Kovačići",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4037989,
+          43.8504988
+        ]
+      },
+      "id": "node/5205105250"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205108541",
+        "name": "Socijalno",
+        "name:sr": "Социјално",
+        "name:sr-Latn": "Socijalno",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3853281,
+          43.8530077
+        ]
+      },
+      "id": "node/5205108541"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205108542",
+        "name": "Pofalići II",
+        "name:sr": "Пофалићи ИИ",
+        "name:sr-Latn": "Pofalići II",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3772064,
+          43.8603727
+        ]
+      },
+      "id": "node/5205108542"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205109668",
+        "name": "Marijin Dvor",
+        "name:hr": "Marijin Dvor",
+        "name:sr": "Маријин Двор",
+        "name:sr-Latn": "Marijin Dvor",
+        "place": "suburb",
+        "wikidata": "Q1568607",
+        "wikimedia_commons": "Category:Marijin dvor (neighborhood)",
+        "wikipedia": "bs:Marijin Dvor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.408278,
+          43.8559143
+        ]
+      },
+      "id": "node/5205109668"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205110199",
+        "name": "Drvenija",
+        "name:sr": "Дрвенија",
+        "name:sr-Latn": "Drvenija",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4230501,
+          43.8559992
+        ]
+      },
+      "id": "node/5205110199"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205110200",
+        "name": "Baščaršija",
+        "name:hr": "Baščaršija",
+        "name:mk": "Baščaršija",
+        "name:ml": "ബസ്ചാർഷ്യ",
+        "name:sl": "Baščaršija",
+        "name:sr": "Башчаршија",
+        "name:sr-Latn": "Baščaršija",
+        "place": "suburb",
+        "wikidata": "Q629641",
+        "wikimedia_commons": "Category:Baščaršija",
+        "wikipedia": "bs:Baščaršija"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4309501,
+          43.8591032
+        ]
+      },
+      "id": "node/5205110200"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205110792",
+        "name": "Jezero",
+        "name:sr": "Језеро",
+        "name:sr-Latn": "Jezero",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4130708,
+          43.8762114
+        ]
+      },
+      "id": "node/5205110792"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205110793",
+        "name": "Koševo",
+        "name:sr": "Кошево",
+        "name:sr-Latn": "Koševo",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4134142,
+          43.8715709
+        ]
+      },
+      "id": "node/5205110793"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5205115051",
+        "name": "Korea",
+        "name:sr": "Кореа",
+        "name:sr-Latn": "Korea",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3850087,
+          43.8561386
+        ]
+      },
+      "id": "node/5205115051"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5349190059",
+        "name": "Podhrastovi",
+        "name:sr": "Подхрастови",
+        "name:sr-Latn": "Podhrastovi",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4235918,
+          43.8685862
+        ]
+      },
+      "id": "node/5349190059"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5625399522",
+        "name": "Briješće polje",
+        "name:sr": "Бријешће поље",
+        "name:sr-Latn": "Briješće polje",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3109988,
+          43.8564713
+        ]
+      },
+      "id": "node/5625399522"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5745501702",
+        "name": "Crni vrh",
+        "name:hr": "Crni vrh",
+        "name:sr": "Црни врх",
+        "name:sr-Latn": "Crni vrh",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4071042,
+          43.8618287
+        ]
+      },
+      "id": "node/5745501702"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6011249470",
+        "name": "Vratnik",
+        "name:sr": "Вратник",
+        "name:sr-Latn": "Vratnik",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4406951,
+          43.8623357
+        ]
+      },
+      "id": "node/6011249470"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6011254033",
+        "name": "Širokača",
+        "name:sr": "Широкача",
+        "name:sr-Latn": "Širokača",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4250643,
+          43.8516902
+        ]
+      },
+      "id": "node/6011254033"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7682628239",
+        "addr:postcode": "71123",
+        "name": "Dobrinja IV",
+        "name:bs": "Dobrinja IV",
+        "name:hr": "Dobrinja IV",
+        "name:sr": "Добриња IV",
+        "name:sr-Latn": "Dobrinja IV",
+        "note": "Izgrađeno 1983. kao Olimpijsko selo za novinare (ZOI 1984). Do Dejtonskog sporazuma 1995. bio integralni dio naselja Dobrinja. Danas je dio opštine Istočna Ilidža (RS).",
+        "place": "quarter",
+        "source": "<Source_Description>",
+        "start_date": "1983",
+        "wikidata": "Q3033347",
+        "wikimedia_commons": "Category:Dobrinja IV",
+        "wikipedia": "sr:Добриња IV"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3583108,
+          43.8280287
+        ]
+      },
+      "id": "node/7682628239"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7682628244",
+        "name": "Mladičko Polje",
+        "name:sr": "Младичко Поље",
+        "name:sr-Latn": "Mladičko Polje",
+        "place": "quarter",
+        "wikidata": "Q3317425",
+        "wikipedia": "sr:Младичко Поље"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3720762,
+          43.8075869
+        ]
+      },
+      "id": "node/7682628244"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7682628388",
+        "name": "Veljine",
+        "name:sr": "Вељине",
+        "name:sr-Latn": "Veljine",
+        "place": "quarter",
+        "wikidata": "Q12749710",
+        "wikimedia_commons": "Category:Veljine",
+        "wikipedia": "sr:Вељине"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3597714,
+          43.8253416
+        ]
+      },
+      "id": "node/7682628388"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7682628389",
+        "name": "Dobrinja I",
+        "name:sr": "Добриња I",
+        "name:sr-Latn": "Dobrinja I",
+        "place": "quarter",
+        "wikidata": "Q3033348",
+        "wikipedia": "sr:Добриња I"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3522447,
+          43.823389
+        ]
+      },
+      "id": "node/7682628389"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7682628390",
+        "addr:postcode": "71123",
+        "name": "Naselje Starosjedilaca",
+        "name:bs": "Naselje Starosjedilaca",
+        "name:hr": "Naselje Starosjedilaca",
+        "name:sr": "Насеље Старосједилаца",
+        "name:sr-Latn": "Naselje Starosjedilaca",
+        "place": "neighbourhood",
+        "source": "<Source_Description>",
+        "wikidata": "Q3336173",
+        "wikipedia": "sr:Насеље Старосједилаца"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3654286,
+          43.8308259
+        ]
+      },
+      "id": "node/7682628390"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7682628391",
+        "addr:postcode": "71123",
+        "name": "Soko",
+        "name:bs": "Soko",
+        "name:hr": "Soko",
+        "name:sr": "Соко",
+        "name:sr-Latn": "Soko",
+        "note": "Stambeno naselje izgrađeno poslije 1995. godine.",
+        "place": "neighbourhood",
+        "source": "<Source_Description>",
+        "wikidata": "Q16088117",
+        "wikipedia": "sr:Соко (Источна Илиџа)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3569368,
+          43.8243381
+        ]
+      },
+      "id": "node/7682628391"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7804312936",
+        "name": "Gornji Velešići",
+        "name:sr": "Горњи Велешићи",
+        "name:sr-Latn": "Gornji Velešići",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3979098,
+          43.8701631
+        ]
+      },
+      "id": "node/7804312936"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7816021574",
+        "name": "Dobrinja III",
+        "name:sr": "Добриња",
+        "name:sr-Latn": "Dobrinja III",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3510055,
+          43.8303246
+        ]
+      },
+      "id": "node/7816021574"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7816021575",
+        "name": "Dobrinja V",
+        "name:sr": "Добриња V",
+        "name:sr-Latn": "Dobrinja V",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3433173,
+          43.8336463
+        ]
+      },
+      "id": "node/7816021575"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7816021576",
+        "name": "Dobrinja II",
+        "name:sr": "Добриња II",
+        "name:sr-Latn": "Dobrinja II",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3492282,
+          43.8279694
+        ]
+      },
+      "id": "node/7816021576"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7843565684",
+        "addr:postcode": "71000",
+        "name": "Lukavica",
+        "name:bs": "Lukavica",
+        "name:hr": "Lukavica",
+        "name:sr": "Лукавица",
+        "name:sr-Latn": "Lukavica",
+        "note": "Dio prijeratnog naselja Lukavica koji je nakon Dejtonskog sporazuma 1995. ostao u opštini Novo Sarajevo (FBiH).",
+        "place": "neighbourhood",
+        "population": "831",
+        "population:date": "2013",
+        "source": "<Source_Description>",
+        "source:population": "census",
+        "wikidata": "Q19951110",
+        "wikipedia": "bs:Lukavica (Novo Sarajevo)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.37345,
+          43.8388743
+        ]
+      },
+      "id": "node/7843565684"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7843662122",
+        "addr:postcode": "71000",
+        "name": "Miljevići",
+        "name:bs": "Miljevići",
+        "name:hr": "Miljevići",
+        "name:sr": "Миљевићи",
+        "name:sr-Latn": "Miljevići",
+        "note": "Dio prijeratnog naselja Miljevići koji je nakon Dejtonskog sporazuma 1995. ostao u opštini Novo Sarajevo (FBiH).",
+        "place": "neighbourhood",
+        "population": "31",
+        "population:date": "2013",
+        "source": "<Source_Description>",
+        "source:population": "census",
+        "wikidata": "Q19951129",
+        "wikipedia": "bs:Miljevići (Novo Sarajevo)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4032252,
+          43.8443118
+        ]
+      },
+      "id": "node/7843662122"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7847558817",
+        "name": "Vlakovo",
+        "name:sr": "Влаково",
+        "name:sr-Latn": "Vlakovo",
+        "place": "suburb"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.2418118,
+          43.8757281
+        ]
+      },
+      "id": "node/7847558817"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7859485515",
+        "name": "Hipodrom",
+        "name:sr": "Хиподром",
+        "name:sr-Latn": "Hipodrom",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3306921,
+          43.8073363
+        ]
+      },
+      "id": "node/7859485515"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7861877715",
+        "addr:postcode": "71123",
+        "name": "Bijelo Polje",
+        "name:bs": "Bijelo Polje",
+        "name:hr": "Bijelo Polje",
+        "name:sr": "Бијело Поље",
+        "name:sr-Latn": "Bijelo Polje",
+        "note": "Dio opštine Istočna Ilidža. Prije rata ruralno područje, planski urbanizovano poslije 1995.",
+        "place": "neighbourhood",
+        "source": "<Source_Description>",
+        "wikidata": "Q2902516",
+        "wikipedia": "sr:Бијело Поље (Источна Илиџа)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3530161,
+          43.819639
+        ]
+      },
+      "id": "node/7861877715"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9191073049",
+        "name": "Naselje Bulevar",
+        "name:sr": "Насеље Булевар",
+        "name:sr-Latn": "Naselje Bulevar",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3230076,
+          43.840292
+        ]
+      },
+      "id": "node/9191073049"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915843174",
+        "name": "Džidžikovac",
+        "name:sr": "Џиџиковац",
+        "name:sr-Latn": "Džidžikovac",
+        "place": "neighbourhood",
+        "wikidata": "Q30595666",
+        "wikimedia_commons": "Category:Džidžikovac",
+        "wikipedia": "en:Džidžikovac"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4163868,
+          43.8616456
+        ]
+      },
+      "id": "node/11915843174"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12771570872",
+        "name": "Mojmilo brdo",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3560312,
+          43.8395003
+        ]
+      },
+      "id": "node/12771570872"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12771929378",
+        "name": "Turkušići",
+        "place": "neighbourhood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3598373,
+          43.8347519
+        ]
+      },
+      "id": "node/12771929378"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12776852613",
+        "name": "Gorica",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.4062616,
+          43.8635717
+        ]
+      },
+      "id": "node/12776852613"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12794021396",
+        "name": "Dobrinjska Mahala",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3402436,
+          43.8316528
+        ]
+      },
+      "id": "node/12794021396"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14120239943",
+        "name": "Reljevo",
+        "place": "quarter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.3119075,
+          43.8878098
+        ]
+      },
+      "id": "node/14120239943"
+    }
+  ]
+}

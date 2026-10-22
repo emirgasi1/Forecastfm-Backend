@@ -70,7 +70,6 @@ class SavedPlaceRepository {
                         longitude = row[Places.longitude],
                         description = row[Places.description],
                         imageUrl = row[Places.imageUrl],
-                        rating = row[Places.rating],
                         createdAt = row[Places.createdAt].toString()
                     )
                 }

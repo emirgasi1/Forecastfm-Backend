@@ -137,7 +137,6 @@ object PlaceGeoJsonSeeder {
                 it[Places.longitude] = centroid.second
                 it[Places.description] = "$category in Sarajevo"
                 it[Places.imageUrl] = null
-                it[Places.rating] = 0.0
                 it[Places.createdAt] = Instant.now()
             }
             result = InsertResult.INSERTED

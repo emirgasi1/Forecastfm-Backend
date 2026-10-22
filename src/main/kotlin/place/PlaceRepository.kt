@@ -8,7 +8,7 @@ import org.jetbrains.exposed.v1.core.or
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.time.Instant
-import java.util.UUID
+import org.jetbrains.exposed.v1.jdbc.insert
 
 class PlacesRepository {
 
@@ -28,7 +28,6 @@ class PlacesRepository {
                         longitude = row[Places.longitude],
                         description = row[Places.description],
                         imageUrl = row[Places.imageUrl],
-                        rating = row[Places.rating],
                         createdAt = row[Places.createdAt].toString()
                     )
                 }
@@ -52,7 +51,6 @@ class PlacesRepository {
                         longitude = row[Places.longitude],
                         description = row[Places.description],
                         imageUrl = row[Places.imageUrl],
-                        rating = row[Places.rating],
                         createdAt = row[Places.createdAt].toString()
                     )
                 }
@@ -82,10 +80,25 @@ class PlacesRepository {
                         longitude = row[Places.longitude],
                         description = row[Places.description],
                         imageUrl = row[Places.imageUrl],
-                        rating = row[Places.rating],
                         createdAt = row[Places.createdAt].toString()
                     )
                 }
+        }
+    }
+    fun bulkInsert(places: List<Place>) = transaction {
+        for (p in places) {
+            com.example.database.table.Places.insert {
+                it[id] = p.id
+                it[name] = p.name
+                it[category] = p.category
+                it[venueId] = p.venueId
+                it[address] = p.address
+                it[latitude] = p.latitude
+                it[longitude] = p.longitude
+                it[description] = p.description
+                it[imageUrl] = p.imageUrl
+                it[createdAt] = Instant.now()
+            }
         }
     }
     fun getAllPlaces(): List<Place> {
@@ -103,7 +116,6 @@ class PlacesRepository {
                         longitude = row[Places.longitude],
                         description = row[Places.description],
                         imageUrl = row[Places.imageUrl],
-                        rating = row[Places.rating],
                         createdAt = row[Places.createdAt].toString()
                     )
                 }
@@ -118,4 +130,5 @@ class PlacesRepository {
                 .toInt()
         }
     }
+
 }

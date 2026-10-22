@@ -63,7 +63,6 @@ class PlacesRoutesTest {
                 it[Places.latitude] = 43.0
                 it[Places.longitude] = 18.0
                 it[Places.description] = "Wooden fountain"
-                it[Places.rating] = 4.9
                 it[Places.createdAt] = Instant.now()
             }
         }

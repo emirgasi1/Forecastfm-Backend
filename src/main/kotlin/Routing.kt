@@ -14,6 +14,7 @@ import com.example.routes.playlistRoutes
 import com.example.routes.postRoutes
 import com.example.routes.routeRoutes
 import com.example.routes.userRoutes
+import com.example.routes.venuesRoutes
 import com.example.user.CreateUserRequest
 import com.example.user.UserRepository
 import com.example.user.UserResponse
@@ -43,6 +44,7 @@ fun Application.configureRouting(
             )
         }
         userRoutes()
+        venuesRoutes()
         postRoutes()
         commentRoutes()
         playlistRoutes()

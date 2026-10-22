@@ -54,7 +54,6 @@ class PlacesRepositoryTest {
                 it[Places.longitude] = 18.4200
                 it[Places.description] = "Description for $name"
                 it[Places.imageUrl] = null
-                it[Places.rating] = rating
                 it[Places.createdAt] = Instant.now()
             }
         }

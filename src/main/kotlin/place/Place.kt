@@ -13,6 +13,5 @@ data class Place(
     val longitude: Double,
     val description: String,
     val imageUrl: String? = null,
-    val rating: Double = 0.0,
     val createdAt: String
 )

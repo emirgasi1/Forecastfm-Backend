@@ -40,7 +40,6 @@ class PlaceRecommendationRepository {
             it[PlaceRecommendations.suitableFor] = suitableForString
             it[PlaceRecommendations.weatherCondition] = weatherCondition
             it[PlaceRecommendations.ageGroup] = ageGroupString
-            it[PlaceRecommendations.rating] = rating
             it[PlaceRecommendations.imageUrl] = imageUrl
             it[PlaceRecommendations.createdAt] = now
             it[PlaceRecommendations.placeId] = placeId
@@ -55,7 +54,6 @@ class PlaceRecommendationRepository {
             suitableFor = suitableFor,
             weatherCondition = weatherCondition,
             ageGroup = ageGroup,
-            rating = rating,
             imageUrl = imageUrl,
             createdAt = now.toString(),
             placeId = placeId
@@ -110,7 +108,6 @@ class PlaceRecommendationRepository {
             suitableFor = this[PlaceRecommendations.suitableFor].split(",").filter { it.isNotBlank() },
             weatherCondition = this[PlaceRecommendations.weatherCondition],
             ageGroup = this[PlaceRecommendations.ageGroup].split(",").filter { it.isNotBlank() },
-            rating = this[PlaceRecommendations.rating],
             imageUrl = this[PlaceRecommendations.imageUrl],
             createdAt = this[PlaceRecommendations.createdAt].toString(),
             placeId = this[PlaceRecommendations.placeId]

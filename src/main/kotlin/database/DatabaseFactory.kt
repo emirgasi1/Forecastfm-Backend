@@ -1,6 +1,6 @@
 package com.example.database
 
-import com.example.database.seed.SeedData
+import com.example.database.seed.DatabaseSeeder            // ← add
 import com.example.database.table.BusStations
 import com.example.database.table.CommentLikes
 import database.table.Comments
@@ -18,7 +18,8 @@ import com.example.database.table.Posts
 import com.example.database.table.SavedOutfits
 import com.example.database.table.SavedPlaces
 import com.example.database.table.SavedPosts
-import com.example.location.PlaceGeoJsonSeeder
+import com.example.database.table.Venues
+import com.example.location.PlaceGeoJsonSeeder                 // ← keep if this seeds Locations
 import database.table.UserSessions
 import database.table.Users
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -41,30 +42,17 @@ object DatabaseFactory {
 
         transaction {
             SchemaUtils.create(
-                Users,
-                UserSessions,
-                Posts,
-                Comments,
-                CommentLikes,
-                SavedPlaces,
-                Musics,
-                Playlists,
-                PlaylistSongs,
-                PostLikes,
-                SavedPosts,
-                FavoritePlaylists,
-                MusicHistory,
-                Locations,
-                Outfits,
-                PlaceRecommendations,
-                Places,
-                SavedOutfits,
+                Users, UserSessions, Posts, Comments, CommentLikes,
+                SavedPlaces, Musics, Playlists, PlaylistSongs, PostLikes,
+                SavedPosts, FavoritePlaylists, MusicHistory, Locations,
+                Outfits, PlaceRecommendations, SavedOutfits, Venues,
                 BusStations
             )
-        }
+
 
         if (url.startsWith("jdbc:postgresql")) {
-            PlaceGeoJsonSeeder.seed()
+            PlaceGeoJsonSeeder.seed()               // seeds Locations
+            DatabaseSeeder.seedVenuesIfEmpty()      // seeds Venues
         }
     }
 

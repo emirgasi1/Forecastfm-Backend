@@ -13,7 +13,6 @@ data class PlaceRecommendationFromPlaceResponse(
     val suitableFor: List<String>,
     val weatherCondition: String,
     val ageGroup: List<String>,
-    val rating: Double,
     val imageUrl: String? = null,
     val address: String? = null,
     val createdAt: String

@@ -54,7 +54,6 @@ class SavedPlaceRepositoryTest {
                 it[Places.latitude] = 43.0
                 it[Places.longitude] = 18.0
                 it[Places.description] = "Museum desc"
-                it[Places.rating] = 4.8
                 it[Places.createdAt] = Instant.now()
             }
         }

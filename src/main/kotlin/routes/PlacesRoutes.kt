@@ -128,7 +128,6 @@ fun Route.placesRoutes() {
                 suitableFor = com.example.places.PlaceTagMapper.suitableFor(place.category),
                 weatherCondition = com.example.places.PlaceTagMapper.weatherCondition(place.category),
                 ageGroup = com.example.places.PlaceTagMapper.ageGroup(place.category),
-                rating = place.rating,
                 imageUrl = place.imageUrl,
                 address = place.address,
                 createdAt = place.createdAt.toString()

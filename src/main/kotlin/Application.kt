@@ -2,6 +2,7 @@ package com.example
 
 import com.example.configure.createHttpClient
 import com.example.database.DatabaseFactory
+import com.example.database.seed.DatabaseSeeder
 import com.example.weather.WeatherApi
 import com.example.weather.WeatherRepository
 import com.example.routes.weatherRoutes
@@ -11,7 +12,7 @@ import java.io.File
 fun Application.rootModule() {
 
     DatabaseFactory.init()
-
+    DatabaseSeeder.seedVenuesIfEmpty()
     val httpClient = createHttpClient()
 
     val weatherApi = WeatherApi(httpClient)

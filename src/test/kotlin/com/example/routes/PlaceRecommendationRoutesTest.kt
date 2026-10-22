@@ -60,7 +60,6 @@ class PlaceRecommendationRoutesTest {
                 it[Places.longitude] = 0.0
                 it[Places.description] = "Dummy description"
                 it[Places.imageUrl] = null
-                it[Places.rating] = 4.5
                 it[Places.createdAt] = Instant.now()
             }
         }
@@ -102,7 +101,6 @@ class PlaceRecommendationRoutesTest {
         assertNotNull(created.id)
         assertEquals("Central Park", created.name)
         assertEquals("Park", created.category)
-        assertEquals(4.8, created.rating)
     }
 
     @Test

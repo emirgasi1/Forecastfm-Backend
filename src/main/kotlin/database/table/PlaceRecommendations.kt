@@ -12,7 +12,6 @@ object PlaceRecommendations : Table("place_recommendations") {
     val suitableFor = text("suitableFor")  // comma-separated list
     val weatherCondition = text("weatherCondition")
     val ageGroup = text("ageGroup")  // comma-separated list
-    val rating = double("rating")
     val imageUrl = text("imageUrl").nullable()
     val createdAt = timestamp("createdAt")
     val placeId = text("place_id").references(Places.id)
