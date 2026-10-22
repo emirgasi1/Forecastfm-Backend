@@ -18,6 +18,7 @@ import com.example.database.table.Posts
 import com.example.database.table.SavedOutfits
 import com.example.database.table.SavedPlaces
 import com.example.database.table.SavedPosts
+import com.example.location.PlaceGeoJsonSeeder
 import database.table.UserSessions
 import database.table.Users
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -63,7 +64,7 @@ object DatabaseFactory {
         }
 
         if (url.startsWith("jdbc:postgresql")) {
-            SeedData.seedAll()
+            PlaceGeoJsonSeeder.seed()
         }
     }
 

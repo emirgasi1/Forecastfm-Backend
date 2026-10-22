@@ -7,16 +7,19 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 class LocationRepository {
 
     fun getLocations(): List<Location> = transaction {
-
         Locations
             .selectAll()
             .map {
                 Location(
-                    id = it[Locations.id].toString(),
+                    id = it[Locations.id],
                     name = it[Locations.name],
                     description = it[Locations.description],
                     latitude = it[Locations.latitude],
-                    longitude = it[Locations.longitude]
+                    longitude = it[Locations.longitude],
+                    category = it[Locations.category],
+                    address = it[Locations.address],
+                    openingHours = it[Locations.openingHours],
+                    outdoorSeating = it[Locations.outdoorSeating]
                 )
             }
     }
