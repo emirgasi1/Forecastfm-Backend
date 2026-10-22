@@ -4,6 +4,7 @@ import com.example.database.table.Locations
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.exposed.v1.jdbc.insertIgnore
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -24,27 +25,36 @@ data class GeoJsonFeature(
 @Serializable
 data class GeoJsonGeometry(
     val type: String,
-    val coordinates: JsonElement
+    val coordinates: JsonElement? = null,
+    val center: GeoJsonCenter? = null
 )
+
+@Serializable
+data class GeoJsonCenter(val lat: Double, val lon: Double)
 
 object PlaceGeoJsonSeeder {
 
+    private val NEIGHBORHOOD_CATEGORIES = setOf("suburb", "neighbourhood", "quarter")
+
     fun seed() {
-        // This reads the file directly from the src/main/resources folder inside the JAR
         val existing = transaction { Locations.selectAll().count() }
         if (existing > 0L) {
             println("PlaceGeoJsonSeeder: Locations already present ($existing) — skipping")
             return
         }
-        val inputStream = PlaceGeoJsonSeeder::class.java.classLoader.getResourceAsStream("sarajevo_places.geojson")
+
+        // ← reads sarajevo_neighborhoods.geojson (the small 123-feature file)
+        val inputStream = PlaceGeoJsonSeeder::class.java.classLoader
+            .getResourceAsStream("sarajevo_neighborhoods.geojson")
 
         if (inputStream == null) {
-            println("PlaceGeoJsonSeeder: File 'sarajevo_places.geojson' NOT FOUND in resources!")
+            println("PlaceGeoJsonSeeder: 'sarajevo_neighborhoods.geojson' NOT FOUND in resources!")
             return
         }
 
         println("PlaceGeoJsonSeeder: Starting...")
-        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        // ← UTF-8 to fix mojibake
+        val jsonString = inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
         val json = Json { ignoreUnknownKeys = true }
 
         try {
@@ -53,30 +63,28 @@ object PlaceGeoJsonSeeder {
 
             var inserted = 0
             var skipped = 0
+            var filteredOut = 0
 
             transaction {
                 featureCollection.features.forEach { feature ->
-
                     val props = feature.properties
-                    val name = props?.get("name")?.jsonPrimitive?.contentOrNull ?: return@forEach
+                    val name = props?.get("name")?.jsonPrimitive?.contentOrNull ?: run {
+                        skipped++; return@forEach
+                    }
 
-                    val category = props["amenity"]?.jsonPrimitive?.contentOrNull
-                        ?: props["tourism"]?.jsonPrimitive?.contentOrNull
-                        ?: props["highway"]?.jsonPrimitive?.contentOrNull
-                        ?: props["place"]?.jsonPrimitive?.contentOrNull
-                        ?: "general"
+                    // ← only neighborhoods/suburbs/quarters
+                    val placeTag = props["place"]?.jsonPrimitive?.contentOrNull
+                    if (placeTag == null || placeTag !in NEIGHBORHOOD_CATEGORIES) {
+                        filteredOut++
+                        return@forEach
+                    }
 
-                    val street = props["addr:street"]?.jsonPrimitive?.contentOrNull
-                    val housenumber = props["addr:housenumber"]?.jsonPrimitive?.contentOrNull
-                    val address = if (street != null) {
-                        if (housenumber != null) "$street $housenumber" else street
-                    } else null
+                    val (lat, lon) = extractCoordinates(feature.geometry) ?: run {
+                        skipped++; return@forEach
+                    }
 
-                    val openingHours = props["opening_hours"]?.jsonPrimitive?.contentOrNull
-                    val outdoorSeating = props["outdoor_seating"]?.jsonPrimitive?.contentOrNull == "yes"
-
-                    val (lat, lon) = extractCoordinates(feature.geometry) ?: return@forEach
-                    val description = props["description"]?.jsonPrimitive?.contentOrNull ?: "Sarajevo location"
+                    val description = props["description"]?.jsonPrimitive?.contentOrNull
+                        ?: "Naselje u Sarajevu."
                     val id = feature.id.replace("/", "-")
 
                     try {
@@ -86,10 +94,10 @@ object PlaceGeoJsonSeeder {
                             it[Locations.description] = description
                             it[Locations.latitude] = lat
                             it[Locations.longitude] = lon
-                            it[Locations.category] = category
-                            it[Locations.address] = address
-                            it[Locations.openingHours] = openingHours
-                            it[Locations.outdoorSeating] = outdoorSeating
+                            it[Locations.category] = placeTag
+                            it[Locations.address] = null
+                            it[Locations.openingHours] = null
+                            it[Locations.outdoorSeating] = false
                         }
                         inserted++
                     } catch (e: Exception) {
@@ -97,7 +105,7 @@ object PlaceGeoJsonSeeder {
                     }
                 }
             }
-            println("PlaceGeoJsonSeeder DONE: inserted=$inserted, skipped=$skipped")
+            println("PlaceGeoJsonSeeder DONE: inserted=$inserted, skipped=$skipped, filteredOut=$filteredOut")
 
         } catch (e: Exception) {
             println("PlaceGeoJsonSeeder failed: ${e.message}")
@@ -107,14 +115,20 @@ object PlaceGeoJsonSeeder {
 
     private fun extractCoordinates(geometry: GeoJsonGeometry?): Pair<Double, Double>? {
         if (geometry == null) return null
+
+        geometry.center?.let { return it.lat to it.lon }
+
+        val coords = geometry.coordinates ?: return null
+
         return try {
             when (geometry.type) {
                 "Point" -> {
-                    val coords = geometry.coordinates.toString().removeSurrounding("[", "]").split(",")
-                    Pair(coords[1].trim().toDouble(), coords[0].trim().toDouble())
+                    val text = coords.toString().removeSurrounding("[", "]")
+                    val parts = text.split(",")
+                    Pair(parts[1].trim().toDouble(), parts[0].trim().toDouble())
                 }
                 "Polygon", "MultiPolygon" -> {
-                    val text = geometry.coordinates.toString()
+                    val text = coords.toString()
                     val firstBracket = text.indexOf("[[")
                     val firstComma = text.indexOf(",", firstBracket)
                     val lon = text.substring(firstBracket + 2, firstComma).trim().toDouble()
@@ -128,10 +142,4 @@ object PlaceGeoJsonSeeder {
             null
         }
     }
-
-    private val JsonElement?.contentOrNull: String?
-        get() = try { this?.jsonPrimitive?.content } catch (e: Exception) { null }
-
-    private val JsonElement?.jsonPrimitive: kotlinx.serialization.json.JsonPrimitive
-        get() = this as kotlinx.serialization.json.JsonPrimitive
 }

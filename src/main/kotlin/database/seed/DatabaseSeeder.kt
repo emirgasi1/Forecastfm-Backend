@@ -34,7 +34,7 @@ object DatabaseSeeder {
                 return
             }
 
-        val root = stream.bufferedReader().use { it.readText() }
+        val root = stream.bufferedReader(Charsets.UTF_8).use { it.readText() }
         val parsed = json.parseToJsonElement(root).jsonObject
         val features = parsed["features"]?.jsonArray ?: JsonArray(emptyList())
 
