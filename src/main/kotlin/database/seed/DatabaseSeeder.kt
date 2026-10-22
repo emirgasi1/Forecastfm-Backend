@@ -6,6 +6,7 @@ import com.example.venue.VenuesRepository
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonArray
@@ -81,37 +82,53 @@ object DatabaseSeeder {
     }
 
     /**
-     * GeoJSON can come in two shapes here:
-     *  - Point:  geometry.coordinates = [lon, lat]
-     *  - Polygon: geometry.center     = { lat, lon }   (Overpass `out center;` for ways)
+     * GeoJSON geometry types that Overpass `out center;` can produce:
+     *  - Point:      coordinates = [lon, lat]
+     *  - LineString: coordinates = [[lon, lat], ...]
+     *  - Polygon:    coordinates = [[[lon, lat], ...], ...]
+     *  - MultiPolygon: coordinates = [[[[lon, lat], ...]], ...]
+     *  - Ways/relations from `out center;` also come with `center = { lat, lon }`
+     *
+     * We prefer `center` when present, then fall back to the first reachable
+     * coordinate pair. Returns `(lat, lon)` or null if nothing usable.
      */
     private fun extractCoordinates(feature: JsonObject): Pair<Double, Double>? {
         val geometry = feature["geometry"]?.jsonObject ?: return null
 
-        // Prefer `center` for ways (Overpass `out center;`)
+        // 1. Prefer `center` for ways/relations
         val center = geometry["center"]?.jsonObject
         if (center != null) {
-            val lat = center["lat"]?.jsonPrimitive?.doubleOrNull
-            val lon = center["lon"]?.jsonPrimitive?.doubleOrNull
+            val lat = (center["lat"] as? JsonPrimitive)?.doubleOrNull
+            val lon = (center["lon"] as? JsonPrimitive)?.doubleOrNull
             if (lat != null && lon != null) return lat to lon
         }
 
-        // Fall back to Point coordinates: [lon, lat]
-        val type = geometry["type"]?.jsonPrimitive?.contentOrNull
-        val coords = geometry["coordinates"]?.jsonArray
-        if (type == "Point" && coords != null && coords.size >= 2) {
-            val lon = coords[0].jsonPrimitive.doubleOrNull
-            val lat = coords[1].jsonPrimitive.doubleOrNull
+        val coords = geometry["coordinates"] as? JsonArray ?: return null
+
+        // 2. Point: [lon, lat]
+        if (coords.size >= 2) {
+            val lon = (coords[0] as? JsonPrimitive)?.doubleOrNull
+            val lat = (coords[1] as? JsonPrimitive)?.doubleOrNull
             if (lat != null && lon != null) return lat to lon
         }
 
-        // Fallback: first coordinate of a polygon
-        if (coords != null && coords.isNotEmpty()) {
-            val first = coords[0]
-            if (first is JsonArray && first.size >= 2) {
-                val lon = first[0].jsonPrimitive.doubleOrNull
-                val lat = first[1].jsonPrimitive.doubleOrNull
-                if (lat != null && lon != null) return lat to lon
+        // 3. Nested arrays — walk down until we find a [lon, lat] pair
+        var current: JsonArray? = coords
+        var depth = 0
+        while (current != null && depth < 5) {
+            val first = current.firstOrNull()
+            when (first) {
+                is JsonPrimitive -> {
+                    val lon = first.doubleOrNull
+                    val lat = (current.getOrNull(1) as? JsonPrimitive)?.doubleOrNull
+                    if (lat != null && lon != null) return lat to lon
+                    return null
+                }
+                is JsonArray -> {
+                    current = first
+                    depth++
+                }
+                else -> return null
             }
         }
 

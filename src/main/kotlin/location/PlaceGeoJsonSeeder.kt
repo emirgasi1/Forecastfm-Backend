@@ -6,6 +6,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.exposed.v1.jdbc.insertIgnore
+import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 @Serializable
@@ -30,6 +31,11 @@ object PlaceGeoJsonSeeder {
 
     fun seed() {
         // This reads the file directly from the src/main/resources folder inside the JAR
+        val existing = transaction { Locations.selectAll().count() }
+        if (existing > 0L) {
+            println("PlaceGeoJsonSeeder: Locations already present ($existing) — skipping")
+            return
+        }
         val inputStream = PlaceGeoJsonSeeder::class.java.classLoader.getResourceAsStream("sarajevo_places.geojson")
 
         if (inputStream == null) {
