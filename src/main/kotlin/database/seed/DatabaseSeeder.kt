@@ -9,7 +9,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -34,22 +33,33 @@ object DatabaseSeeder {
                 return
             }
 
+        // ← UTF-8 fix
         val root = stream.bufferedReader(Charsets.UTF_8).use { it.readText() }
         val parsed = json.parseToJsonElement(root).jsonObject
-        val features = parsed["features"]?.jsonArray ?: JsonArray(emptyList())
+        val features = parsed["features"]?.let { it as? JsonArray } ?: JsonArray(emptyList())
 
         val venues = mutableListOf<Venue>()
         val seenIds = mutableSetOf<String>()
+        var filteredShortName = 0
+        var filteredNoCoord = 0
+        var filteredNoCategory = 0
 
         for (feature in features) {
             val f = feature.jsonObject
             val props = f["properties"]?.jsonObject ?: continue
             val name = props["name"]?.jsonPrimitive?.contentOrNull ?: continue
 
+            // ← filter junk names: skip anything < 3 chars or all-digits
+            val trimmed = name.trim()
+            if (trimmed.length < 3 || trimmed.all { it.isDigit() }) {
+                filteredShortName++
+                continue
+            }
+
             val category = props["amenity"]?.jsonPrimitive?.contentOrNull
                 ?: props["tourism"]?.jsonPrimitive?.contentOrNull
                 ?: props["highway"]?.jsonPrimitive?.contentOrNull
-                ?: continue
+                ?: run { filteredNoCategory++; continue }
 
             val rawId = f["id"]?.jsonPrimitive?.contentOrNull
                 ?: props["@id"]?.jsonPrimitive?.contentOrNull
@@ -58,11 +68,11 @@ object DatabaseSeeder {
             val id = rawId.replace("/", "-")
             if (!seenIds.add(id)) continue
 
-            val coords = extractCoordinates(f) ?: continue
+            val coords = extractCoordinates(f) ?: run { filteredNoCoord++; continue }
 
             venues += Venue(
                 id = id,
-                name = name,
+                name = trimmed,
                 category = category,
                 locationId = null,
                 address = null,
@@ -74,28 +84,18 @@ object DatabaseSeeder {
             )
         }
 
-        println("[Seeder] Parsed ${features.size} features → ${venues.size} unique venues")
+        println("[Seeder] Parsed ${features.size} features → ${venues.size} unique venues " +
+                "(dropped: shortName=$filteredShortName noCoord=$filteredNoCoord noCategory=$filteredNoCategory)")
+
         if (venues.isNotEmpty()) {
             VenuesRepository().bulkInsert(venues)
             println("[Seeder] Inserted ${venues.size} venues")
         }
     }
 
-    /**
-     * GeoJSON geometry types that Overpass `out center;` can produce:
-     *  - Point:      coordinates = [lon, lat]
-     *  - LineString: coordinates = [[lon, lat], ...]
-     *  - Polygon:    coordinates = [[[lon, lat], ...], ...]
-     *  - MultiPolygon: coordinates = [[[[lon, lat], ...]], ...]
-     *  - Ways/relations from `out center;` also come with `center = { lat, lon }`
-     *
-     * We prefer `center` when present, then fall back to the first reachable
-     * coordinate pair. Returns `(lat, lon)` or null if nothing usable.
-     */
     private fun extractCoordinates(feature: JsonObject): Pair<Double, Double>? {
         val geometry = feature["geometry"]?.jsonObject ?: return null
 
-        // 1. Prefer `center` for ways/relations
         val center = geometry["center"]?.jsonObject
         if (center != null) {
             val lat = (center["lat"] as? JsonPrimitive)?.doubleOrNull
@@ -105,14 +105,12 @@ object DatabaseSeeder {
 
         val coords = geometry["coordinates"] as? JsonArray ?: return null
 
-        // 2. Point: [lon, lat]
         if (coords.size >= 2) {
             val lon = (coords[0] as? JsonPrimitive)?.doubleOrNull
             val lat = (coords[1] as? JsonPrimitive)?.doubleOrNull
             if (lat != null && lon != null) return lat to lon
         }
 
-        // 3. Nested arrays — walk down until we find a [lon, lat] pair
         var current: JsonArray? = coords
         var depth = 0
         while (current != null && depth < 5) {
