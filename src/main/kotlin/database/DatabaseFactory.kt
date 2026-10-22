@@ -1,6 +1,6 @@
 package com.example.database
 
-import com.example.database.seed.DatabaseSeeder            // ← add
+import com.example.database.seed.DatabaseSeeder
 import com.example.database.table.BusStations
 import com.example.database.table.CommentLikes
 import database.table.Comments
@@ -19,7 +19,7 @@ import com.example.database.table.SavedOutfits
 import com.example.database.table.SavedPlaces
 import com.example.database.table.SavedPosts
 import com.example.database.table.Venues
-import com.example.location.PlaceGeoJsonSeeder                 // ← keep if this seeds Locations
+import com.example.location.PlaceGeoJsonSeeder
 import database.table.UserSessions
 import database.table.Users
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -48,17 +48,17 @@ object DatabaseFactory {
                 Outfits, PlaceRecommendations, SavedOutfits, Venues,
                 BusStations
             )
-
+        }   // ← THIS is the brace that was missing
 
         if (url.startsWith("jdbc:postgresql")) {
             PlaceGeoJsonSeeder.seed()               // seeds Locations
             DatabaseSeeder.seedVenuesIfEmpty()      // seeds Venues
         }
-    }
+    }   // closes init()
 
     private fun driverFor(url: String): String = when {
         url.startsWith("jdbc:h2") -> "org.h2.Driver"
         url.startsWith("jdbc:postgresql") -> "org.postgresql.Driver"
         else -> throw IllegalArgumentException("Unsupported DB URL: $url")
     }
-}
+}   // closes object DatabaseFactory
