@@ -1,5 +1,6 @@
 package com.example.database.seed
 
+import com.example.database.table.Locations
 import com.example.database.table.Venues
 import com.example.venue.Venue
 import com.example.venue.VenuesRepository
@@ -27,6 +28,12 @@ object DatabaseSeeder {
             return
         }
 
+        // 1. Fetch valid location IDs from the DATABASE (not just the JSON file)
+        val validLocationIds = transaction {
+            Locations.selectAll().map { it[Locations.id] }.toSet()
+        }
+        println("[Seeder] Found ${validLocationIds.size} valid locations in DB")
+
         val locStream = javaClass.classLoader.getResourceAsStream("sarajevo_neighborhoods.geojson")
         if (locStream == null) {
             println("[Seeder] sarajevo_neighborhoods.geojson not found! Cannot assign locationIds.")
@@ -40,12 +47,16 @@ object DatabaseSeeder {
             val obj = f.jsonObject
             val props = obj["properties"]?.jsonObject ?: return@mapNotNull null
             val id = (obj["id"]?.jsonPrimitive?.contentOrNull ?: props["@id"]?.jsonPrimitive?.contentOrNull)?.replace("/", "-") ?: return@mapNotNull null
+
+            // Only map against locations that ACTUALLY exist in the DB
+            if (id !in validLocationIds) return@mapNotNull null
+
             val coords = extractCoordinates(obj) ?: return@mapNotNull null
             NeighborhoodPoint(id, coords.first, coords.second)
         }
         println("[Seeder] Loaded ${neighborhoods.size} neighborhoods for center-point mapping")
 
-        // 2. Load Venues
+        // 3. Load Venues
         val stream = javaClass.classLoader.getResourceAsStream("sarajevo_places.geojson")
             ?: run {
                 println("[Seeder] sarajevo_places.geojson not found in resources")
@@ -87,14 +98,13 @@ object DatabaseSeeder {
 
             val coords = extractCoordinates(f) ?: run { filteredNoCoord++; continue }
 
-            // 3. Find the mathematically closest neighborhood to this venue
+            // 4. Find the mathematically closest neighborhood to this venue
             var closestLocId: String? = null
             var minDistance = Double.MAX_VALUE
 
             for (n in neighborhoods) {
                 val latDiff = coords.first - n.lat
                 val lonDiff = coords.second - n.lon
-                // Simple Euclidean distance is perfectly fine for a city scale
                 val dist = (latDiff * latDiff) + (lonDiff * lonDiff)
                 if (dist < minDistance) {
                     minDistance = dist
@@ -106,7 +116,7 @@ object DatabaseSeeder {
                 id = id,
                 name = trimmed,
                 category = category,
-                locationId = closestLocId, // <-- REAL ID ASSIGNED HERE
+                locationId = closestLocId, // Will be a valid ID or null
                 address = null,
                 latitude = coords.first,
                 longitude = coords.second,
