@@ -9,6 +9,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -26,7 +27,6 @@ object DatabaseSeeder {
             return
         }
 
-        // 1. Load Neighborhoods to calculate closest centers
         val locStream = javaClass.classLoader.getResourceAsStream("sarajevo_neighborhoods.geojson")
         if (locStream == null) {
             println("[Seeder] sarajevo_neighborhoods.geojson not found! Cannot assign locationIds.")
