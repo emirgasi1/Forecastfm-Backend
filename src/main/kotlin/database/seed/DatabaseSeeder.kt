@@ -26,14 +26,32 @@ object DatabaseSeeder {
             return
         }
 
-        val stream = javaClass.classLoader
-            .getResourceAsStream("sarajevo_places.geojson")
+        // 1. Load Neighborhoods to calculate closest centers
+        val locStream = javaClass.classLoader.getResourceAsStream("sarajevo_neighborhoods.geojson")
+        if (locStream == null) {
+            println("[Seeder] sarajevo_neighborhoods.geojson not found! Cannot assign locationIds.")
+            return
+        }
+        val locRoot = locStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        val locParsed = json.parseToJsonElement(locRoot).jsonObject
+        val locFeatures = locParsed["features"]?.jsonArray ?: JsonArray(emptyList())
+
+        val neighborhoods = locFeatures.mapNotNull { f ->
+            val obj = f.jsonObject
+            val props = obj["properties"]?.jsonObject ?: return@mapNotNull null
+            val id = (obj["id"]?.jsonPrimitive?.contentOrNull ?: props["@id"]?.jsonPrimitive?.contentOrNull)?.replace("/", "-") ?: return@mapNotNull null
+            val coords = extractCoordinates(obj) ?: return@mapNotNull null
+            NeighborhoodPoint(id, coords.first, coords.second)
+        }
+        println("[Seeder] Loaded ${neighborhoods.size} neighborhoods for center-point mapping")
+
+        // 2. Load Venues
+        val stream = javaClass.classLoader.getResourceAsStream("sarajevo_places.geojson")
             ?: run {
                 println("[Seeder] sarajevo_places.geojson not found in resources")
                 return
             }
 
-        // ← UTF-8 fix
         val root = stream.bufferedReader(Charsets.UTF_8).use { it.readText() }
         val parsed = json.parseToJsonElement(root).jsonObject
         val features = parsed["features"]?.let { it as? JsonArray } ?: JsonArray(emptyList())
@@ -49,7 +67,6 @@ object DatabaseSeeder {
             val props = f["properties"]?.jsonObject ?: continue
             val name = props["name"]?.jsonPrimitive?.contentOrNull ?: continue
 
-            // ← filter junk names: skip anything < 3 chars or all-digits
             val trimmed = name.trim()
             if (trimmed.length < 3 || trimmed.all { it.isDigit() }) {
                 filteredShortName++
@@ -70,11 +87,26 @@ object DatabaseSeeder {
 
             val coords = extractCoordinates(f) ?: run { filteredNoCoord++; continue }
 
+            // 3. Find the mathematically closest neighborhood to this venue
+            var closestLocId: String? = null
+            var minDistance = Double.MAX_VALUE
+
+            for (n in neighborhoods) {
+                val latDiff = coords.first - n.lat
+                val lonDiff = coords.second - n.lon
+                // Simple Euclidean distance is perfectly fine for a city scale
+                val dist = (latDiff * latDiff) + (lonDiff * lonDiff)
+                if (dist < minDistance) {
+                    minDistance = dist
+                    closestLocId = n.id
+                }
+            }
+
             venues += Venue(
                 id = id,
                 name = trimmed,
                 category = category,
-                locationId = null,
+                locationId = closestLocId, // <-- REAL ID ASSIGNED HERE
                 address = null,
                 latitude = coords.first,
                 longitude = coords.second,
@@ -89,9 +121,11 @@ object DatabaseSeeder {
 
         if (venues.isNotEmpty()) {
             VenuesRepository().bulkInsert(venues)
-            println("[Seeder] Inserted ${venues.size} venues")
+            println("[Seeder] Inserted ${venues.size} venues with assigned neighborhoods")
         }
     }
+
+    private data class NeighborhoodPoint(val id: String, val lat: Double, val lon: Double)
 
     private fun extractCoordinates(feature: JsonObject): Pair<Double, Double>? {
         val geometry = feature["geometry"]?.jsonObject ?: return null
