@@ -28,7 +28,6 @@ object DatabaseSeeder {
             return
         }
 
-        // 1. Fetch valid location IDs from the DATABASE (not just the JSON file)
         val validLocationIds = transaction {
             Locations.selectAll().map { it[Locations.id] }.toSet()
         }
@@ -47,16 +46,12 @@ object DatabaseSeeder {
             val obj = f.jsonObject
             val props = obj["properties"]?.jsonObject ?: return@mapNotNull null
             val id = (obj["id"]?.jsonPrimitive?.contentOrNull ?: props["@id"]?.jsonPrimitive?.contentOrNull)?.replace("/", "-") ?: return@mapNotNull null
-
-            // Only map against locations that ACTUALLY exist in the DB
             if (id !in validLocationIds) return@mapNotNull null
-
             val coords = extractCoordinates(obj) ?: return@mapNotNull null
             NeighborhoodPoint(id, coords.first, coords.second)
         }
         println("[Seeder] Loaded ${neighborhoods.size} neighborhoods for center-point mapping")
 
-        // 3. Load Venues
         val stream = javaClass.classLoader.getResourceAsStream("sarajevo_places.geojson")
             ?: run {
                 println("[Seeder] sarajevo_places.geojson not found in resources")
@@ -98,7 +93,15 @@ object DatabaseSeeder {
 
             val coords = extractCoordinates(f) ?: run { filteredNoCoord++; continue }
 
-            // 4. Find the mathematically closest neighborhood to this venue
+            // --- EXTRACT ADDRESS AND HOURS HERE ---
+            val street = props["addr:street"]?.jsonPrimitive?.contentOrNull
+            val housenumber = props["addr:housenumber"]?.jsonPrimitive?.contentOrNull
+            val address = if (street != null) {
+                if (housenumber != null) "$street $housenumber" else street
+            } else null
+            val openingHours = props["opening_hours"]?.jsonPrimitive?.contentOrNull
+            // --------------------------------------
+
             var closestLocId: String? = null
             var minDistance = Double.MAX_VALUE
 
@@ -116,8 +119,9 @@ object DatabaseSeeder {
                 id = id,
                 name = trimmed,
                 category = category,
-                locationId = closestLocId, // Will be a valid ID or null
-                address = null,
+                locationId = closestLocId,
+                address = address,           // 👈 NOW SET
+                openingHours = openingHours, // 👈 NOW SET
                 latitude = coords.first,
                 longitude = coords.second,
                 description = null,
@@ -139,22 +143,18 @@ object DatabaseSeeder {
 
     private fun extractCoordinates(feature: JsonObject): Pair<Double, Double>? {
         val geometry = feature["geometry"]?.jsonObject ?: return null
-
         val center = geometry["center"]?.jsonObject
         if (center != null) {
             val lat = (center["lat"] as? JsonPrimitive)?.doubleOrNull
             val lon = (center["lon"] as? JsonPrimitive)?.doubleOrNull
             if (lat != null && lon != null) return lat to lon
         }
-
         val coords = geometry["coordinates"] as? JsonArray ?: return null
-
         if (coords.size >= 2) {
             val lon = (coords[0] as? JsonPrimitive)?.doubleOrNull
             val lat = (coords[1] as? JsonPrimitive)?.doubleOrNull
             if (lat != null && lon != null) return lat to lon
         }
-
         var current: JsonArray? = coords
         var depth = 0
         while (current != null && depth < 5) {
@@ -173,7 +173,6 @@ object DatabaseSeeder {
                 else -> return null
             }
         }
-
         return null
     }
 }

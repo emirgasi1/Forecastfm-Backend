@@ -9,6 +9,7 @@ data class Venue(
     val category: String,
     val locationId: String?,
     val address: String?,
+    val openingHours: String?,
     val latitude: Double,
     val longitude: Double,
     val description: String?,

@@ -9,6 +9,7 @@ object Venues : Table("venues") {
     val category = text("category")                        // "cafe", "restaurant", "bus_stop", ...
     val locationId = text("locationId").references(Locations.id).nullable()  // neighborhood FK
     val address = text("address").nullable()
+    val openingHours = text("openingHours").nullable()
     val latitude = double("latitude")
     val longitude = double("longitude")
     val description = text("description").nullable()

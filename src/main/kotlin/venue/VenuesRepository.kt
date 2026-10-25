@@ -45,6 +45,7 @@ class VenuesRepository {
                 it[category] = v.category
                 it[locationId] = v.locationId
                 it[address] = v.address
+                it[openingHours] = v.openingHours
                 it[latitude] = v.latitude
                 it[longitude] = v.longitude
                 it[description] = v.description
@@ -60,6 +61,7 @@ class VenuesRepository {
         category = this[Venues.category],
         locationId = this[Venues.locationId],
         address = this[Venues.address],
+        openingHours = this[Venues.openingHours],
         latitude = this[Venues.latitude],
         longitude = this[Venues.longitude],
         description = this[Venues.description],
