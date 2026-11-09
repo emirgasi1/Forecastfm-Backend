@@ -58,6 +58,18 @@ fun Route.outfitRoutes() {
         call.respond(signed)
     }
 
+    get("/api/outfits/grouped") {
+        val outfitsByWeather = outfitRepository.getGroupedOutfits()
+
+        val signedGrouped = outfitsByWeather.mapValues { (_, outfits) ->
+            outfits.map { outfit ->
+                outfit.copy(imageUrl = getSignedImageUrlOrOriginal(outfit.imageUrl) ?: "")
+            }
+        }
+
+        call.respond(signedGrouped)
+    }
+
     post("/api/outfits/{id}/like") {
         val id = call.parameters["id"]
             ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing outfit ID")

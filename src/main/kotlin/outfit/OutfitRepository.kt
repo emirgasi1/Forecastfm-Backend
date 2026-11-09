@@ -148,4 +148,30 @@ class OutfitRepository {
             }
         }
     }
+
+    fun getGroupedOutfits(): Map<String, List<Outfit>> {
+        return transaction {
+            Outfits
+                .selectAll()
+                .orderBy(Outfits.likes to SortOrder.DESC)
+                .map { row ->
+                    Outfit(
+                        id = row[Outfits.id],
+                        userId = row[Outfits.userId],
+                        imageUrl = row[Outfits.imageUrl],
+                        title = row[Outfits.title],
+                        weatherCondition = row[Outfits.weatherCondition],
+                        season = row[Outfits.season],
+                        likes = row[Outfits.likes],
+                        storeName = row[Outfits.storeName],
+                        storeAddress = row[Outfits.storeAddress],
+                        price = row[Outfits.price],
+                        storePhone = row[Outfits.storePhone],
+                        productUrl = row[Outfits.productUrl],
+                        createdAt = row[Outfits.createdAt].toString()
+                    )
+                }
+                .groupBy { it.weatherCondition } // 👈 Groups them into Map<String, List<Outfit>>
+        }
+    }
 }
