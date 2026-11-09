@@ -2,6 +2,7 @@ package com.example
 
 import com.example.configure.createHttpClient
 import com.example.database.DatabaseFactory
+import com.example.database.seed.OutfitSeeder
 import com.example.weather.WeatherApi
 import com.example.weather.WeatherRepository
 import com.example.routes.weatherRoutes
@@ -9,7 +10,11 @@ import io.ktor.server.application.Application
 import java.io.File
 
 fun Application.rootModule() {
-    DatabaseFactory.init()          // seeds both locations and venues
+    DatabaseFactory.init() // seeds both locations and venues
+
+    OutfitSeeder.seedIfEmpty()
+
+
     val httpClient = createHttpClient()
 
     val weatherApi = WeatherApi(httpClient)
