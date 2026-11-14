@@ -48,17 +48,17 @@ object DatabaseFactory {
                 Outfits, PlaceRecommendations, SavedOutfits, Venues,
                 BusStations
             )
-        }   // ← THIS is the brace that was missing
+        }
 
         if (url.startsWith("jdbc:postgresql")) {
-            PlaceGeoJsonSeeder.seed()               // seeds Locations
-            DatabaseSeeder.seedVenuesIfEmpty()      // seeds Venues
+            PlaceGeoJsonSeeder.seed()
+            DatabaseSeeder.seedVenuesIfEmpty()
         }
-    }   // closes init()
+    }
 
     private fun driverFor(url: String): String = when {
         url.startsWith("jdbc:h2") -> "org.h2.Driver"
         url.startsWith("jdbc:postgresql") -> "org.postgresql.Driver"
         else -> throw IllegalArgumentException("Unsupported DB URL: $url")
     }
-}   // closes object DatabaseFactory
+}

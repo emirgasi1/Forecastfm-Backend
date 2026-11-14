@@ -3,6 +3,7 @@ package com.example
 import com.example.configure.createHttpClient
 import com.example.database.DatabaseFactory
 import com.example.database.seed.OutfitSeeder
+import com.example.database.seed.PlaylistSeeder
 import com.example.weather.WeatherApi
 import com.example.weather.WeatherRepository
 import com.example.routes.weatherRoutes
@@ -13,6 +14,7 @@ fun Application.rootModule() {
     DatabaseFactory.init() // seeds both locations and venues
 
     OutfitSeeder.seedIfEmpty()
+    PlaylistSeeder.seedBestForTags()
 
 
     val httpClient = createHttpClient()
